@@ -1,0 +1,70 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <o:UsernameToken u:id="8b1f5957-8dda-4657-9d29-02cfddfb7cce" xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+                xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+                <o:Username>ServiceNowTest</o:Username>
+                <o:Password>service123</o:Password>
+                <o:Nonce>J7SezqhGt7XG9RZB3VhjnzREbXs=</o:Nonce>
+            </o:UsernameToken>
+        </Security>
+        <TargetPortfolio xmlns="http://www.mps.com/Prolog/webservices">Prolog_Sample</TargetPortfolio>
+    </s:Header>
+    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <ExecuteDynamicQueryOnPortfolio xmlns="uri://meridiansystems.com/prolog/connect/queryservice">
+            <Query>
+                <ID xsi:nil="true" />
+                <QueryGroupID xsi:nil="true" />
+                <CreationDate xsi:nil="true" />
+                <ModificationDate xsi:nil="true" />
+                <IsDistinct>false</IsDistinct>
+                <DataGroupID>112</DataGroupID>
+                <Fields>
+                    <QueryField>
+                        <Column>Company.Name</Column>
+                        <IsShow>true</IsShow>
+                        <SortOrder>None</SortOrder>
+                    </QueryField>
+                    <QueryField>
+                        <Column>Contacts.DisplayName</Column>
+                        <IsShow>true</IsShow>
+                        <SortOrder>None</SortOrder>
+                    </QueryField>
+                    <QueryField>
+                        <Column>Contacts.ContactID</Column>
+                        <IsShow>true</IsShow>
+                        <SortOrder>None</SortOrder>
+                    </QueryField>
+                    <QueryField>
+                        <Column>Contacts.Email</Column>
+                        <IsShow>true</IsShow>
+                        <SortOrder>None</SortOrder>
+                    </QueryField>
+                    <QueryField>
+                        <Column>Company.GUID</Column>
+                        <IsShow>true</IsShow>
+                        <SortOrder>None</SortOrder>
+                    </QueryField>
+                    <QueryField>
+                        <Column>Addresses.GUID</Column>
+                        <IsShow>true</IsShow>
+                        <SortOrder>None</SortOrder>
+                    </QueryField>
+                    <QueryField>
+                        <Column>Addresses.NameOfLocation</Column>
+                        <IsShow>true</IsShow>
+                        <SortOrder>None</SortOrder>
+                    </QueryField>
+                </Fields>
+                <Filters/>
+                <DatagroupName>Contact List</DatagroupName>
+            </Query>
+            <ExecutionPlan>
+                <PageInfo>
+                    <FirstRecordNumber>0</FirstRecordNumber>
+                    <PageSize>5000</PageSize>
+                </PageInfo>
+            </ExecutionPlan>
+        </ExecuteDynamicQueryOnPortfolio>
+    </s:Body>
+</s:Envelope>

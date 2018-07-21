@@ -1,0 +1,268 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <o:UsernameToken u:id="e3bf6ff7-22f3-419e-8df1-82ba66dc388e" xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+                xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+                <o:Username>ServiceNowTest</o:Username>
+                <o:Password>service123</o:Password>
+                <o:Nonce>MQF6ciZl5K/OWGlQ9ClEptMx2r8=</o:Nonce>
+            </o:UsernameToken>
+        </Security>
+        <TargetPortfolio xmlns="http://www.mps.com/Prolog/webservices">Prolog_Sample
+        </TargetPortfolio>
+        <TargetProject xmlns="http://www.mps.com/Prolog/webservices">Downtown Medical Center
+        </TargetProject>
+    </s:Header>
+    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <SaveDocument xmlns="uri://meridiansystems.com/prolog/connect/documentservice">
+            <SaveDocumentArgument>
+                <DocumentData xmlns="uri://meridiansystems.com/prolog/connect/documentservice/MeridianSystems.Prolog.Business.Administration.Company"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <CompanyID>TEST1</CompanyID>
+                    <Name>Test with Jordan</Name>
+                    <ShortName>TestJordan</ShortName>
+                    <TypeOfCompany_Section>CompanyType</TypeOfCompany_Section>
+                    <TypeOfCompany_Description>Vendor</TypeOfCompany_Description>
+                    <MaxContractValue>0</MaxContractValue>
+                    <AvgAnnualWorkValue>0</AvgAnnualWorkValue>
+                    <InLitigationNow>false</InLitigationNow>
+                    <IsBondable>false</IsBondable>
+                    <BondingCapacity>0</BondingCapacity>
+                    <IsUnion>false</IsUnion>
+                    <IsOpenShop>false</IsOpenShop>
+                    <IsPrevailingWage>false</IsPrevailingWage>
+                    <IsOtherLabType>false</IsOtherLabType>
+                    <InNatUnionAgreement>false</InNatUnionAgreement>
+                    <InLocUnionAgreement>false</InLocUnionAgreement>
+                    <IsWBE>false</IsWBE>
+                    <IsMBE>false</IsMBE>
+                    <IsDBE>false</IsDBE>
+                    <IsVBE>false</IsVBE>
+                    <IsSBE>false</IsSBE>
+                    <IsState>false</IsState>
+                    <IsFederal>false</IsFederal>
+                    <IsOtherClass>false</IsOtherClass>
+                    <DivisionID_LookupType>Divisions</DivisionID_LookupType>
+                    <WorkUsuallySubedOut>0.00</WorkUsuallySubedOut>
+                    <Addresses>
+                        <AddressesRow>
+                            <AddressID>297</AddressID>
+                            <NameOfLocation>Main</NameOfLocation>
+                            <DisplayAddress>, </DisplayAddress>
+                            <TypeOfAddress_Section>AddressType</TypeOfAddress_Section>
+                            <SortOrder>0</SortOrder>
+                            <IsMainAddress>true</IsMainAddress>
+                            <LastModifiedBy>Chris Gibson</LastModifiedBy>
+                            <LastModified>2018-05-09T10:36:13.907</LastModified>
+                            <GUID>1628607b-9d92-4761-92dd-4698fb389aed</GUID>
+                        </AddressesRow>
+                    </Addresses>
+                    <Contacts>
+                        <ContactsRow>
+                            <ContactID>JOHSIM03</ContactID>
+                            <Address_ItemGuid>1628607b-9d92-4761-92dd-4698fb389aed</Address_ItemGuid>
+                            <Address_ItemTitle>Main</Address_ItemTitle>
+                            <Address_DocumentReference_Title>Test with Jordan</Address_DocumentReference_Title>
+                            <Address_DocumentReference_Identifier>TEST1</Address_DocumentReference_Identifier>
+                            <Address_DocumentReference_Guid>fb4ee409-9351-4823-a386-5ab9bc3ce9c4</Address_DocumentReference_Guid>
+                            <Address_DocumentReference_DocumentType>MeridianSystems.Prolog.Business.Administration.Company.CompanyDocument</Address_DocumentReference_DocumentType>
+                            <DisplayAddress>, </DisplayAddress>
+                            <DisplayName>John Simpson3</DisplayName>
+                            <FirstName>John</FirstName>
+                            <LastName>Simpson3</LastName>
+                            <PortfolioRole_Section>PortfolioRole</PortfolioRole_Section>
+                            <IsMainContact>false</IsMainContact>
+                            <IsAutoNotify>false</IsAutoNotify>
+                            <IsActive>true</IsActive>
+                            <IsCurrent>false</IsCurrent>
+                            <SortOrder>0</SortOrder>
+                            <LastModified>2018-05-09T10:56:37.657</LastModified>
+                            <LastModifiedBy>ServiceNowTest</LastModifiedBy>
+                            <GUID>526e56a5-f615-428e-932b-3e7d6bab4989</GUID>
+                            <ProjectsLinks/>
+                        </ContactsRow>
+                        <ContactsRow>
+                            <ContactID>JOHSIM01</ContactID>
+                            <Address_ItemGuid>1628607b-9d92-4761-92dd-4698fb389aed</Address_ItemGuid>
+                            <Address_ItemTitle>Main</Address_ItemTitle>
+                            <Address_DocumentReference_Title>Test with Jordan</Address_DocumentReference_Title>
+                            <Address_DocumentReference_Identifier>TEST1</Address_DocumentReference_Identifier>
+                            <Address_DocumentReference_Guid>fb4ee409-9351-4823-a386-5ab9bc3ce9c4</Address_DocumentReference_Guid>
+                            <Address_DocumentReference_DocumentType>MeridianSystems.Prolog.Business.Administration.Company.CompanyDocument</Address_DocumentReference_DocumentType>
+                            <DisplayAddress>, </DisplayAddress>
+                            <DisplayName>John Simpson2</DisplayName>
+                            <FirstName>John</FirstName>
+                            <LastName>Simpson2</LastName>
+                            <PortfolioRole_Section>PortfolioRole</PortfolioRole_Section>
+                            <IsMainContact>true</IsMainContact>
+                            <IsAutoNotify>false</IsAutoNotify>
+                            <IsActive>true</IsActive>
+                            <IsCurrent>false</IsCurrent>
+                            <SortOrder>0</SortOrder>
+                            <LastModified>2018-05-09T10:45:57.67</LastModified>
+                            <LastModifiedBy>Chris Gibson</LastModifiedBy>
+                            <GUID>9e4ea6b0-f565-4d12-8906-8837a2e372d4</GUID>
+                            <ProjectsLinks>
+                                <ProjectsLinksRow>
+                                    <CompProjID>231</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>Package 2</Project_Title>
+                                    <Project_Identifier>3</Project_Identifier>
+                                    <Project_Guid>eb14b378-146f-11d4-816e-000102351bdf</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>556487ad-d32b-457f-b312-3e5930ef6583</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>227</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>Downtown Medical Center</Project_Title>
+                                    <Project_Identifier>4</Project_Identifier>
+                                    <Project_Guid>7d6e8c09-2bc9-11d4-9a64-006097901016</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>029b1328-4f6d-4b8c-8a9c-ccef21f8ad8b</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>229</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>Newtown Convention Center</Project_Title>
+                                    <Project_Identifier>5</Project_Identifier>
+                                    <Project_Guid>529878c6-9c7a-4179-9b4d-872d6173721a</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>2f746682-aee7-448b-98b6-0f855360e0f5</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>228</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>Eagleridge Town Square</Project_Title>
+                                    <Project_Identifier>6</Project_Identifier>
+                                    <Project_Guid>e6d4addf-88fc-44fd-a76f-38c44e66976b</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>036b017c-e2f5-41c8-b119-b299d551585e</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>233</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>Riverbank Shopping Mall</Project_Title>
+                                    <Project_Identifier>7</Project_Identifier>
+                                    <Project_Guid>b6a3c840-efc8-4297-ac1b-4ff67eef4081</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>0c20c822-97ac-418d-b8e4-e0fc9497f471</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>225</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>Creekside Estate</Project_Title>
+                                    <Project_Identifier>8</Project_Identifier>
+                                    <Project_Guid>3a87a209-4505-4b36-9b07-7d7ba8472106</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>227a8c3f-bdf3-4d32-90d1-71bd040da762</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>234</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>Sunnydale Care Center</Project_Title>
+                                    <Project_Identifier>9</Project_Identifier>
+                                    <Project_Guid>be9d6080-d336-4759-b5a8-84ba4d741468</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>0dece355-810b-4eaa-b72f-10b66a40097c</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>230</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>PMSS Project</Project_Title>
+                                    <Project_Identifier>10</Project_Identifier>
+                                    <Project_Guid>ef4e457e-f922-443b-ba86-2d0c53ffd1b1</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>65f25cf0-a2c3-4c3f-8100-a0dc6dde88ca</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>224</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>Aventura Plaza</Project_Title>
+                                    <Project_Identifier>11</Project_Identifier>
+                                    <Project_Guid>9f20f993-2881-402e-8d23-941d54f6fa3a</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>8bba6993-dbbd-4717-953e-a0d5a6a64136</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>226</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>DB Package 1</Project_Title>
+                                    <Project_Identifier>12</Project_Identifier>
+                                    <Project_Guid>6fc001d8-f459-4496-b6f1-47cbf8bcd9d2</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>350e53ee-865e-42ee-802e-044abe624f5d</GUID>
+                                </ProjectsLinksRow>
+                                <ProjectsLinksRow>
+                                    <CompProjID>232</CompProjID>
+                                    <SortOrder>0</SortOrder>
+                                    <Project_Title>Prolog Manager New Project</Project_Title>
+                                    <Project_Identifier>13</Project_Identifier>
+                                    <Project_Guid>ad91d386-a483-4bad-bdc5-4e64ab19785a</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                    <GUID>a388c420-947a-4729-a701-8997a2754c04</GUID>
+                                </ProjectsLinksRow>
+                            </ProjectsLinks>
+                        </ContactsRow>
+                        <ContactsRow RowState="Added">
+                            <ContactID>JOHSIM1</ContactID>
+                            <Address_ItemGuid>bb193f86-bf79-445d-888b-238d56044914</Address_ItemGuid>
+                            <DisplayName>John Simpson</DisplayName>
+                            <FirstName>John</FirstName>
+                            <LastName>Simpson</LastName>
+                            <IsMainContact>false</IsMainContact>
+                            <IsAutoNotify>false</IsAutoNotify>
+                            <IsActive>true</IsActive>
+                            <IsCurrent>false</IsCurrent>
+                            <GUID/>
+                            <ProjectsLinks>
+                                <ProjectsLinksRow RowState="Added">
+                                    <Project_Guid>7d6e8c09-2bc9-11d4-9a64-006097901016</Project_Guid>
+                                    <Project_DocumentType>MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument</Project_DocumentType>
+                                    <IsMainProjectContact>false</IsMainProjectContact>
+                                </ProjectsLinksRow>
+                            </ProjectsLinks>
+                        </ContactsRow>
+                    </Contacts>
+                    <InsurancePolicies/>
+                    <CompanyDivisionsOfWork/>
+                    <CompanyOwnedEquip/>
+                    <CompanyRegionsOfWork/>
+                    <CompanyTypesOfWork/>
+                    <CompanyWorkHistory/>
+                    <DistributionLinks/>
+                    <DocumentType>MeridianSystems.Prolog.Business.Administration.Company.CompanyDocument</DocumentType>
+                    <GUID>fb4ee409-9351-4823-a386-5ab9bc3ce9c4</GUID>
+                    <LastModified>2018-05-09T10:56:37.657</LastModified>
+                    <LastModifiedBy>ServiceNowTest</LastModifiedBy>
+                    <PortfolioName>Prolog_Sample</PortfolioName>
+                    <ExternalLinks/>
+                    <GlobalRecord_GlobalID>1472</GlobalRecord_GlobalID>
+                    <GlobalRecord_ParentID>TEST1</GlobalRecord_ParentID>
+                    <GlobalRecord_ParentGUID>fb4ee409-9351-4823-a386-5ab9bc3ce9c4</GlobalRecord_ParentGUID>
+                    <GlobalRecord_PEParentType>10</GlobalRecord_PEParentType>
+                    <GlobalRecord_ProjectID>4</GlobalRecord_ProjectID>
+                    <GlobalRecord_LastModified>2018-05-09T10:56:37.657</GlobalRecord_LastModified>
+                    <GlobalRecord_LastModifiedBy>ServiceNowTest</GlobalRecord_LastModifiedBy>
+                    <GlobalRecord_GUID>82d7d829-ba52-4db9-a762-2ff2b1b4fdb7</GlobalRecord_GUID>
+                    <GlobalRecord_RoutingStatus>0</GlobalRecord_RoutingStatus>
+                    <GlobalRecord_GlobalRoutingItems/>
+                </DocumentData>
+            </SaveDocumentArgument>
+            <DocumentOutputOptions>
+                <IncludeMetaData>false</IncludeMetaData>
+            </DocumentOutputOptions>
+        </SaveDocument>
+    </s:Body>
+</s:Envelope>

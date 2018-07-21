@@ -1,0 +1,21 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <o:UsernameToken u:id="8b1f5957-8dda-4657-9d29-02cfddfb7cce" xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+                xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+                <o:Username>ServiceNowTest</o:Username>
+                <o:Password>service123</o:Password>
+                <o:Nonce>J7SezqhGt7XG9RZB3VhjnzREbXs=</o:Nonce>
+            </o:UsernameToken>
+        </Security>
+        <TargetPortfolio xmlns="http://www.mps.com/Prolog/webservices">Prolog_Sample</TargetPortfolio>
+        <TargetProject xmlns="http://www.mps.com/Prolog/webservices">Downtown Medical Center</TargetProject>
+    </s:Header>
+    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <ReadDocument xmlns="uri://meridiansystems.com/prolog/connect/documentservice">
+            <DocumentTypeName>MeridianSystems.Prolog.Business.Administration.Company.CompanyDocument</DocumentTypeName>
+            <DocumentGuid>fb4ee409-9351-4823-a386-5ab9bc3ce9c4</DocumentGuid>
+            <SkipMetadataElement>true</SkipMetadataElement>
+        </ReadDocument>
+    </s:Body>
+</s:Envelope>

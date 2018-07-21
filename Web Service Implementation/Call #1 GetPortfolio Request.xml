@@ -1,0 +1,15 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sit="uri://meridiansystems.com/prolog/connect/siteinformationservice">
+    <soapenv:Header>
+        <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <o:UsernameToken u:id="8b1f5957-8dda-4657-9d29-02cfddfb7cce" xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+                xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+                <o:Username>ServiceNowTest</o:Username>
+                <o:Password>service123</o:Password>
+                <o:Nonce>J7SezqhGt7XG9RZB3VhjnzREbXs=</o:Nonce>
+            </o:UsernameToken>
+        </Security>
+    </soapenv:Header>
+    <soapenv:Body>
+        <sit:GetPortfolios/>
+    </soapenv:Body>
+</soapenv:Envelope>

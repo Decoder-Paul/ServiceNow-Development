@@ -1,0 +1,14 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+    <soap:Header>
+        <wsa:Action>uri://meridiansystems.com/prolog/connect/administrationservice/AddOrUpdateUserResponse</wsa:Action>
+        <wsa:MessageID>urn:uuid:d596d74f-e1ae-4cb8-a2e0-a2aa07216cbe</wsa:MessageID>
+        <wsa:RelatesTo>urn:uuid:327a729f-0fb7-4503-9c0b-30a9efc60aaf</wsa:RelatesTo>
+        <wsa:To>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</wsa:To>
+    </soap:Header>
+    <soap:Body>
+        <AddOrUpdateUserResponse xmlns="uri://meridiansystems.com/prolog/connect/administrationservice">
+            <AddOrUpdateUserResult>true</AddOrUpdateUserResult>
+        </AddOrUpdateUserResponse>
+    </soap:Body>
+</soap:Envelope>
