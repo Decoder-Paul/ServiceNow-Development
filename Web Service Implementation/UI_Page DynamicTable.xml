@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <html>
+    <head>
+        <style>
+            @media (min-width: 1100px) {
+                .container {
+                    width: 1070px;
+                }
+            }
+
+            @media (min-width: 800px) {
+                .container {
+                    width: 780px;
+                }
+            }
+
+            .container {
+                padding-right: 0px !important;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    </head>
+    <body ng-app="tableApp" ng-controller="MainCtrl" class="form-control" style="width:50%">
+        <div class="container" style="display:block;text-align:center">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group ">
+                                <input type="button" class="btn btn-primary addnew pull-left" ng-click="addRecord(TableInfos)" value="Add New" />
+                                <input type="button" ng-hide="!TableInfos.length" class="btn btn-danger addnew pull-right" ng-click="remove()" value="Remove"
+                                />
+                            </div>
+                            <p id="stat" class="text-center bg-danger">{{status}}</p>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Database Name</th>
+                                        <th>Project Name</th>
+                                        <th>Security</th>
+                                        <th>Name of Company</th>
+                                        <th>Name of Location</th>
+                                        <th>
+                                            <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" />
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="EachInfo in TableInfos">
+                                        <td> {{EachInfo.serialKey}} </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="EachInfo.field1" ng-disabled="true"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="EachInfo.field2" ng-disabled="true"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="EachInfo.field3" ng-disabled="true"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="EachInfo.field4" ng-disabled="true"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="EachInfo.field5" ng-disabled="true"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" ng-model="EachInfo.selected" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            <![CDATA[
+                angular.module('tableApp', [])
+                .controller('MainCtrl', function ($scope) {
+                    $scope.TableInfos = [];
+                    $scope.compositeKey = [];
+                    var i = 0;
+                    $scope.status = "Please select all option & click Add";
+                    $scope.addRecord = function () {
+                        var rec = g_form.getValue('NUR_DatabaseforProj') + g_form.getValue(
+                            'NUR_ProjectName') + g_form.getValue('NUR_Security') + g_form.getValue(
+                            'NUR_NameofCompany') + g_form.getValue('NUR_NameofLocation');
+                        if (g_form.getValue('NUR_DatabaseforProj') && g_form.getValue('NUR_ProjectName') &&
+                            g_form.getValue('NUR_Security') && g_form.getValue('NUR_NameofCompany') &&
+                            g_form.getValue('NUR_NameofLocation')) {
+                            if (!$scope.compositeKey.includes(rec)) {
+                                $scope.TableInfos.push({
+                                    'serialKey': ++i,
+                                    'field1': g_form.getValue('NUR_DatabaseforProj'),
+                                    'field2': g_form.getValue('NUR_ProjectName'),
+                                    'field3': g_form.getValue('NUR_Security'),
+                                    'field4': g_form.getValue('NUR_NameofCompany'),
+                                    'field5': g_form.getValue('NUR_NameofLocation'),
+                                    'selected': false
+                                });
+                                $scope.compositeKey.push(rec);
+                                $scope.status = "Data added Successfully";
+                                document.getElementById("stat").classList.remove("bg-danger");
+                                document.getElementById("stat").classList.add("bg-success");
+                            } else {
+                                $scope.status = "Please try with unique data";
+                                document.getElementById("stat").classList.add("bg-danger");
+                            }
+                        } else {
+                            alert("Please select all the fields");
+                        }
+
+                        g_form.setValue('NUR_json', JSON.stringify($scope.TableInfos));
+                    };
+                    $scope.checkAll = function () {
+                        var checkStatus = $scope.selectedAll;
+                        angular.forEach($scope.TableInfos, function (itm) {
+                            itm.selected = checkStatus;
+                        });
+                    };
+                    $scope.remove = function () {
+                        var updatedList = [];
+                        var j = 1;
+                        angular.forEach($scope.TableInfos, function (data) {
+                            if (!data.selected) {
+                                data.serialKey = j++;
+                                updatedList.push(data);
+                            } else {
+                                --i;
+                            }
+                        });
+                        $scope.TableInfos = updatedList;
+                        $scope.selectedAll = false;
+                        g_form.setValue('NUR_json', JSON.stringify($scope.TableInfos));
+                        if ($scope.TableInfos.length == 0) {
+                            $scope.status = "Please select all option & click Add";
+                            document.getElementById("stat").classList.remove("bg-success");
+                            document.getElementById("stat").classList.add("bg-danger");
+                        }
+                    };
+                });
+            ]]>
+        </script>
+    </body>
+    </html>
+</j:jelly>

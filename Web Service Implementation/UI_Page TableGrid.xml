@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <style>
+        #tableData {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #tableData td,
+        #tableData th {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+
+        #tableData th {
+            background-color: #dddddd;
+        }
+
+        form {
+            font-size: inherit;
+            line-height: inherit;
+            font-style: inherit;
+            color: inherit;
+        }
+    </style>
+    <form>
+        <div class="container" id='d1v1' style="display:block;text-align:center;width:100%">
+        </div>
+    </form>
+    <script>
+        function onCondition() {
+            var s = g_form.getValue('NUR_json');
+            var sHTML = "<h4>User Entered Information</h4>";
+            sHTML += "<table id='tableData'>";
+            sHTML += "<thead>";
+            sHTML += "<tr>";
+            sHTML += "<th>Database For New Project</th>";
+            sHTML += "<th>Project Name</th>";
+            sHTML += "<th>Security</th>";
+            sHTML += "<th>Name Of Company</th>";
+            sHTML += "<th>Name Of Location</th>";
+            sHTML += "</tr>";
+            sHTML += "</thead>";
+            sHTML += "<tbody>";
+            var jObj = JSON.parse(s);
+            for (var i = 0; i < jObj.length; i++) {
+                sHTML += "<tr>";
+                sHTML += "<td>" + jObj[i].field1 + "</td>";
+                sHTML += "<td>" + jObj[i].field2 + "</td>";
+                sHTML += "<td>" + jObj[i].field3 + "</td>";
+                sHTML += "<td>" + jObj[i].field4 + "</td>";
+                sHTML += "<td>" + jObj[i].field5 + "</td>";
+                sHTML += "</tr>";
+            }
+            sHTML += "</tbody>";
+            document.getElementById("d1v1").innerHTML = sHTML;
+        }
+    </script>
+</j:jelly>
