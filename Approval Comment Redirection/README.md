@@ -20,3 +20,5 @@ the requestor can open the UI Page in new window by clicking the **Clicking me**
 * The client side functions `serverCall` in the UI Page making synchronous GlideAjax call to server for posting the comment into the `sc_req_item` table.
 * It's also checking the status of the ticket based on that it'll show the below message.
 ![pic of closed ritm](https://github.com/Decoder-Paul/ServiceNow-Development/blob/master/Approval%20Comment%20Redirection/Closed%20Ritm.PNG)
+* Finally the comment captured in the modal is redirected back to Approval Page.
+![comment in approval](https://github.com/Decoder-Paul/ServiceNow-Development/blob/master/Approval%20Comment%20Redirection/Comment%20from%20Approval.PNG)
