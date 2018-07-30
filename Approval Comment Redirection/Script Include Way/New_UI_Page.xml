@@ -60,6 +60,7 @@
 			<g:ui_form>
 				<div id="myModal" class="modal">
 					<!-- Modal content -->
+					
 					<div class="modal-content">
 						<div id="notif" class="alert alert-info">
 							<label>Number :</label>
@@ -86,22 +87,26 @@
 			// using that ritm table will be queried to get the short description of the ticket
 			if(${gr.state}==3){
 				document.getElementById("comBody").style.display = "none";
-				document.getElementById("notif").innerHTML = "<strong>This RITM is no more available for commenting</strong>";
+				document.getElementById("notif").innerHTML = "<strong>This ${gr.number} is no more available for commenting</strong><button class='btn btn-icon close icon-cross' onclick='modalClose()'></button>";
 			}
 			document.getElementById("comSubmit").onclick = function() {
 				var doc_id = getParmVal('sysparm_doc');
-
+				
 				//getting comment
 				var comment = "";
 				comment = trim(document.getElementById("modalComment").value);
+				//setTimeout(callAlert, 3000);
+				
 				if(comment==""){
 					alert("Please enter your commment");
 					return false;
 				}
 				else{
-					alert("Comment Captured Successfully");
-					serverCall(comment,doc_id);
-					window.top.close();
+					if (confirm("Do you want to submit the comment?")) {
+						serverCall(comment,doc_id);
+					} else {
+						return false;
+					}
 				}
 				function getParmVal(name){
 					var url = document.URL.parseQuery();
@@ -117,13 +122,11 @@
 					ga.addParam('sysparm_name','putComment');
 					ga.addParam('sysparm_comment',comment);
 					ga.addParam('sysparm_doc',doc_id);
-					ga.getXML(Parser);
-					function Parser(response){
-						var answer = response.responseXML.documentElement.getAttribute("answer");
+					ga.getXMLWait();
+					if(ga.getAnswer()){
+						alert("Comment Captured Successfully");
+						window.top.close();
 					}
-				}
-				function modalClose(){
-					window.top.close();
 				}
 			}
 		</script>
