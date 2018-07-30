@@ -9,7 +9,13 @@ The BR Script is creating the url of the UI Page with two query variables `syspa
 * *sysparm_ui_page* - used for bypassing the UI Action of page redirection on Portal for ESS users.
 * *sysparm_doc* - used for passing the `sys_id` of the record of approval table through Url which later used in the UI Page for finding the RITM record.
 #### Rendered URL
-![alt text](https://github.com/Decoder-Paul/ServiceNow-Development/blob/master/Approval%20Comment%20Redirection/RITM%20Comment.PNG)
+**UI16 View**
+
+![Comment in RITM](https://github.com/Decoder-Paul/ServiceNow-Development/blob/master/Approval%20Comment%20Redirection/RITM%20Comment.PNG)
+
+**Portal View**
+
+![Comment in Portal](https://github.com/Decoder-Paul/ServiceNow-Development/blob/master/Approval%20Comment%20Redirection/Portal%20Comment.PNG)
 ## UI Page
 the requestor can open the UI Page in new window by clicking the **Clicking me** link in the comment section.
 
@@ -21,4 +27,5 @@ the requestor can open the UI Page in new window by clicking the **Clicking me**
 * It's also checking the status of the ticket based on that it'll show the below message.
 ![pic of closed ritm](https://github.com/Decoder-Paul/ServiceNow-Development/blob/master/Approval%20Comment%20Redirection/Closed%20Ritm.PNG)
 * Finally the comment captured in the modal is redirected back to Approval Page.
-![comment in approval](https://github.com/Decoder-Paul/ServiceNow-Development/blob/master/Approval%20Comment%20Redirection/Comment%20from%20Approval.PNG)
+
+![comment in approval](https://github.com/Decoder-Paul/ServiceNow-Development/blob/master/Approval%20Comment%20Redirection/Comment%20on%20Approval.PNG)
