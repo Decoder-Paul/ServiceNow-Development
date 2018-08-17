@@ -46,6 +46,7 @@
 		<j:set var="jvar_approval" value="${sysparm_doc}"/>
 		<g:evaluate>
 			var apprv = new GlideRecord('sysapproval_approver');
+			var comment;
 			apprv.addQuery('sys_id', '${jvar_approval}');
 			apprv.query();
 			if(apprv.next()){
@@ -53,6 +54,17 @@
 				gr.addQuery('sys_id', apprv.document_id);
 				gr.query();
 				gr.next();
+			var journal = gr.comments.getJournalEntry(-1).split("\n\n");
+			for (var i = 0; i &lt; journal.length; i++){
+				if(journal[i].includes("This comment is from the approval"))
+				{
+					comment = journal[i].split("\n");
+					comment.shift();
+					comment.shift();
+					break;
+				}
+			}
+			var comm = comment.join("\n");
 <!-- 				gs.log("Decoder|State: "+gr.state); -->
 			}
 		</g:evaluate> 
@@ -69,9 +81,11 @@
 								<label>Short Description :</label>
 								<j2:whitespace trim="false"> ${gr.short_description}</j2:whitespace>
 							</div>
+							<label>Comment from approver :</label>
+							<j2:whitespace trim="false"> ${comm}</j2:whitespace>
 						</div>
 						<div id="comBody">
-							<label>Please enter your comment below</label>
+							<label>Please enter your response below</label>
 							<textarea name='message' class="form-control" rows="4" id='modalComment'></textarea>
 							<div class="modal-footer">
 								<button id ='comSubmit' class="btn btn-primary float-left">Submit</button>
@@ -87,7 +101,7 @@
 			// using that ritm table will be queried to get the short description of the ticket
 			if(${gr.state}==3){
 				document.getElementById("comBody").style.display = "none";
-				document.getElementById("notif").innerHTML = "<strong>This ${gr.number} is no more available for commenting</strong><button class='btn btn-icon close icon-cross' onclick='modalClose()'></button>";
+				document.getElementById("notif").innerHTML = "<strong>${gr.number} is closed and you are not able to further comment. To open a new request please visit <a href='http://support.jacobs.com'>http://support.jacobs.com</a></strong><button class='btn btn-icon close icon-cross' onclick='modalClose()'></button>";
 			}
 			document.getElementById("comSubmit").onclick = function() {
 				var doc_id = getParmVal('sysparm_doc');

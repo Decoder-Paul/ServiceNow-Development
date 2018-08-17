@@ -30,7 +30,8 @@
 		}
 	} else {
 		if (gr.next()) {
-			gr.comments = "This comment is from the approval. Please respond by " + "[code]<strong><a href='https://trianzjacobsdev.service-now.com/Approval_Comment_Binder.do?&sysparm_ui_page=Approval_Comment_Binder&sysparm_doc=" + current.sys_id + "' target='_blank' id='link'>Clicking me</a></div></strong>[/code]\n" + journal.join("\n");
+			var instanceName = gs.getProperty('instance_name');
+			gr.comments = "This comment is from the approval. Please " + "[code]<strong><a href='https://"+instanceName+".service-now.com/Approval_Comment_Binder.do?&sysparm_ui_page=Approval_Comment_Binder&sysparm_doc=" + current.sys_id + "' target='_blank' id='link'>click here</a></div></strong>[/code] to respond.\n" + journal.join("\n");
 			gr.update();
 		}
 	}
