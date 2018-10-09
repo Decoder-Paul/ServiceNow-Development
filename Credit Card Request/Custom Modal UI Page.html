@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<j:set var="jvar_pref" value="${sysparm_message}"/>
+   <div class="modal-body">
+	   <div id="myid"></div>
+   </div>
+   <!-- <footer class="modal-footer flex">
+	   <g:dialog_buttons_ok_cancel ok="return onOK();" cancel="return onCancel();" ok_type="button" cancel_type="button"/>
+   </footer> -->
+	<hr/>
+	<div class='float-right'>
+		<button onclick='notAgree()' type='button' class='btn btn-default'>✘ Don't agree</button>
+		&#160;&#160;
+		<button onclick='agree()' type='button' class='btn btn-primary'>✔ I Agree</button>
+    </div>
+    <script>
+    //as <g:noescape> dosen't work to render HTML when called from GlideModal
+        addLoadEvent(function() {
+            var gr=new GlideRecord('kb_knowledge');
+            gr.addQuery('short_description','STARTSWITH',g_form.getValue('hr_country')+" Cardholder");
+            gr.addQuery('workflow_state','published');
+            gr.addQuery('latest',true);
+            gr.query();
+            var modVal='';
+            if(gr.next()){
+                //sHTML=(gr.text);
+                document.getElementById("myid").innerHTML = gr.text;
+            }
+            //document.getElementById("myid").innerHTML = "${jvar_pref}";
+        });
+        function agree(){
+            g_form.addInfoMessage("You have agreed to the terms and conditions. Please click Order Now to proceed");
+            g_form.setValue('checkBox_agreement','true');
+            GlideDialogWindow.get().destroy();
+        }
+        function notAgree(){
+            alert('Please accept the terms and conditions to continue your order.');
+            g_form.setValue('checkBox_agreement','false');
+            //g_form.setDisabled('checkBox_agreement',true);
+            GlideDialogWindow.get().destroy();
+        }
+    </script>
+</j:jelly>
