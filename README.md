@@ -1,2 +1,2 @@
 # ServiceNow-Development
-POCs and small scale developments in ServiceNow platform captured for documentation purpose and future reference
+POCs and small to large scale developments in ServiceNow platform captured for documentation purpose and future reference
