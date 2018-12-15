@@ -88,7 +88,6 @@ if (baseId.length < 6) {
     gr.query();
     var mx = 0;
     while (gr.next()) {
-        console.log("coming in 1st loop");
         if (!isNaN(parseInt(gr.u_contact_id.substr(-2)))) { //TYC0012
             if (mx < parseInt(gr.u_contact_id.substr(-2))) {
                 mx = parseInt(gr.u_contact_id.substr(-2));
