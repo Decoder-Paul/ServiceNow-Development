@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <g:requires name="angularjs.min.1.3.2.jsdbx" />
+    <style>
+        #dynamicTable table, #dynamicTable th, #dynamicTable td{
+			text-align:center !important;
+		}
+	</style>
+    <div id="dtAdd">
+        <div ng-app="myApp" ng-controller="MainCtrl" style="width:100%">
+            <div style="display:block;text-align:center;margin:auto">
+                <div class="row">
+                    <div class="col-md-12" style="padding-right:0px!important bold">
+                        <kbd>{{caption}}</kbd>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-group ">
+                                    <input type="button" class="btn btn-primary addnew pull-left" ng-click="addRecord(TableInfos)"
+                                        value="Add Item" id="addItem" />
+                                    <input type="button" ng-hide="!TableInfos.length" class="btn btn-danger addnew pull-right"
+                                        ng-click="remove()" value="Remove Item" id="removeItem" />
+                                </div>
+                                <p id="stat" class="text-center bg-danger">{{status}}</p>
+                                <div style="overflow-x:auto;">
+                                    <table class="table table-bordered" id="dynamicTable">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan='2'><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
+                                                <th rowspan='2'>Edit</th>
+                                                <th rowspan='2'>Sr.</th>
+                                                <th rowspan='2'>New / Existing</th>
+                                                <th rowspan='2'>PU&#160;Change Type</th>
+                                                <th rowspan='2'>Performance&#160;Unit</th>
+                                                <th rowspan='2'>Performance&#160;Unit Description</th>
+                                                <th rowspan='2'>PU&#160;Start / End&#160;Date</th>
+                                                <th rowspan='2'>Service Center</th>
+                                                <th rowspan='2'>Allocation PU</th>
+                                                <th rowspan='2'>PCCA Rate</th>
+                                                <th rowspan='2'>Federal PU</th>
+                                                <th rowspan='2'>Projects Assigned</th>
+                                                <th rowspan='2'>People Assigned</th>
+                                                <th rowspan='2'>Country(s)</th>
+                                                <th rowspan='2'>Global Cross Charging</th>
+                                                <th colspan='5'>Segment Reporting (Hierarchy Assignments)</th>
+
+                                            </tr>
+                                            <tr>
+                                                <th>Line&#160;of&#160;Business</th>
+                                                <th>Business Unit</th>
+                                                <th>Region</th>
+                                                <th>Sub Region&#160;1</th>
+                                                <th>Sub Region&#160;2</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="EachInfo in TableInfos">
+                                                <td><input type="checkbox" ng-model="EachInfo.selected" /></td>
+                                                <td><button type="button" onclick="displaySave(this)" class="btn btn-default btn-sm"
+                                                        id="edit" ng-click="editRecord($index)" ng-hide="hideEditIcon">
+                                                        <span class="glyphicon glyphicon-edit"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default btn-sm" id="save"
+                                                        ng-click="saveRecord($index,$event)" style="display:none">
+                                                        <!-- ng-show="showSaveIcon" -->
+                                                        <span class="glyphicon glyphicon-floppy-save" style="color:red"></span>
+                                                    </button>
+                                                </td>
+
+                                                <td> {{EachInfo.serialKey}} </td>
+                                                <td>
+                                                    <div style='width: 65px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field1"
+                                                            ng-disabled="true" /></div>
+                                                </td>
+                                                <td>
+                                                    <div style='width: 180px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field2"
+                                                            ng-disabled="true" /></div>
+                                                </td>
+                                                <td><input type="text" class="form-control" ng-model="EachInfo.field3"
+                                                        ng-disabled="true" /></td>
+                                                <td>
+                                                    <div style='width: 130px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field4"
+                                                            ng-disabled="true" /></div>
+                                                </td>
+                                                <td>
+                                                    <div style='width: 80px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field5"
+                                                            ng-disabled="true" /></div>
+                                                </td>
+                                                <td><input type="text" class="form-control" ng-model="EachInfo.field6"
+                                                        ng-disabled="true" /></td>
+                                                <td><input type="text" class="form-control" ng-model="EachInfo.field7"
+                                                        ng-disabled="true" /></td>
+                                                <td>
+                                                    <div style='width: 50px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field8"
+                                                            ng-disabled="true" />
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" ng-model="EachInfo.field9"
+                                                        ng-disabled="true" /></td>
+                                                <td><input type="text" class="form-control" ng-model="EachInfo.field10"
+                                                        ng-disabled="true" /></td>
+                                                <td><input type="text" class="form-control" ng-model="EachInfo.field11"
+                                                        ng-disabled="true" /></td>
+                                                <td>
+                                                    <div style='width: 100px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field12"
+                                                            ng-disabled="true" />
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" ng-model="EachInfo.field13"
+                                                        ng-disabled="true" /></td>
+                                                <td><input type="text" class="form-control" ng-model="EachInfo.field14"
+                                                        ng-disabled="true" /></td>
+                                                <td>
+                                                    <div style='width: 100px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field15"
+                                                            ng-disabled="true" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div style='width: 100px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field16"
+                                                            ng-disabled="true" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div style='width: 100px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field17"
+                                                            ng-disabled="true" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div style='width: 100px;'>
+                                                        <input type="text" class="form-control" ng-model="EachInfo.field18"
+                                                            ng-disabled="true" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</j:jelly>
