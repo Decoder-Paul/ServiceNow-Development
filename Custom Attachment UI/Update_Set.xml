@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2019-08-05 12:35:46">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description/>
+<inserted/>
+<name>2019-07-26 TRZ RITM1402147 | SCTask Attachment Enhancement V1</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date/>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>f68e3a7edb7a77c00b98e9ec0b9619e5</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>PAULS4</sys_created_by>
+<sys_created_on>2019-08-05 12:35:46</sys_created_on>
+<sys_id>56e9768adb8bf3000b98e9ec0b9619bc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>PAULS4</sys_updated_by>
+<sys_updated_on>2019-08-05 12:35:46</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_include_79c0a4d0db037bc061a31be3159619a7</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;global.AttachmentQuery&lt;/api_name&gt;&lt;client_callable&gt;true&lt;/client_callable&gt;&lt;description&gt;This is queried by 'Custom Attachment UI on SC Task' UI Policy &amp;amp; 'Custom Attachment UI on RITM Approvals' UI Policy&lt;/description&gt;&lt;name&gt;AttachmentQuery&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var AttachmentQuery = Class.create();
+AttachmentQuery.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+	getRitmAttachmentDetails: function(){
+		//var table = this.getParameter('sysparm_table_name');
+		var id = this.getParameter('sysparm_ritm_id');
+		
+		var gr = new GlideRecord('sys_attachment');
+		gr.addQuery('table_name','sc_req_item');
+		gr.addQuery('table_sys_id',id);
+		gr.query();
+		
+		var count = gr.getRowCount();
+		var c = this.newItem("result");
+		c.setAttribute("number",count);
+		
+		if(count&gt;0){
+			while(gr.next()){
+				var guid = gr.sys_id;
+				var name = gr.file_name;
+				var type = gr.content_type?gr.content_type:name.slice(name.lastIndexOf("."));
+				
+				var gr_icon = new GlideRecord('sys_attachment_icon_rule');
+				gr_icon.get('file_format_indicator',type);
+
+				var icon = gr_icon.icon?gr_icon.icon:"images/icons/attach_document.gifx";
+				
+				this._addDetails(guid,name,icon);
+			}
+		}
+	},
+	getApprovalAttachmentDetails: function(){
+		//var table = this.getParameter('sysparm_table_name');
+		var id = this.getParameter('sysparm_ritm_id');
+		
+		var gr = new GlideRecord('sysapproval_approver');
+		gr.addQuery('sysapproval',id);
+		gr.addQuery('state','approved');
+		gr.query();
+		var count =0;
+		while (gr.next()){
+			var gr_atm = new GlideRecord('sys_attachment');
+			gr_atm.addQuery('table_name','sysapproval_approver');
+			gr_atm.addQuery('table_sys_id',gr.sys_id);
+			gr_atm.query();
+			
+			count = count + gr_atm.getRowCount();
+		
+			//gs.print(gr.sys_id+' Attachments: ' + gr2.getRowCount());
+			while(gr_atm.next()){
+				var guid = gr_atm.sys_id;
+				var name = gr_atm.file_name;
+				var type = gr_atm.content_type?gr_atm.content_type:name.slice(name.lastIndexOf("."));
+				
+				var gr_icon = new GlideRecord('sys_attachment_icon_rule');
+				gr_icon.get('file_format_indicator',type);
+				
+				var icon = gr_icon.icon?gr_icon.icon:"images/icons/attach_document.gifx";
+				this._addDetails(guid,name,icon);
+			}
+		}
+		var c = this.newItem("result");
+		c.setAttribute("number",count);
+	},
+	_addDetails: function(guid,name,icon){
+		var att = this.newItem("attachments");
+		att.setAttribute("guid",guid);
+		att.setAttribute("fileName",name);
+		att.setAttribute("icon_link",icon);
+	},
+    type: 'AttachmentQuery'
+});]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;PAULS4&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-07-30 19:51:51&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;false&lt;/sys_customer_update&gt;&lt;sys_id&gt;79c0a4d0db037bc061a31be3159619a7&lt;/sys_id&gt;&lt;sys_mod_count&gt;13&lt;/sys_mod_count&gt;&lt;sys_name&gt;AttachmentQuery&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_79c0a4d0db037bc061a31be3159619a7&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;PAULS4&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-08-01 15:19:37&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+<payload_hash>725900969</payload_hash>
+<remote_update_set display_value="2019-07-26 TRZ RITM1402147 | SCTask Attachment Enhancement V1">56e9768adb8bf3000b98e9ec0b9619bc</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>PAULS4</sys_created_by>
+<sys_created_on>2019-08-05 12:35:46</sys_created_on>
+<sys_id>16e9768adb8bf3000b98e9ec0b9619bd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4dc3dd950000001</sys_recorded_at>
+<sys_updated_by>PAULS4</sys_updated_by>
+<sys_updated_on>2019-08-05 12:35:46</sys_updated_on>
+<table/>
+<target_name>AttachmentQuery</target_name>
+<type>Script Include</type>
+<update_domain>global</update_domain>
+<update_guid>5b09f2f813437fc0d9e9bdc820da0659</update_guid>
+<update_guid_history>5b09f2f813437fc0d9e9bdc820da0659:725900969,85e4f2740d437fc0e12e34bae12a3d43:-1343306716,0734f634d2437fc07902c67fb897f508:1280683468,0862f2b0cc437fc01d9cb52a2ca54196:1926218845,d5f136f0d9437fc088f67d9d759378ae:-90753306,06d34e900bc77bc0f8d63396688ab57f:-198782876,fbc1069c6b877bc0241d46fa52cc7511:-967259550,756f715c4d877bc0f16aa328366359b0:508552,cbebf91408877bc079d6325e96f4aa11:1004903174,9848359427877bc07f9c52820eb60a99:679761749,a97331dc40477bc08de0b9a23cd5bf5c:-546041357,c917e1d0cc477bc0be09bcb131daa3c6:-425185366,9765295cfa077bc0afad7d59643c1949:-167315446,3b24eddcb0077bc0490fd89c8fda6abd:-140693788</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_faf7e6c1dbc7234061a31be31596199a</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;false&lt;/action_delete&gt;&lt;action_insert&gt;true&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;false&lt;/action_update&gt;&lt;active&gt;false&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;sysapproval_approver&lt;/collection&gt;&lt;condition/&gt;&lt;description/&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition/&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;Copy attachment to the Approval Request&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[(function executeRule(current, previous /*null when async*/) {
+	//gs.log('loop started');
+	// Add your code here
+	var id = current.sys_id;
+	
+	var reqItem = new GlideRecord('sc_req_item');
+	
+	reqItem.addQuery('sys_id',current.sysapproval);
+	
+	reqItem.query();
+	
+	if(reqItem.next()) {
+		gs.log('reqitemid '+reqItem.sys_id);
+		gs.log('approvalid'+id);
+		//GlideSysAttachment.copy('sc_req_item', reqItem.sys_id,'sysapproval_approver', current.sysapproval);
+		
+		GlideSysAttachment.copy('sc_req_item', reqItem.sys_id,'sysapproval_approver', id); //Attach all the documents from the source table to the target table
+		
+	}
+	
+	
+}
+
+)(current, previous);]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;YEKULAK&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-01-15 12:33:49&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;false&lt;/sys_customer_update&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;faf7e6c1dbc7234061a31be31596199a&lt;/sys_id&gt;&lt;sys_mod_count&gt;21&lt;/sys_mod_count&gt;&lt;sys_name&gt;Copy attachment to the Approval Request&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_faf7e6c1dbc7234061a31be31596199a&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;PAULS4&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-08-01 04:36:17&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;before&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=faf7e6c1dbc7234061a31be31596199a"/&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1112525488</payload_hash>
+<remote_update_set display_value="2019-07-26 TRZ RITM1402147 | SCTask Attachment Enhancement V1">56e9768adb8bf3000b98e9ec0b9619bc</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>PAULS4</sys_created_by>
+<sys_created_on>2019-08-05 12:35:46</sys_created_on>
+<sys_id>52e9768adb8bf3000b98e9ec0b9619bd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4b76df2a0000001</sys_recorded_at>
+<sys_updated_by>PAULS4</sys_updated_by>
+<sys_updated_on>2019-08-05 12:35:46</sys_updated_on>
+<table>sysapproval_approver</table>
+<target_name>Copy attachment to the Approval Request</target_name>
+<type>Business Rule</type>
+<update_domain>global</update_domain>
+<update_guid>a7c5e4b421073fc053a645e3a2ffca91</update_guid>
+<update_guid_history>a7c5e4b421073fc053a645e3a2ffca91:1112525488,ecd77f45b98f234032fccf36ada37837:326711649,0f577305b98f23405de7730b6f4f1cdc:-1457353386,df47f305558f234068baf13b3721a53f:-1731326745,c7421301facb234033f766811f4a1248:-1457353386,80e5c34dad4b23400ba270a1f5f0865b:-976463309,cfe4cbc9754b234005b24716aed4ed2a:1815581683,cba48bc90d4b234084b44fa39303aacf:-2079557543,8fc24b09904b23409c81562a386c600d:-1993235173,dfb14709fb4b2340269e6b65693ac1ea:2011323932,421fb681574b2340e26915f3458013c4:1840022973,8cdeb281224b23402ce6c303e87068ad:1072024398,afb9f60dfe0b2340d55c378ef3c8737e:373061738,9138ba899e0b2340338fcd42cc4a077e:-1849217381,2467b649f40b2340a06652976ad073aa:-687622391,99bfaa0d01c72340e74ff4351d4c6081:-274981008,f23e26c937c7234068b580a1e56a74e9:2005124321,ddec6649f7c723400e083f043cf934f0:-1078047630,0efb6ec5c4c72340572ddceed190e12a:27386273,4f5a2685a4c723403e32192dd635303c:-1441838491,e2392a0549c723409176dd78792af09b:1780391652,d058e2c1fec72340aca70768fa006a84:854029546</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_section_c77245bcd7031100b9a5c7400e6103f0</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="" section_id="c77245bcd7031100b9a5c7400e6103f0" sys_domain="global" table="sys_ui_policy" version="3" view="advanced"><sys_ui_annotation action="INSERT_OR_UPDATE"><is_plain_text>false</is_plain_text><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>0e4c2732db32b7c00b98e9ec0b9619ae</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><text>UI Policy Form Description</text><type display_value="Section Details">19756e5ec3313000bac1addbdfba8f18</type></sys_ui_annotation><sys_ui_element action="INSERT_OR_UPDATE"><element>0e4c2732db32b7c00b98e9ec0b9619ae</element><position>0</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>064c2732db32b7c00b98e9ec0b9619af</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type>annotation</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.begin_split</element><position>1</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>8a4c2732db32b7c00b98e9ec0b9619af</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type>.begin_split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>table</element><position>2</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>0e4c2732db32b7c00b98e9ec0b9619af</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>3</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>8e4c2732db32b7c00b98e9ec0b9619af</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>sys_scope</element><position>4</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>024c2732db32b7c00b98e9ec0b9619b0</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>active</element><position>5</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>824c2732db32b7c00b98e9ec0b9619b0</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>model_id</element><position>6</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>064c2732db32b7c00b98e9ec0b9619b0</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.end_split</element><position>7</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>864c2732db32b7c00b98e9ec0b9619b0</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type>.end_split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>short_description</element><position>8</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>0a4c2732db32b7c00b98e9ec0b9619b0</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>order</element><position>9</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>8a4c2732db32b7c00b98e9ec0b9619b0</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>isolate_script</element><position>10</position><sys_created_by>PAULS4</sys_created_by><sys_created_on>2019-07-26 13:55:35</sys_created_on><sys_id>0e4c2732db32b7c00b98e9ec0b9619b0</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_ui_policy" sys_domain="global" view="7966be310a0a0b8c00bd504090503227">c77245bcd7031100b9a5c7400e6103f0</sys_ui_section><sys_updated_by>PAULS4</sys_updated_by><sys_updated_on>2019-07-26 13:55:35</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption/><header>false</header><name>sys_ui_policy</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>jared.laethem</sys_created_by><sys_created_on>2014-02-19 20:50:04</sys_created_on><sys_customer_update>false</sys_customer_update><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>c77245bcd7031100b9a5c7400e6103f0</sys_id><sys_mod_count>1</sys_mod_count><sys_name>sys_ui_policy</sys_name><sys_overrides display_value="">global</sys_overrides><sys_package display_value="Performance Analytics" source="com.snc.pa">a800c2b3dba3320029253220ad9619a0</sys_package><sys_policy/><sys_replace_on_upgrade>false</sys_replace_on_upgrade><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_section_c77245bcd7031100b9a5c7400e6103f0</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2014-07-04 01:30:12</sys_updated_on><sys_user/><title>true</title><view display_value="Advanced" name="advanced">7966be310a0a0b8c00bd504090503227</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+<payload_hash>-1528780495</payload_hash>
+<remote_update_set display_value="2019-07-26 TRZ RITM1402147 | SCTask Attachment Enhancement V1">56e9768adb8bf3000b98e9ec0b9619bc</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>PAULS4</sys_created_by>
+<sys_created_on>2019-08-05 12:35:46</sys_created_on>
+<sys_id>5ee9768adb8bf3000b98e9ec0b9619bd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c2e90c78f0000001</sys_recorded_at>
+<sys_updated_by>PAULS4</sys_updated_by>
+<sys_updated_on>2019-08-05 12:35:46</sys_updated_on>
+<table>sys_ui_policy</table>
+<target_name>UI Policy</target_name>
+<type>Form Layout</type>
+<update_domain>global</update_domain>
+<update_guid>4a4ce732dd32b7c075b76dc5d68963f4</update_guid>
+<update_guid_history>4a4ce732dd32b7c075b76dc5d68963f4:-1528780495,ce4c27321b32b7c065838aab2e4924a9:-982722512</update_guid_history>
+<update_set display_value=""/>
+<view>advanced</view>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_client_f6eea9d8db477bc061a31be315961900</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script_client"&gt;&lt;sys_script_client action="DELETE"&gt;&lt;active&gt;false&lt;/active&gt;&lt;applies_extended&gt;false&lt;/applies_extended&gt;&lt;condition/&gt;&lt;description/&gt;&lt;field&gt;active&lt;/field&gt;&lt;global&gt;true&lt;/global&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;messages/&gt;&lt;name&gt;Custom Attachment UI on SC Task&lt;/name&gt;&lt;order&gt;200&lt;/order&gt;&lt;script&gt;&lt;![CDATA[function onLoad() {
+   
+//----------------Task Based variables---------------
+	var ritm = g_form.getValue('request_item');
+	var ga = GlideAjax("AttachmentQuery");
+	ga.addParam('sysparm_name', 'getAttachmentDetails');
+	ga.addParam('sysparm_table', 'sc_req_item');
+	ga.addParam('sysparm_id', ritm);
+	ga.getXML(renderAttachment); //This is our callback 
+	
+//----------------DOM Rendering----------------------
+	var ul = document.createElement('ul');
+	ul.id='ritm_attachment_ul';
+	ul.style="display: none;max-height: 2em;overflow: hidden;padding: 0 0 0 0;margin: 0 15px 0 15px;";
+	
+//	var ritmAttachmentMarkup ='&lt;a id="RITM_attachment_list_label" href="#" class="attachment" click-on-enter="true" onclick="javascript:saveAttachment(\'sc_req_item\', '+ritm+');; return false;"&gt;RITM Attachments ('+attachment_count+'):&lt;/a&gt;';
+
+	var _html = '&lt;li class="manage_list" style="display: inline;line-height: 1.4em;"&gt;&lt;a id="RITM_attachment_list_label" href="#" class="attachment"&gt;RITM Attachments (2):&amp;nbsp;&amp;nbsp;&lt;/a&gt;&lt;/li&gt;&lt;li class="attachment_list_items" style="display: inline;line-height: 1.4em;"&gt;&lt;span id="attachment_be56deaadbb2f3c00b98e9ec0b961923" style="margin-right: 10px;"&gt;&lt;a href="sys_attachment.do?sys_id=be56deaadbb2f3c00b98e9ec0b961923" title="" style="margin-right:4px;" data-original-title="Attached by PAULS4 on 07-30-2019 10:56:06"&gt;&lt;img src="images/icons/attach_document.gifx" alt=""&gt;&lt;/a&gt;&lt;a href="sys_attachment.do?sys_id=be56deaadbb2f3c00b98e9ec0b961923" data-id="be56deaadbb2f3c00b98e9ec0b961923" class="content_editable" style="display: inline; margin-right: 5px;" aria-label="Download DS_Store"&gt;images&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;';
+	document.getElementById("header_attachment").appendChild(ul);
+	ul.innerHTML = _html;
+//	document.getElementById('header_attachment_line').style.visibility='visible';
+}
+function renderAttachment(response){
+	var result = response.responseXML.getElementsByTagName("attachmentCount");
+	var count = parseInt(result[0].getAttribute("number"));
+	var attachments = response.responseXML.getElementsByTagName("attachments");
+	console.log("++++++++++++++++++++++Count: "+count);
+	for(var i=0;i&lt;count;i++){
+		this.id = attachments[i].getAttribute("guid");
+		this.name = attachments[i].getAttribute("fileName");
+		this.icon = attachments[i].getAttribute("icon_link");
+		console.log(this);
+	}
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_client&lt;/sys_class_name&gt;&lt;sys_created_by&gt;PAULS4&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-07-30 20:40:43&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;false&lt;/sys_customer_update&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;f6eea9d8db477bc061a31be315961900&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;Custom Attachment UI on SC Task&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_client_f6eea9d8db477bc061a31be315961900&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;PAULS4&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-07-30 20:52:18&lt;/sys_updated_on&gt;&lt;table&gt;sc_task&lt;/table&gt;&lt;type&gt;onLoad&lt;/type&gt;&lt;ui_type&gt;0&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_script_client&gt;&lt;/record_update&gt;</payload>
+<payload_hash>202640723</payload_hash>
+<remote_update_set display_value="2019-07-26 TRZ RITM1402147 | SCTask Attachment Enhancement V1">56e9768adb8bf3000b98e9ec0b9619bc</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>PAULS4</sys_created_by>
+<sys_created_on>2019-08-05 12:35:46</sys_created_on>
+<sys_id>9ae9768adb8bf3000b98e9ec0b9619bc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c451cbc890000001</sys_recorded_at>
+<sys_updated_by>PAULS4</sys_updated_by>
+<sys_updated_on>2019-08-05 12:35:46</sys_updated_on>
+<table>sc_task</table>
+<target_name>Custom Attachment UI on SC Task</target_name>
+<type>Client Script</type>
+<update_domain>global</update_domain>
+<update_guid>554f86dc68c77bc0aae14f67c2114561</update_guid>
+<update_guid_history>554f86dc68c77bc0aae14f67c2114561:202640723,9502f15c02477bc023826eb842167bfd:112689351,b4dfa51cff477bc0e52a6bbda816fb38:-483122694,d35fa11c5c477bc0438184dc75b8e59d:1101313288</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_54a05736db3e77c00b98e9ec0b961917</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_policy"&gt;&lt;sys_ui_policy action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;conditions/&gt;&lt;description/&gt;&lt;global&gt;true&lt;/global&gt;&lt;inherit&gt;false&lt;/inherit&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;model_id/&gt;&lt;model_table/&gt;&lt;on_load&gt;true&lt;/on_load&gt;&lt;order&gt;300&lt;/order&gt;&lt;reverse_if_false&gt;false&lt;/reverse_if_false&gt;&lt;run_scripts&gt;true&lt;/run_scripts&gt;&lt;script_false&gt;&lt;![CDATA[function onCondition() {
+
+}]]&gt;&lt;/script_false&gt;&lt;script_true&gt;&lt;![CDATA[function onCondition() {
+//----------------Task Based variables---------------
+	var ritm = g_form.getValue('request_item');
+	var ga = new GlideAjax("AttachmentQuery");
+	ga.addParam("sysparm_name", "getRitmAttachmentDetails");
+	ga.addParam("sysparm_ritm_id", ritm);
+	ga.getXML(renderRitmAttachment);	
+	
+	ga = new GlideAjax("AttachmentQuery");
+	ga.addParam("sysparm_name", "getApprovalAttachmentDetails");
+	ga.addParam("sysparm_ritm_id", ritm);
+	ga.getXML(renderApprovalAttachment);
+	
+	function renderRitmAttachment(response){
+		var result = response.responseXML.getElementsByTagName("result");
+		var count = result[0].getAttribute("number");
+		if(count&gt;0){
+			var attachments = response.responseXML.getElementsByTagName("attachments");
+			//----------------DOM Rendering----------------------
+			var ul = document.createElement('ul');
+			ul.id='ritm_attachment_ul';
+			ul.style="display: block;max-height: 2em;overflow: hidden;padding: 0 0 0 0;margin: 0 15px 0 15px;";
+			var markup = '&lt;li class="manage_list" style="display: inline;line-height: 1.4em;"&gt;&lt;a id="ritm_attachment_list_label" href="#" class="attachment"&gt;RITM Attachments ('+count+'):&lt;/a&gt;&lt;/li&gt;&amp;nbsp;';    
+			for(var i=0;i&lt;attachments.length;i++){
+				var id = attachments[i].getAttribute("guid");
+				var name = attachments[i].getAttribute("fileName");
+				var icon = attachments[i].getAttribute("icon_link");
+				markup += '&lt;li class="attachment_list_items" style="display: inline;line-height: 1.4em;"&gt;&lt;span id="attachment_'+id+'" style="margin-right: 5px;"&gt;&lt;a href="sys_attachment.do?sys_id='+id+'" style="margin-right:4px;"&gt;&lt;img src="'+icon+'" alt=""&gt;&lt;/a&gt;&lt;a href="sys_attachment.do?sys_id='+id+'" data-id="'+id+'" class="content_editable" style="display: inline; margin-right: 5px;"&gt;'+name+'&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;';
+			}
+			document.getElementById("header_attachment").appendChild(ul);
+			ul.innerHTML = markup;
+			showObject(document.getElementById('header_attachment_line'));
+		}
+	}
+	function renderApprovalAttachment(response){
+		var result = response.responseXML.getElementsByTagName("result");
+		var count = result[0].getAttribute("number");
+		if(count&gt;0){
+			var attachments = response.responseXML.getElementsByTagName("attachments");
+			//----------------DOM Rendering----------------------
+			var ul = document.createElement('ul');
+			ul.id='approval_attachment_ul';
+			ul.style="display: block;max-height: 2em;overflow: hidden;padding: 0 0 0 0;margin: 0 15px 0 15px;";
+			var markup = '&lt;li class="manage_list" style="display: inline;line-height: 1.4em;"&gt;&lt;a id="approval_attachment_list_label" href="#" class="attachment"&gt;Approval Attachments ('+count+'):&lt;/a&gt;&lt;/li&gt;&amp;nbsp;';    
+			for(var i=0;i&lt;attachments.length;i++){
+				var id = attachments[i].getAttribute("guid");
+				var name = attachments[i].getAttribute("fileName");
+				var icon = attachments[i].getAttribute("icon_link");
+				markup += '&lt;li class="attachment_list_items" style="display: inline;line-height: 1.4em;"&gt;&lt;span id="attachment_'+id+'" style="margin-right: 5px;"&gt;&lt;a href="sys_attachment.do?sys_id='+id+'" style="margin-right:4px;"&gt;&lt;img src="'+icon+'" alt=""&gt;&lt;/a&gt;&lt;a href="sys_attachment.do?sys_id='+id+'" data-id="'+id+'" class="content_editable" style="display: inline; margin-right: 5px;"&gt;'+name+'&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;';
+			}
+			document.getElementById("header_attachment").appendChild(ul);
+			ul.innerHTML = markup;
+			showObject(document.getElementById('header_attachment_line'));
+		}
+	}
+}]]&gt;&lt;/script_true&gt;&lt;set_values/&gt;&lt;short_description&gt;Custom Attachment UI on SC Task&lt;/short_description&gt;&lt;sys_class_name&gt;sys_ui_policy&lt;/sys_class_name&gt;&lt;sys_created_by&gt;PAULS4&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-07-26 11:56:16&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;false&lt;/sys_customer_update&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;54a05736db3e77c00b98e9ec0b961917&lt;/sys_id&gt;&lt;sys_mod_count&gt;53&lt;/sys_mod_count&gt;&lt;sys_name&gt;Custom Attachment UI on SC Task&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_policy_54a05736db3e77c00b98e9ec0b961917&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;PAULS4&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-08-01 15:17:46&lt;/sys_updated_on&gt;&lt;table&gt;sc_task&lt;/table&gt;&lt;ui_type&gt;0&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_ui_policy&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1826286880</payload_hash>
+<remote_update_set display_value="2019-07-26 TRZ RITM1402147 | SCTask Attachment Enhancement V1">56e9768adb8bf3000b98e9ec0b9619bc</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>PAULS4</sys_created_by>
+<sys_created_on>2019-08-05 12:35:46</sys_created_on>
+<sys_id>9ae9768adb8bf3000b98e9ec0b9619bd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4dc22ca80000001</sys_recorded_at>
+<sys_updated_by>PAULS4</sys_updated_by>
+<sys_updated_on>2019-08-05 12:35:46</sys_updated_on>
+<table>sc_task</table>
+<target_name>Custom Attachment UI on SC Task</target_name>
+<type>UI Policy</type>
+<update_domain>global</update_domain>
+<update_guid>18a8baf8b0437fc0bf2d9c45ddd10792</update_guid>
+<update_guid_history>18a8baf8b0437fc0bf2d9c45ddd10792:1826286880,da283af458437fc09219f5ceb82e4cd3:1646238490,2c773e3885437fc036ec9c43a36ccadd:474324785,bec5b63830437fc098417e0a43d50b0e:1931151168,3e45b2b44b437fc00ebbdf23f75fd5c1:551169305,4835f2f43b437fc038f40f163fc27015:-1391114111,a558a43852073fc0ca7e2e07b5e4d278:-440300629,967e48201a43bbc09db7d96e227cc287:1289665947,505b5ed84e0b7bc0a832d40a756cdd13:2115469526,ca3a1a180a0b7bc0769a71ad9875253f:1203146335,c2e9da581e0b7bc04320c8067eb4c5f8:442900097,29a85e947b0b7bc0e13a9f5f863aa94e:-35407235,6a365e94140b7bc0ca6e315628593245:827284690,a426d254830b7bc0d223714df7cf471c:-1499355568,091e0e5c12c77bc06d0bff17bd6449ca:-701777360,a9fcce1cc3c77bc0a184b6340be7d720:-443548426,b249421821c77bc0a20cba78cea69d5b:-276250971,e3094a542fc77bc0bd4d25104ead4f78:-1268433220,cc514edc2a877bc0cd23d2ee7c26ac59:-776598526,e9e0cadc63877bc09d561573a8cc2428:-381531843,774ff9d8ae877bc0e4befcb2535d9e4a:2010977893,1ece755cda877bc0138c7378145615d7:-2144277216,780cb5984f877bc0f7841f7e896abfde:-426999904,8757b114aa877bc01e4055ad902ac675:1042296911,54a4f5dc1a477bc02fced4a620dacefb:602423247,f0c3715c3d477bc0e3110f74433fdff6:99829391,66a2f9dcf3477bc0674079e1dc5e7fb3:-840369312,a47275dcd0477bc09652839dfcf665f9:-2096307317,c60e2d5870477bc0d067ae9666eced4c:920294609,f57b2dd434477bc0217f917bf6ea19b3:-1307492154,dc1b6d141a477bc0d8854e737a65b3e3:-143603996,8b69ed502f477bc07665d8e3abe4affc:763359150,d8b3c05cdb4f3bc0e3b3903487b1b3ba:-576394539,b653c41ca44f3bc01cdf4477cb51c96d:-1345999694,eeee37c4a04f3bc071180ca69e05a98b:1041234016,485ef7c43d4f3bc0240035609744fa0e:-16828253,08fdbf84814f3bc04f8e953b74a2a68f:-653424591,3b8cb380924f3bc0a6712791437cd677:706143617,102af780824f3bc0267872855e7d76ea:-1669202821,50e3f7883b0f3bc0e634135eec33c52d:803681203,4a4df7b20eb2b7c0779548b99808cb97:-1521219836,36faf3beb472b7c04a918b6e06bb865c:-1550663555,856afffa1972b7c09c082936dfcf894f:1874923116,ccc73b36be72b7c0eb5297582005b592:-1645644960,fb9733364072b7c0862a53f99a3cdb3b:1322312587,225777363272b7c0cb7cc1386cbec68c:509174019,6ea633f2e272b7c0a96ba4e8de93d56b:-308691732,26bc27727a32b7c097c4009568b7dcef:1027745954,309c6b32f732b7c06fd5fe652257c2e0:-1993198761,ea2cebfe54fe77c054a94996001c2a42:607627858,8b7b23be78fe77c08e77badb38f77f6d:-147123525,6228eb3a0dfe77c0ae57657db04f75a6:1245920920,19e763f6a2fe77c002e6da460231a255:1134627912,52f053f22d3e77c0ffc3b49bca1ffd3d:329114716</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_500e71ecdbc7fbc061a31be3159619fb</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_policy"&gt;&lt;sys_ui_policy action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;conditions/&gt;&lt;description/&gt;&lt;global&gt;true&lt;/global&gt;&lt;inherit&gt;false&lt;/inherit&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;model_id/&gt;&lt;model_table/&gt;&lt;on_load&gt;true&lt;/on_load&gt;&lt;order&gt;100&lt;/order&gt;&lt;reverse_if_false&gt;false&lt;/reverse_if_false&gt;&lt;run_scripts&gt;true&lt;/run_scripts&gt;&lt;script_false&gt;&lt;![CDATA[function onCondition() {
+
+}]]&gt;&lt;/script_false&gt;&lt;script_true&gt;&lt;![CDATA[function onCondition() {
+//----------------Task Based variables---------------
+	var table = g_form.getDisplayBox('sysapproval').value.slice(0,4);
+	if(table=="RITM"){
+		var ritm = g_form.getValue('sysapproval');
+		var ga = new GlideAjax("AttachmentQuery");
+		ga.addParam("sysparm_name", "getRitmAttachmentDetails");
+		ga.addParam("sysparm_ritm_id", ritm);
+		ga.getXML(function(response){
+			var result = response.responseXML.getElementsByTagName("result");
+			var count = result[0].getAttribute("number");
+			var attachments = response.responseXML.getElementsByTagName("attachments");
+			if(count&gt;0){
+				//----------------DOM Rendering----------------------
+				var ul = document.createElement('ul');
+				ul.id='ritm_attachment_ul';
+				ul.style="display: block;max-height: 2em;overflow: hidden;padding: 0 0 0 0;margin: 0 15px 0 15px;";
+				var markup = '&lt;li class="manage_list" style="display: inline;line-height: 1.4em;"&gt;&lt;a id="RITM_attachment_list_label" href="#" class="attachment"&gt;RITM Attachments ('+count+'):&lt;/a&gt;&lt;/li&gt;&amp;nbsp;';    
+				for(var i=0;i&lt;attachments.length;i++){
+					var id = attachments[i].getAttribute("guid");
+					var name = attachments[i].getAttribute("fileName");
+					var icon = attachments[i].getAttribute("icon_link");
+					markup += '&lt;li class="attachment_list_items" style="display: inline;line-height: 1.4em;"&gt;&lt;span id="attachment_'+id+'" style="margin-right: 5px;"&gt;&lt;a href="sys_attachment.do?sys_id='+id+'" title="" style="margin-right:4px;"&gt;&lt;img src="'+icon+'" alt=""&gt;&lt;/a&gt;&lt;a href="sys_attachment.do?sys_id='+id+'" data-id="'+id+'" class="content_editable" style="display: inline; margin-right: 5px;"&gt;'+name+'&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;';
+
+				}
+				document.getElementById("header_attachment").appendChild(ul);
+				ul.innerHTML = markup;
+				showObject(document.getElementById('header_attachment_line'));
+			}	
+		});
+	}
+}]]&gt;&lt;/script_true&gt;&lt;set_values/&gt;&lt;short_description&gt;Custom Attachment UI on RITM Approvals&lt;/short_description&gt;&lt;sys_class_name&gt;sys_ui_policy&lt;/sys_class_name&gt;&lt;sys_created_by&gt;PAULS4&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-07-31 16:32:15&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;false&lt;/sys_customer_update&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;500e71ecdbc7fbc061a31be3159619fb&lt;/sys_id&gt;&lt;sys_mod_count&gt;10&lt;/sys_mod_count&gt;&lt;sys_name&gt;Custom Attachment UI on RITM Approvals&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_policy_500e71ecdbc7fbc061a31be3159619fb&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;PAULS4&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-08-05 12:32:33&lt;/sys_updated_on&gt;&lt;table&gt;sysapproval_approver&lt;/table&gt;&lt;ui_type&gt;0&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_ui_policy&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-888083573</payload_hash>
+<remote_update_set display_value="2019-07-26 TRZ RITM1402147 | SCTask Attachment Enhancement V1">56e9768adb8bf3000b98e9ec0b9619bc</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>PAULS4</sys_created_by>
+<sys_created_on>2019-08-05 12:35:46</sys_created_on>
+<sys_id>d6e9768adb8bf3000b98e9ec0b9619bd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c61c457dd0000001</sys_recorded_at>
+<sys_updated_by>PAULS4</sys_updated_by>
+<sys_updated_on>2019-08-05 12:35:46</sys_updated_on>
+<table>sysapproval_approver</table>
+<target_name>Custom Attachment UI on RITM Approvals</target_name>
+<type>UI Policy</type>
+<update_domain>global</update_domain>
+<update_guid>8f29fa0af78bf300232d0a0f4ca83545</update_guid>
+<update_guid_history>8f29fa0af78bf300232d0a0f4ca83545:-888083573,dad8ba0adb8bf30000c8937df907d37d:-527638594,9f78fec6c48bf300cf1a2c71852a088a:-888083573,b959fef83c437fc06bae2e17375c4d73:-275261736,19453af465437fc0d57dcc3b18d9fea5:-751399544,35072c3809073fc08ca929194ffce4e6:-1883008338,d1e66cf454073fc0c75e68db6a492653:-624250597,0a720e24f40bfbc0b9b9b6cdc91bb666:-1208102177,fb024a240d0bfbc0d8315bcecfa74478:1593645900,b23082a0f40bfbc0d79571b9de5ab739:1592349567,29100e60f30bfbc0ce3cdf5a022d26ab:786085887</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>
