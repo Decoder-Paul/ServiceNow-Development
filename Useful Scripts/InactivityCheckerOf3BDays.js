@@ -23,6 +23,7 @@ while(gr.next()){
 				gr2.query();
 				if(gr2.next()){
 					gs.log(gr2.sys_created_on);
+					
 					var newGroupAssignmentDate = new GlideDateTime(gr2.sys_created_on);
 					var lastTicketUpdate = new GlideDateTime(gr.id.sys_updated_on);
 					//checking whether the new Assignment group assigned date is after the last update on the ticket
