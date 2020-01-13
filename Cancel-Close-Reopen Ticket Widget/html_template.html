@@ -1,0 +1,87 @@
+<div>
+	<button type="button" name="closeInc" class="btn btn-primary btn-question"
+		ng-if="data.table == 'incident' && data.incident_state == '6' && data.loggedin_user == data.caller_id"
+		ng-click="c.action('close_inc')">
+		${Close Incident}
+	</button>
+	<button type="button" name="cancelInc" class="btn btn-primary"
+		ng-if="data.table == 'incident' && data.incident_state != '7' && data.incident_state != '6' && data.incident_state != '8' && data.loggedin_user == data.caller_id"
+		ng-click="c.action('cancel_inc')">
+		${Cancel Incident}
+	</button>
+	<button type="button" name="reopenInc" class="btn btn-primary"
+		ng-if="data.table == 'incident' && data.incident_state == '6' && data.loggedin_user == data.caller_id"
+		ng-click="c.action('reopen_inc')">
+		${Reopen Incident}
+	</button>
+	<button type="button" name="cancelRITM" class="btn btn-primary"
+		ng-if="data.table == 'sc_req_item' && data.active == 'true' && data.loggedin_user == data.opened_by && data.stage != 'fulfillment'"
+		ng-click="c.action('cancel_ritm')">
+		${Cancel Request Item}
+	</button>
+</div>
+
+<script type="text/ng-template" id="modalIncRe">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<button type="button" class="close" ng-click="c.closeModal()">&times;</button>
+			<h4 class="panel-title">${Reopen Incident}</h4>
+		</div>
+		<div class="panel-body wrapper-xl">
+			<form name="modalTemplateReopen" ng-submit="c.openInc()">
+				<div class="form-group">
+					<textarea required sp-autosize="true" ng-required="true" ng-model="c.data.comments" id="reopenComments"
+						placeholder="Comments Required" class="form-control ng-pristine ng-valid ng-scope ng-empty ng-touched"
+						aria-invalid="false" style="overflow: hidden; word-wrap: break-word; resize: horizontal;"></textarea>
+				</div>
+				<!--input class="btn btn-primary" type="submit" /-->
+				<!--button class="btn btn-primary" ng-click="c.closeModal()">${Close}</button-->
+				<button class="btn btn-primary" type="submit" ng-disabled="c.data.comments.length == 0">${Reopen
+					Incident}</button>
+				</form>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="modalIncCan">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<button type="button" class="close" ng-click="c.closeModal()">&times;</button>
+			<h4 class="panel-title">${Cancel Incident}</h4>
+		</div>
+		<div class="panel-body wrapper-xl">
+			<form name="modalTemplateCancel" ng-submit="c.cancInc()">
+				<div class="form-group">
+					<textarea required sp-autosize="true" ng-required="true" ng-model="c.data.comments" id="cancelComments"
+						placeholder="Comments required" class="form-control ng-pristine ng-valid ng-scope ng-empty ng-touched"
+						aria-invalid="false" style="overflow: hidden; word-wrap: break-word; resize: horizontal;"></textarea>
+				</div>
+				<!--input class="btn btn-primary" type="submit" /-->
+				<!--button class="btn btn-primary" ng-click="c.closeModal()">${Close}</button-->
+				<button class="btn btn-primary" type="submit" ng-disabled="c.data.comments.length == 0">${Cancel
+					Incident}</button>
+			</form>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="modalRitmCan">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<button type="button" class="close" ng-click="c.closeModal()">&times;</button>
+			<h4 class="panel-title">${Cancel Request Item}</h4>
+		</div>
+		<div class="panel-body wrapper-xl">
+			<form name="modalTemplateCancelRit" ng-submit="c.cancRitm()">
+				<div class="form-group">
+					<textarea required sp-autosize="true" ng-required="true" ng-model="c.data.comments" id="cancritComments"
+						placeholder="Comments required" class="form-control ng-pristine ng-valid ng-scope ng-empty ng-touched"
+						aria-invalid="false" style="overflow: hidden; word-wrap: break-word; resize: horizontal;"></textarea>
+				</div>
+				<!--input class="btn btn-primary" type="submit" /-->
+				<!--button class="btn btn-primary" ng-click="c.closeModal()">${Close}</button-->
+				<button class="btn btn-primary" type="submit" ng-disabled="c.data.comments.length == 0">${Cancel RITM}</button>
+			</form>
+		</div>
+	</div>
+</script>
