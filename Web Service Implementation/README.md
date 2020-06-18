@@ -6,4 +6,4 @@ The datas are coming from the endpoint into 4 different Staging tables which are
 
 #### The Catalog Item Form 
 
-![alt text](/Catalog%20Item.png)
+![alt text](Web Service Implementation/Catalog Item.png)
