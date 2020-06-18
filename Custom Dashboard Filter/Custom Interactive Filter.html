@@ -1,0 +1,193 @@
+<!-- ***************************************************************** -->
+<!--** Used in CSS Dashboard - CSS Variable Filter - Dynamic Content **-->
+<!-- ***************************************************************** -->
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<!-- 	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="https://goodies.pixabay.com/jquery/auto-complete/jquery.auto-complete.js"></script> -->
+	<style>
+		table {
+		  font-family: arial, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		td, th {
+		  border: 1px solid #dddddd;
+		  text-align: left;
+		  padding: 8px;
+		}
+		tr:nth-child(even) {
+		  background-color: #dddddd;
+		}
+		button {
+			margin-top: 8px;
+		}
+	</style>
+	
+	<script language='javascript'>
+
+	var my_dashboardMessageHandler = new DashboardMessageHandler("my_unique_id_paul");
+    function buildQueryString(){
+		var request_type = gel('request_type').value;
+		var project_number = gel('project_number').value;
+		var client = gel('sys_display.client').value;
+		var project_name = gel('project_name').value;
+		var region = gel('region').value;
+		var lob = gel('lob').value;
+		var select_leading_discipline = gel('select_leading_discipline').value;
+		
+		var queryString = "cat_item=8973890cdb02a30421544b8b0b9619d4";
+		
+		if(request_type)
+			queryString += "^variables.675d6233dbdbabc061a31be3159619af=" + request_type;
+		if(project_number)
+			queryString += "^variables.3bb440711b69c850d4edeb1dbc4bcbd5=" + project_number;
+		if(client)
+			queryString += "^variables.4a369bc8db06e30421544b8b0b961962=" + client;
+		if(project_name)
+			queryString += "^variables.fa565b0cdb06e30421544b8b0b9619c4=" + project_name;
+		if(region)
+			queryString += "^variables.a696df0cdb06e30421544b8b0b9619b2=" + region;
+		if(lob)
+			queryString += "^variables.0bb61708db06e30421544b8b0b961925=" + lob;
+		if(select_leading_discipline)
+			queryString += "^variables.25579b8cdb06e30421544b8b0b96191d=" + select_leading_discipline;
+		
+		return queryString;
+	}
+	function applyFilter() {
+		var sQuery = buildQueryString();
+		alert(sQuery);
+		
+		var filter_message = {};
+		filter_message.id = "my_unique_id_paul";
+		filter_message.table = "sc_req_item";
+		filter_message.filter = sQuery;
+		
+		
+		SNC.canvas.interactiveFilters.setDefaultValue({
+		id: filter_message.id,
+		filters: [filter_message]
+		}, false);
+		my_dashboardMessageHandler.publishFilter(filter_message.table, filter_message.filter);
+    }
+    function clearFilter() {
+		gel('request_type').value = "";
+		gel('sys_display.project_number').value = "";
+		gel('project_number').value = "";
+		gel('sys_display.client').value = "";
+		gel('client').value = "";
+		gel('project_name').value = "";
+		gel('region').value = "";
+		gel('lob').value = "";
+		gel('select_leading_discipline').value = "";
+		
+        var filter_message = {};
+        filter_message.id = "my_unique_id_paul";
+        filter_message.table = "sc_req_item";
+	 	filter_message.filter = "";
+        SNC.canvas.interactiveFilters.setDefaultValue({
+			id: filter_message.id,
+			filters: [filter_message]
+		}, false);
+        my_dashboardMessageHandler.removeFilter();
+    }
+	var options = ['Badger', 'Bat', 'Cat', 'Cheetah', 'Crocodile', 'Deer', 'Donkey',
+  'Elephant', 'Fish', 'Frog', 'Giraffe', 'Gorilla'];
+$('project_name').autocomplete({
+  // req will contain an object with a "term" property that contains the value
+  // currently in the text input.  responseFn should be invoked with the options
+  // to display to the user.
+  source: function (req, responseFn) {
+    // Escape any RegExp meaningful characters such as ".", or "^" from the
+    // keyed term.
+    var term = $.ui.autocomplete.escapeRegex(req.term),
+      // '^' is the RegExp character to match at the beginning of the string.
+      // 'i' tells the RegExp to do a case insensitive match.
+      matcher = new RegExp('^' + term, 'i'),
+      // Loop over the options and selects only the ones that match the RegExp.
+      matches = $.grep(options, function (item) {
+        return matcher.test(item);
+      });
+    // Return the matched options.
+    responseFn(matches);
+  }
+});
+	</script>
+	
+	<form>
+	<table cellpadding='10' cellspacing='10' border='3'>
+		<tr>
+			<th align='center'>Field</th>
+			<th align='center'>Value</th>
+		</tr>
+		<tr>
+			<td align='center'>Request Type</td>
+			<td align='center'>
+				<select id='request_type' class="form-control">
+					<option value=''>All</option>
+					<option value='project'>Project</option>	
+					<option value='bd_sales'>BD/Sales</option>	
+					<option value='corporate_function'>Corporate Function</option>	
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align='center'>Project Number</td>
+			<td align='center'>
+				<g:ui_reference name="project_number" id="project_number" table="u_jacobs_projects" query="u_client_length=8" completer="AJAXTableCompleter"
+				 columns="u_project_name"/> <!-- "ref_ac_columns=u_project_name,ref_auto_completer=AJAXTableCompleter"-->
+			</td>
+		</tr>
+		<tr>
+			<td align='center'>Client</td>
+			<td align='center'>
+				<input type="hidden" id="client" name="client" value="" onchange="; setLightWeightLink('client'); $('display_hidden.client').value = $('sys_display.client').value;"/>
+				<input type="hidden" id="clientTABLE" name="ni.clientTABLE" value="u_jacobs_projects" onchange=""/>
+				<input type="hidden" id="display_hidden.client" name="display_hidden.client" value="" onchange=""/>
+				<input type="hidden" id="sys_original.client" value=""/>
+				<input id="sys_display.client" name="sys_display.client" class="form-control" onfocus="if (!this.ac) new AJAXReferenceCompleter(this, 'client', '', 'QUERY:sys_idINjavascript:getUniqueValue(%274a369bc8db06e30421544b8b0b961962%27)', 'sc_item_option');" onkeydown="return acReferenceKeyDown(this, event);" onkeyup="return acReferenceKeyUp(this, event)" onkeypress="return acReferenceKeyPress(this, event)" onpaste="return acReferenceKeyPress(this, event)" autocomplete="off" ac_columns="" ac_order_by="" aria-autocomplete="list" aria-owns="AC.client" title="" />
+<!-- 				//item_option_new=4a369bc8db06e30421544b8b0b961962 sc_item_option-->
+				<script>var display = $("sys_display.client");
+			display.value = $("display_hidden.client").value;</script>
+			</td>
+		</tr>
+		<tr>
+			<td align='center'>Project Name</td>
+			<td align='center'><input type="text" id="project_name" class="form-control"/>
+			</td>
+		</tr>
+		<tr>
+			<td align='center'>Region</td>
+			<td align='center'>
+				<select id='region' class="form-control">
+					<option value=''>All</option><option value='latam'>LATAM</option><option value='canada'>Canada</option><option value='menai'>MENAI</option><option value='us'>US</option><option value='europe'>Europe</option><option value='apac'>APAC</option>	
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align='center'>LOB</td>
+			<td align='center'>
+				<select id='lob' class="form-control">
+					<option value=''>All</option><option value='CMS'>CMS</option><option value='P&amp;PS'>P&amp;PS</option><option value='Corporate Functions'>Corporate Functions</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align='center'>Select Leading Discipline</td>
+			<td align='center'>
+				<select id='select_leading_discipline' class="form-control">
+					<option value=''>All</option><option value='Coordination'>Coordination</option><option value='Editing-Writing (EW)'>Editing-Writing (EW)</option><option value='Document Publishing (DP)'>Document Publishing (DP)</option><option value='Graphic Design (GD)'>Graphic Design (GD)</option><option value='Research &amp; Analysis'>Research &amp; Analysis</option><option value='Visual Media (VM)'>Visual Media (VM)</option><option value='Closeout'>Closeout</option><option value='Translation (en-pl)'>Translation (en-pl)</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+		<div class="row">
+			<div class="col-sm-12">
+				<button type="button" class="btn btn-primary float-left" onclick="applyFilter();">Apply Filter</button>
+				<button type="button" class="btn btn-warning float-right" onclick="clearFilter();">Clear Filter</button>
+			</div>
+		</div>
+	</form>
+</j:jelly>
