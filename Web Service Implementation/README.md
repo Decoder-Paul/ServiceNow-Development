@@ -6,4 +6,4 @@ The datas are coming from the endpoint into 4 different Staging tables which are
 
 #### The Catalog Item Form 
 
-![alt text](/ServiceNow-Development/blob/master/Web%20Service%20Implementation/Catalog%20Item.png)
+![alt text](Web%20Service%20Implementation/Catalog%20Item.png)
