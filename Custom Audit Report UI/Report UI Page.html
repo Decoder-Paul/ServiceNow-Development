@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	<script src="//code.jquery.com/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.tabletoCSV.jsdbx"></script>
+	<script type="text/javascript" src="jquery.table2excel.jsdbx"></script>
+	<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+		$(function () {
+			$("#fromDate").datepicker({ minDate: -1000, maxDate: +0, dateFormat: 'yy-mm-dd' });
+			$("#toDate").datepicker({ minDate: -1000, maxDate: +0, dateFormat: 'yy-mm-dd' });
+
+			var d = new Date();
+			d.setDate(d.getDate() - 7);
+			var currMonth = d.getMonth();
+			var currYear = d.getFullYear();
+			var currDay = d.getDay();
+			var startDate = new Date(currYear, currMonth, currDay);
+
+			$("#fromDate").datepicker();
+			$("#fromDate").datepicker("setDate", startDate);
+			$("#toDate").datepicker("setDate", new Date());
+		});
+	</script>
+
+	<style>
+		table#topGrid {
+			table-layout: auto;
+			font-family: arial, sans-serif;
+			border-collapse: collapse;
+			border-spacing: 2em;
+			width: 100%;
+		}
+
+		table#topGrid td {
+			border: 2px solid #dddddd;
+			text-align: left;
+			justify-content: center;
+			padding: 8px;
+			min-width: 120px;
+			vertical-align: baseline;
+		}
+		
+		table#examples {
+			table-layout: auto;
+			font-family: arial, sans-serif;
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		table#examples td {
+			border: 2px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+			width: 100px;
+			min-width: 120px
+		}
+
+		table#examples th {
+			border: 2px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+			width: 200%;
+			min-width: 120px
+		}
+
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+
+		table#examples tr:nth-child(even) {
+			background-color: #eee;
+		}
+
+		table#examples tr:nth-child(odd) {
+			background-color: #fff;
+		}
+
+		table#examples th {
+			background-color: black;
+			color: white;
+		}
+
+		.loader {
+			position: absolute;
+			left: 50%;
+			top: 35%;
+			border: 16px solid #f3f3f3;
+			/* Light grey */
+			border-top: 16px solid #3498db;
+			/* Blue */
+			border-radius: 50%;
+			width: 120px;
+			height: 120px;
+			animation: spin 2s linear infinite;
+		}
+
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+	</style>
+	<g:ui_form>
+		<h3 style="text-align: center;">Jacobs Hardware Audit Report</h3>
+		<input type="hidden" id="hdStartDate" value='${sysparm_Start_Date}' />
+		<input type="hidden" id="hdEndDate" value='${sysparm_End_Date}' />
+
+		<table align='left' border='1' cellspacing='5' cellpadding='5' id='topGrid'>
+			<tr>
+				<td style="width:40%;vertical-align: top;padding:0px;">
+					<input type="hidden" id="location_sys_id" value="" />
+					<iframe src="/Report_Location.do" width="100%" height="150px" style="border:none;">
+					</iframe>
+				</td>
+				<td style="width:25%">
+					<div><span style="padding-right:5px">${gs.getMessage("Start Date: ")}</span><input type="text"
+							id="fromDate" /></div>
+				</td>
+				<td style="width:25%">
+					<div><span style="padding-right:5px">${gs.getMessage("End Date: ")}</span><input type="text" id="toDate" />
+					</div>
+				</td>
+				<td style="width:10%">
+					<div>
+						<button class="btn btn-primary" type="button" id="btnReport" onclick='fetchreport()'>Generate
+							Report</button>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div id='btns' style='display:none'>
+			<button class="btn btn-warning" type="button" id="btnDownload"> Download as CSV</button>
+		</div>
+		<div id="RMSreport" style='display:none'>
+			<table id="examples">
+				<tr>
+					<td style='text-align:center'></td>
+				</tr>
+			</table>
+		</div>
+		<div id="loader" class='loader'></div>
+		<div id="download" style='display:none' align='center' width='100%' height='100%'></div>
+	</g:ui_form>
+</j:jelly>

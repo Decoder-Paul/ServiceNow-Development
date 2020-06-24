@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<g:requires name="scripts/lib/jquery_includes.js" /> 
+	<div style="margin:5px;">
+		<table style="width:100%">
+			<tr>
+				<td style="width:10%;text-align:right;padding-right:10px;">
+					<label style="display: inline-block">${gs.getMessage("Location: ")}</label>
+				</td>
+				<td style="width:90%">
+					<g:ui_reference name="location" query="u_active=True^full_name!=NULL" id="location" table="cmn_location" onchange="setLocationFilter()" show_lookup="true" show_popup="false"/>
+				</td>
+			</tr>
+		</table>
+		<j2:set var="jvar_hide_response_time" value="true"/>
+	</div>
+</j:jelly>
