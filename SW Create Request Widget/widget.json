@@ -1,0 +1,421 @@
+{
+    "instance": {
+        "name": "trianzjacobsdev",
+        "url": "https://trianzjacobsdev.service-now.com",
+        "g_ck": "1bf9ba2bdba1dc1061a31be3159619b89b2efc1cbe1bce963049d87b46d7129ec4061b37"
+    },
+    "action": "saveWidget",
+    "tableName": "sp_widget",
+    "name": "SW Create Request",
+    "sys_id": "baa0f9f9db51d81061a31be3159619f7",
+    "widget": {
+        "template": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Body HTML template",
+            "sys_readonly": false,
+            "type": "html_template",
+            "mandatory": false,
+            "displayValue": "<div class=\"panel panel-default\">\r\n  <div class=\"panel-heading\">\r\n    <h4 class=\"panel-title\">Create a Service Request</h4>\r\n  </div>\r\n  <div class=\"panel-body\">\r\n    <form class=\"m-t form-horizontal\" role=\"form\">\r\n      <div class=\"form-group\">\r\n        <label class=\"col-sm-2 control-label\">Opened For</label>\r\n        <div class=\"col-sm-10\">\r\n          <sn-record-picker field=\"userName\" table=\"'sys_user'\" display-field=\"'name'\" value-field=\"'sys_id'\"\r\n            search-fields=\"'name,email'\" placeholder=\"Requested for\" page-size=\"30\"\r\n            default-query=\"'nameISNOTEMPTY^active=true'\" sn-disabled=\"userDisable\"></sn-record-picker>\r\n        </div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label class=\"col-sm-2 control-label\">Select a Category</label>\r\n        <div class=\"col-sm-10\">\r\n          <sn-record-picker field=\"category_sel\" table=\"'sc_category'\" display-field=\"'title'\" value-field=\"'sys_id'\"\r\n            search-fields=\"'title, description'\" placeholder=\"Catalog Category\" page-size=\"30\"\r\n            default-query=\"data.categoryQuery\"></sn-record-picker>\r\n        </div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label class=\"col-sm-2 control-label\">Select a Catalog Item</label>\r\n        <div class=\"col-sm-10\">\r\n          <sn-record-picker field=\"cat_item_sel\" table=\"'sc_cat_item'\" display-field=\"'name'\" value-field=\"'sys_id'\"\r\n            search-fields=\"'name'\" placeholder=\"Catalog Item\" page-size=\"30\" default-query=\"data.catItemQuery\"\r\n            sn-disabled=\"itemDisable\"></sn-record-picker>\r\n        </div>\r\n      </div>\r\n      <button ng-click=\"openItem()\" ng-disabled=\"submitDisable\" class=\"btn btn-success pull-right\">Submit</button>\r\n    </form>\r\n  </div>\r\n</div>",
+            "readonly": false,
+            "hint": "",
+            "name": "template",
+            "attributes": {},
+            "choice": 0,
+            "value": "<div class=\"panel panel-default\">\r\n  <div class=\"panel-heading\">\r\n    <h4 class=\"panel-title\">Create a Service Request</h4>\r\n  </div>\r\n  <div class=\"panel-body\">\r\n    <form class=\"m-t form-horizontal\" role=\"form\">\r\n      <div class=\"form-group\">\r\n        <label class=\"col-sm-2 control-label\">Opened For</label>\r\n        <div class=\"col-sm-10\">\r\n          <sn-record-picker field=\"userName\" table=\"'sys_user'\" display-field=\"'name'\" value-field=\"'sys_id'\"\r\n            search-fields=\"'name,email'\" placeholder=\"Requested for\" page-size=\"30\"\r\n            default-query=\"'nameISNOTEMPTY^active=true'\" sn-disabled=\"userDisable\"></sn-record-picker>\r\n        </div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label class=\"col-sm-2 control-label\">Select a Category</label>\r\n        <div class=\"col-sm-10\">\r\n          <sn-record-picker field=\"category_sel\" table=\"'sc_category'\" display-field=\"'title'\" value-field=\"'sys_id'\"\r\n            search-fields=\"'title, description'\" placeholder=\"Catalog Category\" page-size=\"30\"\r\n            default-query=\"data.categoryQuery\"></sn-record-picker>\r\n        </div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label class=\"col-sm-2 control-label\">Select a Catalog Item</label>\r\n        <div class=\"col-sm-10\">\r\n          <sn-record-picker field=\"cat_item_sel\" table=\"'sc_cat_item'\" display-field=\"'name'\" value-field=\"'sys_id'\"\r\n            search-fields=\"'name'\" placeholder=\"Catalog Item\" page-size=\"30\" default-query=\"data.catItemQuery\"\r\n            sn-disabled=\"itemDisable\"></sn-record-picker>\r\n        </div>\r\n      </div>\r\n      <button ng-click=\"openItem()\" ng-disabled=\"submitDisable\" class=\"btn btn-success pull-right\">Submit</button>\r\n    </form>\r\n  </div>\r\n</div>",
+            "max_length": 65000,
+            "ed": {
+                "name": "template"
+            }
+        },
+        "css": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "CSS",
+            "sys_readonly": false,
+            "type": "css",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "css",
+            "attributes": {},
+            "choice": 0,
+            "value": "",
+            "max_length": 8000,
+            "ed": {
+                "name": "css"
+            }
+        },
+        "roles": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "Roles",
+            "sys_readonly": false,
+            "type": "user_roles",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "roles",
+            "attributes": {
+                "no_truncate": "true",
+                "update_exempt": "true",
+                "record_watcher_blacklist": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 255,
+            "ed": {
+                "name": "roles"
+            }
+        },
+        "link": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Link",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "function link(scope, element, attrs, controller) { \r\n\r\n }",
+            "readonly": false,
+            "hint": "",
+            "name": "link",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "function link(scope, element, attrs, controller) { \r\n\r\n }",
+            "max_length": 65000,
+            "ed": {
+                "name": "link"
+            }
+        },
+        "description": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Description",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "Defines what the widget does",
+            "name": "description",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 300,
+            "ed": {
+                "name": "description"
+            }
+        },
+        "demo_data": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Demo data",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "demo_data",
+            "attributes": {},
+            "choice": 0,
+            "value": "",
+            "max_length": 8000,
+            "ed": {
+                "name": "demo_data"
+            }
+        },
+        "option_schema": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Option schema",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "option_schema",
+            "attributes": {},
+            "choice": 0,
+            "value": "",
+            "max_length": 8000,
+            "ed": {
+                "name": "option_schema"
+            }
+        },
+        "script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Server script",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "(function() {\r\n  /* populate the 'data' object */\r\n  /* e.g., data.table = $sp.getValue('table'); */\r\n  data.user_id = $sp.getParameter('sysparm_user_id');\r\n  data.user_name = gs.getUser().getUserByID(data.user_id).getRecord().getValue('name');\r\n  data.categoryQuery = new createRequestUtils().getCategories('5dbdd8cedb88030005af3ebf9d9619d3', data.user_id);\r\n  if(input.field_change==\"category_sel\"){\r\n    data.catItemQuery = new createRequestUtils().getCatItems(input.category_sys_id, data.user_id);\r\n  }\r\n})();",
+            "readonly": false,
+            "hint": "",
+            "name": "script",
+            "attributes": {},
+            "choice": 0,
+            "value": "(function() {\r\n  /* populate the 'data' object */\r\n  /* e.g., data.table = $sp.getValue('table'); */\r\n  data.user_id = $sp.getParameter('sysparm_user_id');\r\n  data.user_name = gs.getUser().getUserByID(data.user_id).getRecord().getValue('name');\r\n  data.categoryQuery = new createRequestUtils().getCategories('5dbdd8cedb88030005af3ebf9d9619d3', data.user_id);\r\n  if(input.field_change==\"category_sel\"){\r\n    data.catItemQuery = new createRequestUtils().getCatItems(input.category_sys_id, data.user_id);\r\n  }\r\n})();",
+            "max_length": 65000,
+            "ed": {
+                "name": "script"
+            }
+        },
+        "has_preview": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Has preview",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "false",
+            "readonly": false,
+            "hint": "Defines whether preview data is available",
+            "name": "has_preview",
+            "attributes": {},
+            "choice": 0,
+            "value": "true",
+            "max_length": 40,
+            "ed": {
+                "name": "has_preview"
+            }
+        },
+        "public": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Public",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "false",
+            "readonly": false,
+            "hint": "Widget publicly available to unauthenticated users",
+            "name": "public",
+            "attributes": {
+                "update_exempt": "true"
+            },
+            "choice": 0,
+            "value": "false",
+            "max_length": 40,
+            "ed": {
+                "name": "public"
+            }
+        },
+        "docs": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "Docs",
+            "sys_readonly": false,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sp_documentation",
+            "reference_type": "table",
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "docs",
+            "attributes": {
+                "encode_utf8": "false"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": true,
+            "choice": 0,
+            "value": "",
+            "max_length": 32,
+            "ed": {
+                "reference": "sp_documentation",
+                "searchField": "title",
+                "defaultOperator": "STARTSWITH",
+                "name": "docs"
+            }
+        },
+        "client_script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Client controller",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "function ($scope, spUtil) {\r\n\tvar c = this;\r\n\t$scope.userDisable = false;\r\n\t$scope.submitDisable = true;\r\n\t$scope.itemDisable = true;\r\n\r\n\t$scope.userName = {\r\n\t\tdisplayValue: c.data.user_name,\r\n\t\tvalue: c.data.user_id,\r\n\t\tname: 'userName'\r\n\t};\r\n\t$scope.category_sel = {\r\n\t\tdisplayValue: c.data.category_title,\r\n\t\tvalue: c.data.category_sys_id,\r\n\t\tname: 'category_sel'\r\n\t};\r\n\t$scope.cat_item_sel = {\r\n\t\tdisplayValue: c.data.cat_item_name,\r\n\t\tvalue: c.data.cat_item_sys_id,\r\n\t\tname: 'cat_item_sel'\r\n\t};\r\n\r\n\tif ($scope.userName.value)\r\n\t\t$scope.userDisable = true;\r\n\r\n\t$scope.$on(\"field.change\", function (evt, parms) {\r\n\t\tc.data.field_change = null;\r\n\t\tif (parms.field.name == 'userName') {\r\n\t\t\tc.data.user = parms.newValue;\r\n\t\t\t// var obj = {\r\n\t\t\t// \tuser: parms.newValue\r\n\t\t\t// };\r\n\t\t\t$scope.category_sel.value = '';\r\n\t\t\t$scope.category_sel.displayValue = '';\r\n\t\t\t$scope.cat_item_sel.value = '';\r\n\t\t\t$scope.cat_item_sel.displayValue = '';\r\n\t\t\t$scope.submitDisable = true;\r\n\t\t\tc.server.update().then(function (response) {\r\n\t\t\t\t// spUtil.addInfoMessage(c.data.categoryQuery);\r\n\t\t\t});\r\n\t\t}\r\n\t\telse if (parms.field.name == 'category_sel') {\r\n\t\t\tc.data.field_change = \"category_sel\";\r\n\t\t\t$scope.cat_item_sel.value = '';\r\n\t\t\t$scope.cat_item_sel.displayValue = '';\r\n\t\t\tc.data.category_sys_id = parms.newValue;\r\n\t\t\tif(parms.newValue){\r\n\t\t\t\t$scope.itemDisable = false;\r\n\t\t\t\t// $scope.submitDisable = false;\r\n\t\t\t}else{\r\n\t\t\t\t$scope.itemDisable = true;\r\n\t\t\t\t$scope.submitDisable = true;\r\n\t\t\t}\r\n\t\t\tc.server.update().then(function (response) {\r\n\t\t\t\t// spUtil.addErrorMessage(c.data.catItemQuery);\r\n\t\t\t});\r\n\t\t}\r\n\t\telse if (parms.field.name == 'cat_item_sel') {\r\n\t\t\tc.data.cat_item_sys_id = parms.newValue;\r\n\t\t\tparms.newValue ? $scope.submitDisable = false : $scope.submitDisable = true;\r\n\t\t}\r\n\t});\r\n\t$scope.openItem = function () {\r\n\t\twindow.location.assign(\"https://trianzjacobsdev.service-now.com/swp?id=sw_sc_cat_item_custom&sys_id=\" + c.data.cat_item_sys_id);\r\n\t}\r\n}",
+            "readonly": false,
+            "hint": "",
+            "name": "client_script",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "function ($scope, spUtil) {\r\n\tvar c = this;\r\n\t$scope.userDisable = false;\r\n\t$scope.submitDisable = true;\r\n\t$scope.itemDisable = true;\r\n\r\n\t$scope.userName = {\r\n\t\tdisplayValue: c.data.user_name,\r\n\t\tvalue: c.data.user_id,\r\n\t\tname: 'userName'\r\n\t};\r\n\t$scope.category_sel = {\r\n\t\tdisplayValue: c.data.category_title,\r\n\t\tvalue: c.data.category_sys_id,\r\n\t\tname: 'category_sel'\r\n\t};\r\n\t$scope.cat_item_sel = {\r\n\t\tdisplayValue: c.data.cat_item_name,\r\n\t\tvalue: c.data.cat_item_sys_id,\r\n\t\tname: 'cat_item_sel'\r\n\t};\r\n\r\n\tif ($scope.userName.value)\r\n\t\t$scope.userDisable = true;\r\n\r\n\t$scope.$on(\"field.change\", function (evt, parms) {\r\n\t\tc.data.field_change = null;\r\n\t\tif (parms.field.name == 'userName') {\r\n\t\t\tc.data.user = parms.newValue;\r\n\t\t\t// var obj = {\r\n\t\t\t// \tuser: parms.newValue\r\n\t\t\t// };\r\n\t\t\t$scope.category_sel.value = '';\r\n\t\t\t$scope.category_sel.displayValue = '';\r\n\t\t\t$scope.cat_item_sel.value = '';\r\n\t\t\t$scope.cat_item_sel.displayValue = '';\r\n\t\t\t$scope.submitDisable = true;\r\n\t\t\tc.server.update().then(function (response) {\r\n\t\t\t\t// spUtil.addInfoMessage(c.data.categoryQuery);\r\n\t\t\t});\r\n\t\t}\r\n\t\telse if (parms.field.name == 'category_sel') {\r\n\t\t\tc.data.field_change = \"category_sel\";\r\n\t\t\t$scope.cat_item_sel.value = '';\r\n\t\t\t$scope.cat_item_sel.displayValue = '';\r\n\t\t\tc.data.category_sys_id = parms.newValue;\r\n\t\t\tif(parms.newValue){\r\n\t\t\t\t$scope.itemDisable = false;\r\n\t\t\t\t// $scope.submitDisable = false;\r\n\t\t\t}else{\r\n\t\t\t\t$scope.itemDisable = true;\r\n\t\t\t\t$scope.submitDisable = true;\r\n\t\t\t}\r\n\t\t\tc.server.update().then(function (response) {\r\n\t\t\t\t// spUtil.addErrorMessage(c.data.catItemQuery);\r\n\t\t\t});\r\n\t\t}\r\n\t\telse if (parms.field.name == 'cat_item_sel') {\r\n\t\t\tc.data.cat_item_sys_id = parms.newValue;\r\n\t\t\tparms.newValue ? $scope.submitDisable = false : $scope.submitDisable = true;\r\n\t\t}\r\n\t});\r\n\t$scope.openItem = function () {\r\n\t\twindow.location.assign(\"https://trianzjacobsdev.service-now.com/swp?id=sw_sc_cat_item_custom&sys_id=\" + c.data.cat_item_sys_id);\r\n\t}\r\n}",
+            "max_length": 8000,
+            "ed": {
+                "name": "client_script"
+            }
+        },
+        "data_table": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "default_value": "sp_instance",
+            "label": "Data table",
+            "sys_readonly": false,
+            "type": "table_name",
+            "mandatory": true,
+            "displayValue": "sp_instance",
+            "readonly": false,
+            "hint": "",
+            "name": "data_table",
+            "attributes": {
+                "base_table": "sp_instance",
+                "base_start": "true"
+            },
+            "choice": 0,
+            "choices": [],
+            "value": "sp_instance",
+            "max_length": 80,
+            "ed": {
+                "name": "data_table"
+            }
+        },
+        "name": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "label": "Name",
+            "sys_readonly": false,
+            "type": "translated_field",
+            "mandatory": true,
+            "displayValue": "SW Create Request",
+            "readonly": false,
+            "hint": "",
+            "name": "name",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "SW Create Request",
+            "max_length": 40,
+            "ed": {
+                "name": "name"
+            }
+        },
+        "sys_scope": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "Application",
+            "sys_readonly": true,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sys_scope",
+            "reference_type": "table",
+            "displayValue": "Global",
+            "readonly": true,
+            "hint": "Application containing this record",
+            "name": "sys_scope",
+            "attributes": {
+                "encode_utf8": "false",
+                "list_force_default": "true",
+                "readonly_clickthrough": "true",
+                "ignore_filter_on_new": "true"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": true,
+            "choice": 0,
+            "value": "global",
+            "max_length": 32,
+            "ed": {
+                "reference": "sys_scope",
+                "searchField": "name",
+                "defaultOperator": "STARTSWITH",
+                "name": "sys_scope"
+            }
+        },
+        "id": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "ID",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "sw_create_request",
+            "readonly": false,
+            "hint": "Identifier for $sp.embedWidget()",
+            "name": "id",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "sw_create_request",
+            "max_length": 40,
+            "ed": {
+                "name": "id"
+            }
+        },
+        "field_list": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dependentField": "data_table",
+            "dbType": -1,
+            "label": "Fields",
+            "sys_readonly": false,
+            "type": "field_list",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "field_list",
+            "attributes": {
+                "is_multi_text": "false"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 1000,
+            "ed": {
+                "dependent_value": "sp_instance",
+                "name": "field_list"
+            }
+        },
+        "controller_as": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "controllerAs",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "c",
+            "readonly": false,
+            "hint": "Identifier name for a reference to the controller in the directive's scope",
+            "name": "controller_as",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "c",
+            "max_length": 100,
+            "ed": {
+                "name": "controller_as"
+            }
+        }
+    }
+}

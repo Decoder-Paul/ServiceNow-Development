@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">Create a Service Request</h4>
+  </div>
+  <div class="panel-body">
+    <form class="m-t form-horizontal" role="form">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Opened For</label>
+        <div class="col-sm-10">
+          <sn-record-picker field="userName" table="'sys_user'" display-field="'name'" value-field="'sys_id'"
+            search-fields="'name,email'" placeholder="Requested for" page-size="30"
+            default-query="'nameISNOTEMPTY^active=true'" sn-disabled="userDisable"></sn-record-picker>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Select a Category</label>
+        <div class="col-sm-10">
+          <sn-record-picker field="category_sel" table="'sc_category'" display-field="'title'" value-field="'sys_id'"
+            search-fields="'title, description'" placeholder="Catalog Category" page-size="30"
+            default-query="data.categoryQuery"></sn-record-picker>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Select a Catalog Item</label>
+        <div class="col-sm-10">
+          <sn-record-picker field="cat_item_sel" table="'sc_cat_item'" display-field="'name'" value-field="'sys_id'"
+            search-fields="'name'" placeholder="Catalog Item" page-size="30" default-query="data.catItemQuery"
+            sn-disabled="itemDisable"></sn-record-picker>
+        </div>
+      </div>
+      <button ng-click="openItem()" ng-disabled="submitDisable" class="btn btn-success pull-right">Submit</button>
+    </form>
+  </div>
+</div>
