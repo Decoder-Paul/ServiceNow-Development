@@ -1,0 +1,421 @@
+{
+	"instance": {
+		"name": "trianzjacobsdev",
+		"url": "https://trianzjacobsdev.service-now.com",
+		"g_ck": "1bf9ba2bdba1dc1061a31be3159619b89b2efc1cbe1bce963049d87b46d7129ec4061b37"
+	},
+	"action": "saveWidget",
+	"tableName": "sp_widget",
+	"name": "Custom Ticket Tabs",
+	"sys_id": "6df9957fdbbf720005af3ebf9d9619e0",
+	"widget": {
+		"template": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -1,
+			"label": "Body HTML template",
+			"sys_readonly": false,
+			"type": "html_template",
+			"mandatory": false,
+			"displayValue": "<div>\n<div class=\"tab\">\n \n <button class=\"tablinks\" id=\"req\" ng-click=\"c.openData($event, 'request')\" ng-init=\"c.onLoad()\" >Request Items </button>\n  <!--button class=\"tablinks\" id=\"hrc\" ng-show=\"{{c.options.hrcv}}\" ng-click=\"c.openData($event, 'hrcase')\" >HR Cases </button-->\n  <button class=\"tablinks\" id=\"inc\"  ng-click=\"c.openData($event, 'incident')\">Incidents</button>\n  \n  <button class=\"tablinks\" id=\"prb\" ng-show=\"{{c.options.value}}\"  ng-click=\"c.openData($event, 'problem')\">Problems</button>\n  <button class=\"tablinks\" id=\"chn\" ng-show=\"{{c.options.value}}\" ng-click=\"c.openData($event, 'change')\">Change Requests</button>\n  <button class=\"tablinks\" id=\"apr\" ng-click=\"c.openData($event, 'approval')\">Approvals</button>\n  <button class=\"tablinks\" id=\"wtl\" ng-click=\"c.openData($event, 'watch')\" >Watch List </button>\n \n  <div id= \"sct\" class=\"text\" style=\"font-family:inherit;font-size:17px;float:right;color:white;margin-top:14px;margin-right:5px\">\n  <label class=\"switch\" style=\"float: right\" name=\"test\" value=\"Closed Tickets\">\n  <input type=\"checkbox\" id= \"toggle\"  ng-click=\"c.updateFilter($event)\">\n  <div class=\"slider round\"></div>\n</label>\n  Show Closed Tickets</div>\n  </div>\n  <div id=\"watch\" class=\"tabcontent\">\n  <sp-widget widget=\"data.watchData\" />\n  </div>\n  <div id=\"incident\" class=\"tabcontent\">\n  <sp-widget widget=\"data.incData\" />\n  </div>\n  <div id=\"request\" class=\"tabcontent\">\n  <sp-widget widget=\"data.reqData\" />\n  </div>\n  <div id=\"request1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.reqData1\" />\n  </div>\n  <div id=\"change\" class=\"tabcontent\">\n  <sp-widget widget=\"data.chnData\" />\n  </div>\n  <div id=\"problem\" class=\"tabcontent\">\n  <sp-widget widget=\"data.prbData\" />\n  </div>\n   <div id=\"incident1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.incData1\" />\n  </div>\n  <div id=\"watch1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.watchData1\" />\n  </div>\n  <div id=\"change1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.chnData1\" />\n  </div>\n  <div id=\"problem1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.prbData1\" />\n  </div>\n  <div id=\"approval\" class=\"tabcontent\">\n  <sp-widget widget=\"data.aprData\" />\n  </div>\n  <div id=\"approval1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.aprData1\" />\n  </div>\n</div>\n\n",
+			"readonly": false,
+			"hint": "",
+			"name": "template",
+			"attributes": {},
+			"choice": 0,
+			"value": "<div>\n<div class=\"tab\">\n \n <button class=\"tablinks\" id=\"req\" ng-click=\"c.openData($event, 'request')\" ng-init=\"c.onLoad()\" >Request Items </button>\n  <!--button class=\"tablinks\" id=\"hrc\" ng-show=\"{{c.options.hrcv}}\" ng-click=\"c.openData($event, 'hrcase')\" >HR Cases </button-->\n  <button class=\"tablinks\" id=\"inc\"  ng-click=\"c.openData($event, 'incident')\">Incidents</button>\n  \n  <button class=\"tablinks\" id=\"prb\" ng-show=\"{{c.options.value}}\"  ng-click=\"c.openData($event, 'problem')\">Problems</button>\n  <button class=\"tablinks\" id=\"chn\" ng-show=\"{{c.options.value}}\" ng-click=\"c.openData($event, 'change')\">Change Requests</button>\n  <button class=\"tablinks\" id=\"apr\" ng-click=\"c.openData($event, 'approval')\">Approvals</button>\n  <button class=\"tablinks\" id=\"wtl\" ng-click=\"c.openData($event, 'watch')\" >Watch List </button>\n \n  <div id= \"sct\" class=\"text\" style=\"font-family:inherit;font-size:17px;float:right;color:white;margin-top:14px;margin-right:5px\">\n  <label class=\"switch\" style=\"float: right\" name=\"test\" value=\"Closed Tickets\">\n  <input type=\"checkbox\" id= \"toggle\"  ng-click=\"c.updateFilter($event)\">\n  <div class=\"slider round\"></div>\n</label>\n  Show Closed Tickets</div>\n  </div>\n  <div id=\"watch\" class=\"tabcontent\">\n  <sp-widget widget=\"data.watchData\" />\n  </div>\n  <div id=\"incident\" class=\"tabcontent\">\n  <sp-widget widget=\"data.incData\" />\n  </div>\n  <div id=\"request\" class=\"tabcontent\">\n  <sp-widget widget=\"data.reqData\" />\n  </div>\n  <div id=\"request1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.reqData1\" />\n  </div>\n  <div id=\"change\" class=\"tabcontent\">\n  <sp-widget widget=\"data.chnData\" />\n  </div>\n  <div id=\"problem\" class=\"tabcontent\">\n  <sp-widget widget=\"data.prbData\" />\n  </div>\n   <div id=\"incident1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.incData1\" />\n  </div>\n  <div id=\"watch1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.watchData1\" />\n  </div>\n  <div id=\"change1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.chnData1\" />\n  </div>\n  <div id=\"problem1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.prbData1\" />\n  </div>\n  <div id=\"approval\" class=\"tabcontent\">\n  <sp-widget widget=\"data.aprData\" />\n  </div>\n  <div id=\"approval1\" class=\"tabcontent\">\n  <sp-widget widget=\"data.aprData1\" />\n  </div>\n</div>\n\n",
+			"max_length": 65000,
+			"ed": {
+				"name": "template"
+			}
+		},
+		"css": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -1,
+			"label": "CSS",
+			"sys_readonly": false,
+			"type": "css",
+			"mandatory": false,
+			"displayValue": "div.tab {\n    overflow: hidden;\n    border: 1px solid #337ab7;\n    background-color: #337ab7;\n}\n\n/* Style the buttons inside the tab */\ndiv.tab button {\n    background-color: transparent;\n  color: #ffffff;\n    float: left;\n    border: none;\n    outline: none;\n    cursor: pointer;\n    padding: 14px 16px;\n    transition: 0.3s;\n    font-size: 17px;\n}\n\n/* Change background color of buttons on hover */\ndiv.tab button:hover {\n    background-color: #023c77;\n}\n\n/* Create an active/current tablink class */\ndiv.tab button.active {\n    background-color: #001f3f;\n border: 1px solid  #7fdbff\n  \n}\n\n/* Style the tab content */\n.tabcontent {\n    display: none;\n    padding: 6px 12px;\n    border: 1px solid #337ab7;\n    border-top: none;\n}\n\n.switch {\n  margin-left:5px;\n  position: relative;\n  display: inline-block;\n  width: 50px;\n  height: 24px;\n \n}\n\n.switch input {display:none;\n}\n\n.slider {\n  position: absolute;\n  cursor: pointer;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: #fff;\n  -webkit-transition: .4s;\n  transition: .4s;\n}\n\n.slider:before {\n \n  position: absolute;\n  content: \"\";\n  height: 17px;\n  width: 18px;\n  left: 4px;\n  bottom: 4px;\n  background-color: #800000;\n  -webkit-transition: .4s;\n  transition: .4s;\n}\n\ninput:checked + .slider {\n  background-color: #fff;\n}\n\ninput:focus + .slider {\n  box-shadow: 0 0 1px #fff;\n}\n\ninput:checked + .slider:before {\n  -webkit-transform: translateX(26px);\n  -ms-transform: translateX(26px);\n  transform: translateX(26px);\n  background-color: green;\n}\n.slider.round {\n  border-radius: 3px;\n}\n\n.slider.round:before {\n  border-radius: 10%;\n}\n\n",
+			"readonly": false,
+			"hint": "",
+			"name": "css",
+			"attributes": {},
+			"choice": 0,
+			"value": "div.tab {\n    overflow: hidden;\n    border: 1px solid #337ab7;\n    background-color: #337ab7;\n}\n\n/* Style the buttons inside the tab */\ndiv.tab button {\n    background-color: transparent;\n  color: #ffffff;\n    float: left;\n    border: none;\n    outline: none;\n    cursor: pointer;\n    padding: 14px 16px;\n    transition: 0.3s;\n    font-size: 17px;\n}\n\n/* Change background color of buttons on hover */\ndiv.tab button:hover {\n    background-color: #023c77;\n}\n\n/* Create an active/current tablink class */\ndiv.tab button.active {\n    background-color: #001f3f;\n border: 1px solid  #7fdbff\n  \n}\n\n/* Style the tab content */\n.tabcontent {\n    display: none;\n    padding: 6px 12px;\n    border: 1px solid #337ab7;\n    border-top: none;\n}\n\n.switch {\n  margin-left:5px;\n  position: relative;\n  display: inline-block;\n  width: 50px;\n  height: 24px;\n \n}\n\n.switch input {display:none;\n}\n\n.slider {\n  position: absolute;\n  cursor: pointer;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: #fff;\n  -webkit-transition: .4s;\n  transition: .4s;\n}\n\n.slider:before {\n \n  position: absolute;\n  content: \"\";\n  height: 17px;\n  width: 18px;\n  left: 4px;\n  bottom: 4px;\n  background-color: #800000;\n  -webkit-transition: .4s;\n  transition: .4s;\n}\n\ninput:checked + .slider {\n  background-color: #fff;\n}\n\ninput:focus + .slider {\n  box-shadow: 0 0 1px #fff;\n}\n\ninput:checked + .slider:before {\n  -webkit-transform: translateX(26px);\n  -ms-transform: translateX(26px);\n  transform: translateX(26px);\n  background-color: green;\n}\n.slider.round {\n  border-radius: 3px;\n}\n\n.slider.round:before {\n  border-radius: 10%;\n}\n\n",
+			"max_length": 8000,
+			"ed": {
+				"name": "css"
+			}
+		},
+		"roles": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": 12,
+			"label": "Roles",
+			"sys_readonly": false,
+			"type": "user_roles",
+			"mandatory": false,
+			"displayValue": "",
+			"readonly": false,
+			"hint": "",
+			"name": "roles",
+			"attributes": {
+				"no_truncate": "true",
+				"update_exempt": "true",
+				"record_watcher_blacklist": "true"
+			},
+			"choice": 0,
+			"value": "",
+			"max_length": 255,
+			"ed": {
+				"name": "roles"
+			}
+		},
+		"link": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -1,
+			"label": "Link",
+			"sys_readonly": false,
+			"type": "script",
+			"mandatory": false,
+			"displayValue": "",
+			"readonly": false,
+			"hint": "",
+			"name": "link",
+			"attributes": {
+				"client_script": "true"
+			},
+			"choice": 0,
+			"value": "",
+			"max_length": 65000,
+			"ed": {
+				"name": "link"
+			}
+		},
+		"description": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -1,
+			"label": "Description",
+			"sys_readonly": false,
+			"type": "string",
+			"mandatory": false,
+			"displayValue": "",
+			"readonly": false,
+			"hint": "Defines what the widget does",
+			"name": "description",
+			"attributes": {
+				"edge_encryption_enabled": "true"
+			},
+			"choice": 0,
+			"value": "",
+			"max_length": 300,
+			"ed": {
+				"name": "description"
+			}
+		},
+		"demo_data": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -1,
+			"label": "Demo data",
+			"sys_readonly": false,
+			"type": "json",
+			"mandatory": false,
+			"displayValue": "",
+			"readonly": false,
+			"hint": "",
+			"name": "demo_data",
+			"attributes": {},
+			"choice": 0,
+			"value": "",
+			"max_length": 8000,
+			"ed": {
+				"name": "demo_data"
+			}
+		},
+		"option_schema": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -1,
+			"label": "Option schema",
+			"sys_readonly": false,
+			"type": "json",
+			"mandatory": false,
+			"displayValue": "",
+			"readonly": false,
+			"hint": "",
+			"name": "option_schema",
+			"attributes": {},
+			"choice": 0,
+			"value": "",
+			"max_length": 8000,
+			"ed": {
+				"name": "option_schema"
+			}
+		},
+		"script": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -1,
+			"label": "Server script",
+			"sys_readonly": false,
+			"type": "script",
+			"mandatory": false,
+			"displayValue": "(function() {\n  /* populate the 'data' object */\n  /* e.g., data.table = $sp.getValue('table'); */\n\tvar pl = $sp.getDisplayValue('url_suffix');\n\n\toptions.hrcv = 'false';\n\tvar us = new GlideRecord('sys_user');\n\tus.addQuery('sys_id', gs.getUserID());\n\tus.addQuery('u_legacy_company', 'CH2M');\n\tus.query();\n\tif(us.hasNext())\n\t\t{\n\t\toptions.hrcv = 'true';\t\n\t\t}\n\t/*if(pl=='hrsp')\n\t\t{\n\t\t\toptions.hrcv = 'true';\n\t\t}*/\noptions.value='false';\nif(gs.hasRole(\"itil\"))\n\t{\noptions.value='true';\n\t}\n\t\nvar reqFilter;\nvar incFilter;\nvar prbFilter;\nvar prbFilter1;\nvar chnFilter;\nvar chnFilter1;\nvar reqFilter1;\nvar incFilter1;\nvar appFilter;\nvar appFilter1;\nvar\twatchFilter;\n\tvar watchFilter1;\n//var hrcFilter;\n\t//var hrcFilter1;\n\n\nreqFilter = 'request.requested_for=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()^active=true^EQ';\nincFilter = \"active=true^caller_id=javascript:gs.getUserID()^ORu_on_behalf_of=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()\";\nreqFilter1 = 'request.requested_for=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()^stateIN3,4,7^EQ';\nincFilter1 = \"active=false^caller_id=javascript:gs.getUserID()^ORu_on_behalf_of=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()\";\nprbFilter = 'stateIN1,3,2,8^opened_by=javascript:gs.getUserID()^EQ';\nprbFilter1 = 'opened_by=javascript:gs.getUserID()^stateIN2,4^EQ'\nchnFilter = 'active=true^opened_by=javascript:gs.getUserID()^ORrequested_by=javascript:gs.getUserID()^EQ';\nchnFilter1 = 'active=false^opened_by=javascript:gs.getUserID()^ORrequested_by=javascript:gs.getUserID()^EQ';\nappFilter = 'stateINrequested,more_info_required^approver=javascript:gs.getUserID()^EQ';\nappFilter1 = 'stateINapproved,rejected,cancelled,not_required^approver=javascript:gs.getUserID()^EQ';\nwatchFilter= 'active=true^sys_class_name=change_request^ORsys_class_name=incident^ORsys_class_name=sc_req_item^ORsys_class_name=problem^watch_listLIKEjavascript:gs.getUserID()^ORDERBYDESCsys_updated_on^EQ';\n\twatchFilter1 = 'active=false^sys_class_name=change_request^ORsys_class_name=incident^ORsys_class_name=sc_req_item^ORsys_class_name=problem^watch_listLIKEjavascript:gs.getUserID()^ORDERBYDESCsys_updated_on^EQ';\n//hrcFilter = 'active=true^opened_for=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()^stateNOT IN3,4,7,24';\n//hrcFilter1 = 'opened_for=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()^stateIN3,4,7,24';\n\n\nvar opts = [\n\t\n\t{table:\"incident\", filter:incFilter, sp_page:'form',list_page:'list', fields:'number,short_description,state,priority,category,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"sc_req_item\", filter:reqFilter, sp_page:'form',list_page:'list', fields:'number,short_description,request.requested_for,stage,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table:\"incident\", filter:incFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,state,opened_by,opened_at', o:'sys_updated_on', d:'desc'},\n\t{table: \"sc_req_item\", filter:reqFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,request.requested_for,stage,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"change_request\", filter:chnFilter, sp_page:'form',list_page:'list', fields:'number,short_description,state,requested_by,opened_at', o:'sys_updated_on', d:'desc'},\n\t{table: \"change_request\", filter:chnFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,state,requested_by,opened_at', o:'sys_updated_on', d:'desc'},\n\t{table: \"problem\", filter:prbFilter, sp_page:'form',list_page:'list', fields:'number,short_description,state,opened_by,opened_at',o:'sys_updated_on', d:'desc'},\n\t{table: \"problem\", filter:prbFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,state,opened_by,opened_at', o:'sys_updated_on', d:'desc'},\n\t{table: \"sysapproval_approver\", filter:appFilter, sp_page:'form',list_page:'list', fields:'sysapproval,document_id,approver,state,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"sysapproval_approver\", filter:appFilter1, sp_page:'form',list_page:'list', fields:'sysapproval,document_id,approver,state,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"task\", filter:watchFilter, sp_page:'form',list_page:'list', fields:'number,short_description,state,sys_updated_on,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"task\", filter:watchFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,state,sys_updated_on,sys_created_on', o:'sys_updated_on', d:'desc'}\n\t];\n\t\t\n\n\t\ndata.incData = $sp.getWidget('widget-data-table', opts[0]);\ndata.reqData = $sp.getWidget('widget-data-table', opts[1]);\n\tdata.incData1 = $sp.getWidget('widget-data-table', opts[2]);\n\tdata.reqData1 = $sp.getWidget('widget-data-table', opts[3]);\ndata.chnData = $sp.getWidget('widget-data-table', opts[4]);\n\tdata.chnData1 = $sp.getWidget('widget-data-table', opts[5]);\ndata.prbData = $sp.getWidget('widget-data-table', opts[6]);\n\tdata.prbData1 = $sp.getWidget('widget-data-table', opts[7]);\ndata.aprData = $sp.getWidget('widget-data-table', opts[8]);\n\tdata.aprData1 = $sp.getWidget('widget-data-table', opts[9]);\n\tdata.watchData = $sp.getWidget('widget-data-table', opts[10]);\n\tdata.watchData1 = $sp.getWidget('widget-data-table', opts[11]);\n\n\t\n\t\n})();",
+			"readonly": false,
+			"hint": "",
+			"name": "script",
+			"attributes": {},
+			"choice": 0,
+			"value": "(function() {\n  /* populate the 'data' object */\n  /* e.g., data.table = $sp.getValue('table'); */\n\tvar pl = $sp.getDisplayValue('url_suffix');\n\n\toptions.hrcv = 'false';\n\tvar us = new GlideRecord('sys_user');\n\tus.addQuery('sys_id', gs.getUserID());\n\tus.addQuery('u_legacy_company', 'CH2M');\n\tus.query();\n\tif(us.hasNext())\n\t\t{\n\t\toptions.hrcv = 'true';\t\n\t\t}\n\t/*if(pl=='hrsp')\n\t\t{\n\t\t\toptions.hrcv = 'true';\n\t\t}*/\noptions.value='false';\nif(gs.hasRole(\"itil\"))\n\t{\noptions.value='true';\n\t}\n\t\nvar reqFilter;\nvar incFilter;\nvar prbFilter;\nvar prbFilter1;\nvar chnFilter;\nvar chnFilter1;\nvar reqFilter1;\nvar incFilter1;\nvar appFilter;\nvar appFilter1;\nvar\twatchFilter;\n\tvar watchFilter1;\n//var hrcFilter;\n\t//var hrcFilter1;\n\n\nreqFilter = 'request.requested_for=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()^active=true^EQ';\nincFilter = \"active=true^caller_id=javascript:gs.getUserID()^ORu_on_behalf_of=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()\";\nreqFilter1 = 'request.requested_for=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()^stateIN3,4,7^EQ';\nincFilter1 = \"active=false^caller_id=javascript:gs.getUserID()^ORu_on_behalf_of=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()\";\nprbFilter = 'stateIN1,3,2,8^opened_by=javascript:gs.getUserID()^EQ';\nprbFilter1 = 'opened_by=javascript:gs.getUserID()^stateIN2,4^EQ'\nchnFilter = 'active=true^opened_by=javascript:gs.getUserID()^ORrequested_by=javascript:gs.getUserID()^EQ';\nchnFilter1 = 'active=false^opened_by=javascript:gs.getUserID()^ORrequested_by=javascript:gs.getUserID()^EQ';\nappFilter = 'stateINrequested,more_info_required^approver=javascript:gs.getUserID()^EQ';\nappFilter1 = 'stateINapproved,rejected,cancelled,not_required^approver=javascript:gs.getUserID()^EQ';\nwatchFilter= 'active=true^sys_class_name=change_request^ORsys_class_name=incident^ORsys_class_name=sc_req_item^ORsys_class_name=problem^watch_listLIKEjavascript:gs.getUserID()^ORDERBYDESCsys_updated_on^EQ';\n\twatchFilter1 = 'active=false^sys_class_name=change_request^ORsys_class_name=incident^ORsys_class_name=sc_req_item^ORsys_class_name=problem^watch_listLIKEjavascript:gs.getUserID()^ORDERBYDESCsys_updated_on^EQ';\n//hrcFilter = 'active=true^opened_for=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()^stateNOT IN3,4,7,24';\n//hrcFilter1 = 'opened_for=javascript:gs.getUserID()^ORopened_by=javascript:gs.getUserID()^stateIN3,4,7,24';\n\n\nvar opts = [\n\t\n\t{table:\"incident\", filter:incFilter, sp_page:'form',list_page:'list', fields:'number,short_description,state,priority,category,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"sc_req_item\", filter:reqFilter, sp_page:'form',list_page:'list', fields:'number,short_description,request.requested_for,stage,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table:\"incident\", filter:incFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,state,opened_by,opened_at', o:'sys_updated_on', d:'desc'},\n\t{table: \"sc_req_item\", filter:reqFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,request.requested_for,stage,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"change_request\", filter:chnFilter, sp_page:'form',list_page:'list', fields:'number,short_description,state,requested_by,opened_at', o:'sys_updated_on', d:'desc'},\n\t{table: \"change_request\", filter:chnFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,state,requested_by,opened_at', o:'sys_updated_on', d:'desc'},\n\t{table: \"problem\", filter:prbFilter, sp_page:'form',list_page:'list', fields:'number,short_description,state,opened_by,opened_at',o:'sys_updated_on', d:'desc'},\n\t{table: \"problem\", filter:prbFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,state,opened_by,opened_at', o:'sys_updated_on', d:'desc'},\n\t{table: \"sysapproval_approver\", filter:appFilter, sp_page:'form',list_page:'list', fields:'sysapproval,document_id,approver,state,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"sysapproval_approver\", filter:appFilter1, sp_page:'form',list_page:'list', fields:'sysapproval,document_id,approver,state,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"task\", filter:watchFilter, sp_page:'form',list_page:'list', fields:'number,short_description,state,sys_updated_on,sys_created_on', o:'sys_updated_on', d:'desc'},\n\t{table: \"task\", filter:watchFilter1, sp_page:'form',list_page:'list', fields:'number,short_description,state,sys_updated_on,sys_created_on', o:'sys_updated_on', d:'desc'}\n\t];\n\t\t\n\n\t\ndata.incData = $sp.getWidget('widget-data-table', opts[0]);\ndata.reqData = $sp.getWidget('widget-data-table', opts[1]);\n\tdata.incData1 = $sp.getWidget('widget-data-table', opts[2]);\n\tdata.reqData1 = $sp.getWidget('widget-data-table', opts[3]);\ndata.chnData = $sp.getWidget('widget-data-table', opts[4]);\n\tdata.chnData1 = $sp.getWidget('widget-data-table', opts[5]);\ndata.prbData = $sp.getWidget('widget-data-table', opts[6]);\n\tdata.prbData1 = $sp.getWidget('widget-data-table', opts[7]);\ndata.aprData = $sp.getWidget('widget-data-table', opts[8]);\n\tdata.aprData1 = $sp.getWidget('widget-data-table', opts[9]);\n\tdata.watchData = $sp.getWidget('widget-data-table', opts[10]);\n\tdata.watchData1 = $sp.getWidget('widget-data-table', opts[11]);\n\n\t\n\t\n})();",
+			"max_length": 65000,
+			"ed": {
+				"name": "script"
+			}
+		},
+		"has_preview": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -7,
+			"label": "Has preview",
+			"sys_readonly": false,
+			"type": "boolean",
+			"mandatory": false,
+			"displayValue": "true",
+			"readonly": false,
+			"hint": "Defines whether preview data is available",
+			"name": "has_preview",
+			"attributes": {},
+			"choice": 0,
+			"value": "true",
+			"max_length": 40,
+			"ed": {
+				"name": "has_preview"
+			}
+		},
+		"public": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -7,
+			"label": "Public",
+			"sys_readonly": false,
+			"type": "boolean",
+			"mandatory": false,
+			"displayValue": "false",
+			"readonly": false,
+			"hint": "Widget publicly available to unauthenticated users",
+			"name": "public",
+			"attributes": {
+				"update_exempt": "true"
+			},
+			"choice": 0,
+			"value": "false",
+			"max_length": 40,
+			"ed": {
+				"name": "public"
+			}
+		},
+		"docs": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": 12,
+			"label": "Docs",
+			"sys_readonly": false,
+			"type": "reference",
+			"mandatory": false,
+			"refTable": "sp_documentation",
+			"reference_type": "table",
+			"displayValue": "",
+			"readonly": false,
+			"hint": "",
+			"name": "docs",
+			"attributes": {
+				"encode_utf8": "false"
+			},
+			"reference_key": "sys_id",
+			"readonlyClickthrough": true,
+			"choice": 0,
+			"value": "",
+			"max_length": 32,
+			"ed": {
+				"reference": "sp_documentation",
+				"searchField": "title",
+				"defaultOperator": "STARTSWITH",
+				"name": "docs"
+			}
+		},
+		"client_script": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": -1,
+			"label": "Client controller",
+			"sys_readonly": false,
+			"type": "script",
+			"mandatory": false,
+			"displayValue": "function ($scope, spUtil, $location) {\n\tvar c = this;\n\t$scope.$on('data_table.click', function(e, parms){\n\t\tvar p = 'ticket';\n\t\tif(parms.table=='sc_request')\n\t\t\t{\n\t\t\t\tp = 'sc_request';\n\t\t\t}\n\t\telse if(parms.table=='sysapproval_approver')\n\t\t\t{\n\t\t\t\tp = 'approval'\n\t\t\t}\n\t\tvar s = {id: p, table: parms.table, sys_id: parms.sys_id, view: 'sp'};\n\t\t$location.search(s);\n\t});\n\n\t\nc.onLoad = function()\n{\n\t  document.getElementById(\"req\").className = \"tablinks active\";\ndocument.getElementById(\"request\").style.display=\"block\";\n}\n\n\n\nc.openData = function(evt, table_name) {\n\n  if(document.getElementById(\"toggle\").checked)\n  {\n    document.getElementById(\"toggle\").click();\n  }\n  \n \n    var i, tabcontent, tablinks;\n    tabcontent = document.getElementsByClassName(\"tabcontent\");\n    for (i = 0; i < tabcontent.length; i++) {\n        tabcontent[i].style.display = \"none\";\n    }\n    tablinks = document.getElementsByClassName(\"tablinks\");\n    for (i = 0; i < tablinks.length; i++) {\n        tablinks[i].className = tablinks[i].className.replace(\" active\", \"\");\n    }\n document.getElementById(table_name).style.display = \"block\";\n     evt.currentTarget.className += \" active\"; \n    }\n  \n  c.updateFilter = function(evt)\n  {\n    \n  var i, tabcontent, tablinks;\n    tabcontent = document.getElementsByClassName(\"tabcontent\");\n    for (i = 0; i < tabcontent.length; i++) {\n        tabcontent[i].style.display = \"none\";\n    }\n    \n    var con = document.getElementsByClassName(\"tablinks active\");\n    //alert(con[0].name);\n    var ID = con[0].id;\n\t\tif(ID=='wtl')\n\t\t\t{\n\t\t\t\tID = 'watch'\n\t\t\t}\n    if(ID=='req')\n    {\n      ID='request';\n    }\n     if(ID=='inc')\n    {\n      ID='incident';\n    }\n     if(ID=='prb')\n    {\n      ID='problem';\n    }\n     if(ID=='chn')\n    {\n      ID='change';\n    }\n     if(ID=='apr')\n    {\n      ID='approval';\n    }\nif(document.getElementById(\"toggle\").checked)\n\t\t{   \n \n   ID = ID+'1';\n\n      document.getElementById(ID).style.display = \"block\";\n \n    }\n  \n if(!document.getElementById(\"toggle\").checked)\n\t\t{   \n\t\t\t\n      document.getElementById(ID).style.display = \"block\";\n\t\t}\n\n\t}\n}\n\n\n\n",
+			"readonly": false,
+			"hint": "",
+			"name": "client_script",
+			"attributes": {
+				"client_script": "true"
+			},
+			"choice": 0,
+			"value": "function ($scope, spUtil, $location) {\n\tvar c = this;\n\t$scope.$on('data_table.click', function(e, parms){\n\t\tvar p = 'ticket';\n\t\tif(parms.table=='sc_request')\n\t\t\t{\n\t\t\t\tp = 'sc_request';\n\t\t\t}\n\t\telse if(parms.table=='sysapproval_approver')\n\t\t\t{\n\t\t\t\tp = 'approval'\n\t\t\t}\n\t\tvar s = {id: p, table: parms.table, sys_id: parms.sys_id, view: 'sp'};\n\t\t$location.search(s);\n\t});\n\n\t\nc.onLoad = function()\n{\n\t  document.getElementById(\"req\").className = \"tablinks active\";\ndocument.getElementById(\"request\").style.display=\"block\";\n}\n\n\n\nc.openData = function(evt, table_name) {\n\n  if(document.getElementById(\"toggle\").checked)\n  {\n    document.getElementById(\"toggle\").click();\n  }\n  \n \n    var i, tabcontent, tablinks;\n    tabcontent = document.getElementsByClassName(\"tabcontent\");\n    for (i = 0; i < tabcontent.length; i++) {\n        tabcontent[i].style.display = \"none\";\n    }\n    tablinks = document.getElementsByClassName(\"tablinks\");\n    for (i = 0; i < tablinks.length; i++) {\n        tablinks[i].className = tablinks[i].className.replace(\" active\", \"\");\n    }\n document.getElementById(table_name).style.display = \"block\";\n     evt.currentTarget.className += \" active\"; \n    }\n  \n  c.updateFilter = function(evt)\n  {\n    \n  var i, tabcontent, tablinks;\n    tabcontent = document.getElementsByClassName(\"tabcontent\");\n    for (i = 0; i < tabcontent.length; i++) {\n        tabcontent[i].style.display = \"none\";\n    }\n    \n    var con = document.getElementsByClassName(\"tablinks active\");\n    //alert(con[0].name);\n    var ID = con[0].id;\n\t\tif(ID=='wtl')\n\t\t\t{\n\t\t\t\tID = 'watch'\n\t\t\t}\n    if(ID=='req')\n    {\n      ID='request';\n    }\n     if(ID=='inc')\n    {\n      ID='incident';\n    }\n     if(ID=='prb')\n    {\n      ID='problem';\n    }\n     if(ID=='chn')\n    {\n      ID='change';\n    }\n     if(ID=='apr')\n    {\n      ID='approval';\n    }\nif(document.getElementById(\"toggle\").checked)\n\t\t{   \n \n   ID = ID+'1';\n\n      document.getElementById(ID).style.display = \"block\";\n \n    }\n  \n if(!document.getElementById(\"toggle\").checked)\n\t\t{   \n\t\t\t\n      document.getElementById(ID).style.display = \"block\";\n\t\t}\n\n\t}\n}\n\n\n\n",
+			"max_length": 8000,
+			"ed": {
+				"name": "client_script"
+			}
+		},
+		"data_table": {
+			"sys_mandatory": true,
+			"visible": true,
+			"dbType": 12,
+			"default_value": "sp_instance",
+			"label": "Data table",
+			"sys_readonly": false,
+			"type": "table_name",
+			"mandatory": true,
+			"displayValue": "sp_instance",
+			"readonly": false,
+			"hint": "",
+			"name": "data_table",
+			"attributes": {
+				"base_table": "sp_instance",
+				"base_start": "true"
+			},
+			"choice": 0,
+			"choices": [],
+			"value": "sp_instance",
+			"max_length": 80,
+			"ed": {
+				"name": "data_table"
+			}
+		},
+		"name": {
+			"sys_mandatory": true,
+			"visible": true,
+			"dbType": 12,
+			"label": "Name",
+			"sys_readonly": false,
+			"type": "translated_field",
+			"mandatory": true,
+			"displayValue": "Custom Ticket Tabs",
+			"readonly": false,
+			"hint": "",
+			"name": "name",
+			"attributes": {
+				"edge_encryption_enabled": "true"
+			},
+			"choice": 0,
+			"value": "Custom Ticket Tabs",
+			"max_length": 40,
+			"ed": {
+				"name": "name"
+			}
+		},
+		"sys_scope": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": 12,
+			"label": "Application",
+			"sys_readonly": true,
+			"type": "reference",
+			"mandatory": false,
+			"refTable": "sys_scope",
+			"reference_type": "table",
+			"displayValue": "Global",
+			"readonly": true,
+			"hint": "Application containing this record",
+			"name": "sys_scope",
+			"attributes": {
+				"encode_utf8": "false",
+				"list_force_default": "true",
+				"readonly_clickthrough": "true",
+				"ignore_filter_on_new": "true"
+			},
+			"reference_key": "sys_id",
+			"readonlyClickthrough": true,
+			"choice": 0,
+			"value": "global",
+			"max_length": 32,
+			"ed": {
+				"reference": "sys_scope",
+				"searchField": "name",
+				"defaultOperator": "STARTSWITH",
+				"name": "sys_scope"
+			}
+		},
+		"id": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": 12,
+			"label": "ID",
+			"sys_readonly": false,
+			"type": "string",
+			"mandatory": false,
+			"displayValue": "custom-ticket-tabs",
+			"readonly": false,
+			"hint": "Identifier for $sp.embedWidget()",
+			"name": "id",
+			"attributes": {
+				"edge_encryption_enabled": "true"
+			},
+			"choice": 0,
+			"value": "custom-ticket-tabs",
+			"max_length": 40,
+			"ed": {
+				"name": "id"
+			}
+		},
+		"field_list": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dependentField": "data_table",
+			"dbType": -1,
+			"label": "Fields",
+			"sys_readonly": false,
+			"type": "field_list",
+			"mandatory": false,
+			"displayValue": "",
+			"readonly": false,
+			"hint": "",
+			"name": "field_list",
+			"attributes": {
+				"is_multi_text": "false"
+			},
+			"choice": 0,
+			"value": "",
+			"max_length": 1000,
+			"ed": {
+				"dependent_value": "sp_instance",
+				"name": "field_list"
+			}
+		},
+		"controller_as": {
+			"sys_mandatory": false,
+			"visible": true,
+			"dbType": 12,
+			"label": "controllerAs",
+			"sys_readonly": false,
+			"type": "string",
+			"mandatory": false,
+			"displayValue": "c",
+			"readonly": false,
+			"hint": "Identifier name for a reference to the controller in the directive's scope",
+			"name": "controller_as",
+			"attributes": {
+				"edge_encryption_enabled": "true"
+			},
+			"choice": 0,
+			"value": "c",
+			"max_length": 100,
+			"ed": {
+				"name": "controller_as"
+			}
+		}
+	}
+}

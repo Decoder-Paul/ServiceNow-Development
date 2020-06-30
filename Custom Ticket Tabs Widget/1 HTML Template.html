@@ -1,0 +1,60 @@
+<div>
+  <div class="tab">
+
+    <button class="tablinks" id="req" ng-click="c.openData($event, 'request')" ng-init="c.onLoad()">Request Items
+    </button>
+    <!--button class="tablinks" id="hrc" ng-show="{{c.options.hrcv}}" ng-click="c.openData($event, 'hrcase')" >HR Cases </button-->
+    <button class="tablinks" id="inc" ng-click="c.openData($event, 'incident')">Incidents</button>
+
+    <button class="tablinks" id="prb" ng-show="{{c.options.value}}"
+      ng-click="c.openData($event, 'problem')">Problems</button>
+    <button class="tablinks" id="chn" ng-show="{{c.options.value}}" ng-click="c.openData($event, 'change')">Change
+      Requests</button>
+    <button class="tablinks" id="apr" ng-click="c.openData($event, 'approval')">Approvals</button>
+    <button class="tablinks" id="wtl" ng-click="c.openData($event, 'watch')">Watch List </button>
+
+    <div id="sct" class="text"
+      style="font-family:inherit;font-size:17px;float:right;color:white;margin-top:14px;margin-right:5px">
+      <label class="switch" style="float: right" name="test" value="Closed Tickets">
+        <input type="checkbox" id="toggle" ng-click="c.updateFilter($event)">
+        <div class="slider round"></div>
+      </label>
+      Show Closed Tickets</div>
+  </div>
+  <div id="watch" class="tabcontent">
+    <sp-widget widget="data.watchData" />
+  </div>
+  <div id="incident" class="tabcontent">
+    <sp-widget widget="data.incData" />
+  </div>
+  <div id="request" class="tabcontent">
+    <sp-widget widget="data.reqData" />
+  </div>
+  <div id="request1" class="tabcontent">
+    <sp-widget widget="data.reqData1" />
+  </div>
+  <div id="change" class="tabcontent">
+    <sp-widget widget="data.chnData" />
+  </div>
+  <div id="problem" class="tabcontent">
+    <sp-widget widget="data.prbData" />
+  </div>
+  <div id="incident1" class="tabcontent">
+    <sp-widget widget="data.incData1" />
+  </div>
+  <div id="watch1" class="tabcontent">
+    <sp-widget widget="data.watchData1" />
+  </div>
+  <div id="change1" class="tabcontent">
+    <sp-widget widget="data.chnData1" />
+  </div>
+  <div id="problem1" class="tabcontent">
+    <sp-widget widget="data.prbData1" />
+  </div>
+  <div id="approval" class="tabcontent">
+    <sp-widget widget="data.aprData" />
+  </div>
+  <div id="approval1" class="tabcontent">
+    <sp-widget widget="data.aprData1" />
+  </div>
+</div>

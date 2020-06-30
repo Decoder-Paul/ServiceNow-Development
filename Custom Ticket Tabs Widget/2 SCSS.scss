@@ -1,0 +1,95 @@
+div.tab {
+  overflow: hidden;
+  border: 1px solid #337ab7;
+  background-color: #337ab7;
+}
+
+/* Style the buttons inside the tab */
+div.tab button {
+  background-color: transparent;
+  color: #ffffff;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+div.tab button:hover {
+  background-color: #023c77;
+}
+
+/* Create an active/current tablink class */
+div.tab button.active {
+  background-color: #001f3f;
+  border: 1px solid #7fdbff;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #337ab7;
+  border-top: none;
+}
+
+.switch {
+  margin-left: 5px;
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 17px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #800000;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #fff;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #fff;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+  background-color: green;
+}
+.slider.round {
+  border-radius: 3px;
+}
+
+.slider.round:before {
+  border-radius: 10%;
+}
