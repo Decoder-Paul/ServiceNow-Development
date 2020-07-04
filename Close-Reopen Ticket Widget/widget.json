@@ -1,0 +1,421 @@
+{
+    "instance": {
+        "name": "trianzjacobsdev",
+        "url": "https://trianzjacobsdev.service-now.com",
+        "g_ck": "1bf9ba2bdba1dc1061a31be3159619b89b2efc1cbe1bce963049d87b46d7129ec4061b37"
+    },
+    "action": "saveWidget",
+    "tableName": "sp_widget",
+    "name": "Close/Reopen Ticket",
+    "sys_id": "215be5cfdbdad34429253220ad961969",
+    "widget": {
+        "template": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Body HTML template",
+            "sys_readonly": false,
+            "type": "html_template",
+            "mandatory": false,
+            "displayValue": "<div>\n  <button type=\"button\" name=\"closeInc\" class=\"btn btn-primary btn-question\" ng-if=\"data.table == 'incident' && data.incident_state == '6' && data.loggedin_user == data.caller_id\" ng-click=\"c.action('close_inc')\">\n\t${Close Incident}\n  </button>\n  <button type=\"button\" name=\"cancelInc\" class=\"btn btn-primary\" ng-if=\"data.table == 'incident' && data.incident_state != '7' && data.incident_state != '6' && data.incident_state != '8' && data.loggedin_user == data.caller_id\" ng-click=\"c.action('cancel_inc')\">\n    ${Cancel Incident}\n  </button>\n  <button type=\"button\" name=\"reopenInc\" class=\"btn btn-primary\" ng-if=\"data.table == 'incident' && data.incident_state == '6' && data.loggedin_user == data.caller_id\" ng-click=\"c.action('reopen_inc')\">\n\t${Reopen Incident}\n  </button>\n  <button type=\"button\" name=\"cancelRITM\" class=\"btn btn-primary\" ng-if=\"data.table == 'sc_req_item' && data.active == 'true' && data.loggedin_user == data.opened_by && data.stage != 'fulfillment' && data.actTask==false\"  ng-click=\"c.action('cancel_ritm')\">\n\t${Cancel Request Item}\n  </button>\n  </div>\n\n<script type=\"text/ng-template\" id=\"modalIncRe\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\">\n<button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n<h4 class=\"panel-title\">${Reopen Incident}</h4>\n</div>\n<div class=\"panel-body wrapper-xl\">\n<form name=\"modalTemplateReopen\" ng-submit=\"c.openInc()\">\n<div class=\"form-group\">\n<textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.data.comments\" id=\"reopenComments\" placeholder=\"Comments Required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n</div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"c.closeModal()\">${Close}</button-->\n<button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"c.data.comments.length == 0\">${Reopen Incident}</button>\n</form>\n\n</div>\n</script>\n\n<script type=\"text/ng-template\" id=\"modalIncCan\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\">\n<button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n<h4 class=\"panel-title\">${Cancel Incident}</h4>\n</div>\n<div class=\"panel-body wrapper-xl\">\n<form name=\"modalTemplateCancel\" ng-submit=\"c.cancInc()\">\n<div class=\"form-group\">\n<textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.data.comments\" id=\"cancelComments\" placeholder=\"Comments required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n</div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"c.closeModal()\">${Close}</button-->\n<button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"c.data.comments.length == 0\">${Cancel Incident}</button>\n</form>\n\n</div>\n</script>\n\n<script type=\"text/ng-template\" id=\"modalRitmCan\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\">\n<button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n<h4 class=\"panel-title\">${Cancel Request Item}</h4>\n</div>\n<div class=\"panel-body wrapper-xl\">\n<form name=\"modalTemplateCancelRit\" ng-submit=\"c.cancRitm()\">\n<div class=\"form-group\">\n<textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.data.comments\" id=\"cancritComments\" placeholder=\"Comments required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n</div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"c.closeModal()\">${Close}</button-->\n<button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"c.data.comments.length == 0\">${Cancel RITM}</button>\n</form>\n\n</div>\n</script>",
+            "readonly": false,
+            "hint": "",
+            "name": "template",
+            "attributes": {},
+            "choice": 0,
+            "value": "<div>\n  <button type=\"button\" name=\"closeInc\" class=\"btn btn-primary btn-question\" ng-if=\"data.table == 'incident' && data.incident_state == '6' && data.loggedin_user == data.caller_id\" ng-click=\"c.action('close_inc')\">\n\t${Close Incident}\n  </button>\n  <button type=\"button\" name=\"cancelInc\" class=\"btn btn-primary\" ng-if=\"data.table == 'incident' && data.incident_state != '7' && data.incident_state != '6' && data.incident_state != '8' && data.loggedin_user == data.caller_id\" ng-click=\"c.action('cancel_inc')\">\n    ${Cancel Incident}\n  </button>\n  <button type=\"button\" name=\"reopenInc\" class=\"btn btn-primary\" ng-if=\"data.table == 'incident' && data.incident_state == '6' && data.loggedin_user == data.caller_id\" ng-click=\"c.action('reopen_inc')\">\n\t${Reopen Incident}\n  </button>\n  <button type=\"button\" name=\"cancelRITM\" class=\"btn btn-primary\" ng-if=\"data.table == 'sc_req_item' && data.active == 'true' && data.loggedin_user == data.opened_by && data.stage != 'fulfillment' && data.actTask==false\"  ng-click=\"c.action('cancel_ritm')\">\n\t${Cancel Request Item}\n  </button>\n  </div>\n\n<script type=\"text/ng-template\" id=\"modalIncRe\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\">\n<button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n<h4 class=\"panel-title\">${Reopen Incident}</h4>\n</div>\n<div class=\"panel-body wrapper-xl\">\n<form name=\"modalTemplateReopen\" ng-submit=\"c.openInc()\">\n<div class=\"form-group\">\n<textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.data.comments\" id=\"reopenComments\" placeholder=\"Comments Required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n</div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"c.closeModal()\">${Close}</button-->\n<button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"c.data.comments.length == 0\">${Reopen Incident}</button>\n</form>\n\n</div>\n</script>\n\n<script type=\"text/ng-template\" id=\"modalIncCan\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\">\n<button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n<h4 class=\"panel-title\">${Cancel Incident}</h4>\n</div>\n<div class=\"panel-body wrapper-xl\">\n<form name=\"modalTemplateCancel\" ng-submit=\"c.cancInc()\">\n<div class=\"form-group\">\n<textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.data.comments\" id=\"cancelComments\" placeholder=\"Comments required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n</div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"c.closeModal()\">${Close}</button-->\n<button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"c.data.comments.length == 0\">${Cancel Incident}</button>\n</form>\n\n</div>\n</script>\n\n<script type=\"text/ng-template\" id=\"modalRitmCan\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\">\n<button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n<h4 class=\"panel-title\">${Cancel Request Item}</h4>\n</div>\n<div class=\"panel-body wrapper-xl\">\n<form name=\"modalTemplateCancelRit\" ng-submit=\"c.cancRitm()\">\n<div class=\"form-group\">\n<textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.data.comments\" id=\"cancritComments\" placeholder=\"Comments required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n</div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"c.closeModal()\">${Close}</button-->\n<button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"c.data.comments.length == 0\">${Cancel RITM}</button>\n</form>\n\n</div>\n</script>",
+            "max_length": 65000,
+            "ed": {
+                "name": "template"
+            }
+        },
+        "css": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "CSS",
+            "sys_readonly": false,
+            "type": "css",
+            "mandatory": false,
+            "displayValue": "button{\nmargin: 10px 0;\n  background-color: #428bca;\n  color: #fff;\n  border-color : #357ebd;\n}\n\n",
+            "readonly": false,
+            "hint": "",
+            "name": "css",
+            "attributes": {},
+            "choice": 0,
+            "value": "button{\nmargin: 10px 0;\n  background-color: #428bca;\n  color: #fff;\n  border-color : #357ebd;\n}\n\n",
+            "max_length": 8000,
+            "ed": {
+                "name": "css"
+            }
+        },
+        "roles": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "Roles",
+            "sys_readonly": false,
+            "type": "user_roles",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "roles",
+            "attributes": {
+                "no_truncate": "true",
+                "update_exempt": "true",
+                "record_watcher_blacklist": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 255,
+            "ed": {
+                "name": "roles"
+            }
+        },
+        "link": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Link",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "link",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 65000,
+            "ed": {
+                "name": "link"
+            }
+        },
+        "description": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Description",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "Defines what the widget does",
+            "name": "description",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 300,
+            "ed": {
+                "name": "description"
+            }
+        },
+        "demo_data": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Demo data",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "demo_data",
+            "attributes": {},
+            "choice": 0,
+            "value": "",
+            "max_length": 8000,
+            "ed": {
+                "name": "demo_data"
+            }
+        },
+        "option_schema": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Option schema",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "option_schema",
+            "attributes": {},
+            "choice": 0,
+            "value": "",
+            "max_length": 8000,
+            "ed": {
+                "name": "option_schema"
+            }
+        },
+        "script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Server script",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "// populate the 'data' object\n// e.g., data.table = $sp.getValue('table');\ndata.actTask=false;\nvar gr = $sp.getRecord();\n//c.data.table = gr.getDisplayValue('sys_class_name');\n//data.filter = \"sys_id=\"+gr.getValue('sys_id');\nif(gr && gr.getValue('sys_class_name')=='sc_req_item'){\n\tconsole.log('ritm ticket');\n\tvar ot = new GlideRecord('sc_task');\n\tot.addQuery('request_item',gr.sys_id);\n\tot.addActiveQuery();\n\tot.query();\n\tif(ot.hasNext()){\n\t\tdata.actTask=true;\n\t}\n}\n\nif (input && gr) {\n\tswitch(input.actType) {\n\t\tcase \"close_inc\":\n\t\t\tgr.incident_state = input.incident_state;\n\t\t\tgr.update();\n\t\t\tbreak;\n\t\tcase \"reopen_inc\":\n\t\t\tgr.incident_state = input.incident_state;\n\t\t\tgr.comments = input.comments;\n\t\t\tgr.update();\n\t\t\tbreak;\n\t\tcase \"cancel_inc\":\n\t\t\tif(gr.state!=6)\n\t\t\t\t{ \n\t\t\t\t\tif (gr.assigned_to == ''){\n\t\t\t\t\t\n\t\t\t\t\t\tgr.state = input.incident_state;\n\t\t\t\n\t\t\t\t}\n\t\t\t\t\telse{\n\t\t\t\t\t\tgr.state = 7;\n\t\t\t\t\t\tgr.closed_by= gr.assigned_to;\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t gr.comments = input.comments;\n\t\t\t\t gr.update();\n\t\t\t\t}\n\t\t\telse\n\t\t\t\t{\n\t\t\t\t\tgs.addInfoMessage('The Incident can no longer be cancelled as the incident has been moved to resolved state');\n\t\t\t\t}\n\t\t\tbreak;\n\t\tcase \"cancel_ritm\":\n\t\t\t//gr.stage = 'Request Cancelled';\n\t\t\tgr.state = input.state;\n\t\t\tgr.comments = input.comments;\n\t\t\tgr.update();\n\t\t\tbreak;\n\t\t\n\t}\n}\n\nvar fields = $sp.getFields(gr, 'state,opened_by,incident_state,caller_id,active,stage');\n\nif (gr) {\n\tdata.fields = fields;\n\tdata.state = gr.state.toString();\n\tdata.opened_by = gr.opened_by.toString();\n\tdata.incident_state = gr.incident_state.toString();\n\tdata.caller_id = gr.caller_id.toString();\n\tdata.sys_id = gr.getUniqueValue();\n\tdata.table = gr.getTableName();\n\tdata.loggedin_user = gs.getUserID();\n\tdata.active = gr.active.toString();\n\tdata.stage = gr.stage.toString();\n\tdata.comments = \"\";\n}\n",
+            "readonly": false,
+            "hint": "",
+            "name": "script",
+            "attributes": {},
+            "choice": 0,
+            "value": "// populate the 'data' object\n// e.g., data.table = $sp.getValue('table');\ndata.actTask=false;\nvar gr = $sp.getRecord();\n//c.data.table = gr.getDisplayValue('sys_class_name');\n//data.filter = \"sys_id=\"+gr.getValue('sys_id');\nif(gr && gr.getValue('sys_class_name')=='sc_req_item'){\n\tconsole.log('ritm ticket');\n\tvar ot = new GlideRecord('sc_task');\n\tot.addQuery('request_item',gr.sys_id);\n\tot.addActiveQuery();\n\tot.query();\n\tif(ot.hasNext()){\n\t\tdata.actTask=true;\n\t}\n}\n\nif (input && gr) {\n\tswitch(input.actType) {\n\t\tcase \"close_inc\":\n\t\t\tgr.incident_state = input.incident_state;\n\t\t\tgr.update();\n\t\t\tbreak;\n\t\tcase \"reopen_inc\":\n\t\t\tgr.incident_state = input.incident_state;\n\t\t\tgr.comments = input.comments;\n\t\t\tgr.update();\n\t\t\tbreak;\n\t\tcase \"cancel_inc\":\n\t\t\tif(gr.state!=6)\n\t\t\t\t{ \n\t\t\t\t\tif (gr.assigned_to == ''){\n\t\t\t\t\t\n\t\t\t\t\t\tgr.state = input.incident_state;\n\t\t\t\n\t\t\t\t}\n\t\t\t\t\telse{\n\t\t\t\t\t\tgr.state = 7;\n\t\t\t\t\t\tgr.closed_by= gr.assigned_to;\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t gr.comments = input.comments;\n\t\t\t\t gr.update();\n\t\t\t\t}\n\t\t\telse\n\t\t\t\t{\n\t\t\t\t\tgs.addInfoMessage('The Incident can no longer be cancelled as the incident has been moved to resolved state');\n\t\t\t\t}\n\t\t\tbreak;\n\t\tcase \"cancel_ritm\":\n\t\t\t//gr.stage = 'Request Cancelled';\n\t\t\tgr.state = input.state;\n\t\t\tgr.comments = input.comments;\n\t\t\tgr.update();\n\t\t\tbreak;\n\t\t\n\t}\n}\n\nvar fields = $sp.getFields(gr, 'state,opened_by,incident_state,caller_id,active,stage');\n\nif (gr) {\n\tdata.fields = fields;\n\tdata.state = gr.state.toString();\n\tdata.opened_by = gr.opened_by.toString();\n\tdata.incident_state = gr.incident_state.toString();\n\tdata.caller_id = gr.caller_id.toString();\n\tdata.sys_id = gr.getUniqueValue();\n\tdata.table = gr.getTableName();\n\tdata.loggedin_user = gs.getUserID();\n\tdata.active = gr.active.toString();\n\tdata.stage = gr.stage.toString();\n\tdata.comments = \"\";\n}\n",
+            "max_length": 65000,
+            "ed": {
+                "name": "script"
+            }
+        },
+        "has_preview": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Has preview",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "false",
+            "readonly": false,
+            "hint": "Defines whether preview data is available",
+            "name": "has_preview",
+            "attributes": {},
+            "choice": 0,
+            "value": "true",
+            "max_length": 40,
+            "ed": {
+                "name": "has_preview"
+            }
+        },
+        "public": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Public",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "false",
+            "readonly": false,
+            "hint": "Widget publicly available to unauthenticated users",
+            "name": "public",
+            "attributes": {
+                "update_exempt": "true"
+            },
+            "choice": 0,
+            "value": "false",
+            "max_length": 40,
+            "ed": {
+                "name": "public"
+            }
+        },
+        "docs": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "Docs",
+            "sys_readonly": false,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sp_documentation",
+            "reference_type": "table",
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "docs",
+            "attributes": {
+                "encode_utf8": "false"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": true,
+            "choice": 0,
+            "value": "",
+            "max_length": 32,
+            "ed": {
+                "reference": "sp_documentation",
+                "searchField": "title",
+                "defaultOperator": "STARTSWITH",
+                "name": "docs"
+            }
+        },
+        "client_script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Client controller",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "function ($window,$uibModal,$scope,spUtil) {\n\t\t\n\t$scope.$on('record.updated', function(name, data) {\n\t\tspUtil.refresh($scope);\n});\n\n\n\t\n\tvar c = this;\n\n\t\n\tc.action = function(actType) {\n\t\tswitch(actType) {\n\t\t\tcase \"close_inc\":\n\t\t\tc.data.incident_state = '7';\n\t\t\tbreak;\n\t\t\tcase \"reopen_inc\":\n\t\t\tc.modalInstance = $uibModal.open({\n\t\t\t\ttemplateUrl: 'modalIncRe',\n\t\t\t\tscope: $scope\n\t\t\t});\n\t\t\tbreak;\n\t\t\t\tcase \"cancel_inc\":\n\t\t\tc.modalInstance = $uibModal.open({\n\t\t\t\ttemplateUrl: 'modalIncCan',\n\t\t\t\tscope: $scope\n\t\t\t});\n\t\t\tbreak;\n\t\t\tcase \"cancel_ritm\":\n\t\t\tc.modalInstance = $uibModal.open({\n\t\t\t\ttemplateUrl: 'modalRitmCan',\n\t\t\t\tscope: $scope\n\t\t\t});\n\t\t\tbreak;\n\t\t\t\n\t\t}\n\t\tc.data.actType = actType;\n\t\tc.server.update();\n\t}\n\t\n\tc.openInc = function() {\n\t\tc.data.comments = c.data.comments;\n\t\tc.data.incident_state = '2';\n\t\tc.data.actType = \"reopen_inc\";\n\t\tc.server.update();\n\t\tc.modalInstance.close();\n\t}\n\t\n\tc.cancInc = function() {\n\t\tc.data.comments = c.data.comments;\n\t\tc.data.incident_state = '8';\n\t\tc.data.actType = \"cancel_inc\";\n\t\t//$window.alert('test alert');\n\t\tc.server.update();\n\t\tc.modalInstance.close();\n\t}\n\t\n\t\tc.cancRitm = function() {\n\t\tc.data.comments = c.data.comments;\n\t\tc.data.state = '4';\n\t\tc.data.actType = \"cancel_ritm\";\n\t\tc.data.stage = \"Request Cancelled\";\n\t\tc.server.update();\n\t\tc.modalInstance.close();\n\t}\n\t\n\tc.closeModal = function() {\n\t\tc.modalInstance.close();\n\t}\n}",
+            "readonly": false,
+            "hint": "",
+            "name": "client_script",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "function ($window,$uibModal,$scope,spUtil) {\n\t\t\n\t$scope.$on('record.updated', function(name, data) {\n\t\tspUtil.refresh($scope);\n});\n\n\n\t\n\tvar c = this;\n\n\t\n\tc.action = function(actType) {\n\t\tswitch(actType) {\n\t\t\tcase \"close_inc\":\n\t\t\tc.data.incident_state = '7';\n\t\t\tbreak;\n\t\t\tcase \"reopen_inc\":\n\t\t\tc.modalInstance = $uibModal.open({\n\t\t\t\ttemplateUrl: 'modalIncRe',\n\t\t\t\tscope: $scope\n\t\t\t});\n\t\t\tbreak;\n\t\t\t\tcase \"cancel_inc\":\n\t\t\tc.modalInstance = $uibModal.open({\n\t\t\t\ttemplateUrl: 'modalIncCan',\n\t\t\t\tscope: $scope\n\t\t\t});\n\t\t\tbreak;\n\t\t\tcase \"cancel_ritm\":\n\t\t\tc.modalInstance = $uibModal.open({\n\t\t\t\ttemplateUrl: 'modalRitmCan',\n\t\t\t\tscope: $scope\n\t\t\t});\n\t\t\tbreak;\n\t\t\t\n\t\t}\n\t\tc.data.actType = actType;\n\t\tc.server.update();\n\t}\n\t\n\tc.openInc = function() {\n\t\tc.data.comments = c.data.comments;\n\t\tc.data.incident_state = '2';\n\t\tc.data.actType = \"reopen_inc\";\n\t\tc.server.update();\n\t\tc.modalInstance.close();\n\t}\n\t\n\tc.cancInc = function() {\n\t\tc.data.comments = c.data.comments;\n\t\tc.data.incident_state = '8';\n\t\tc.data.actType = \"cancel_inc\";\n\t\t//$window.alert('test alert');\n\t\tc.server.update();\n\t\tc.modalInstance.close();\n\t}\n\t\n\t\tc.cancRitm = function() {\n\t\tc.data.comments = c.data.comments;\n\t\tc.data.state = '4';\n\t\tc.data.actType = \"cancel_ritm\";\n\t\tc.data.stage = \"Request Cancelled\";\n\t\tc.server.update();\n\t\tc.modalInstance.close();\n\t}\n\t\n\tc.closeModal = function() {\n\t\tc.modalInstance.close();\n\t}\n}",
+            "max_length": 8000,
+            "ed": {
+                "name": "client_script"
+            }
+        },
+        "data_table": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "default_value": "sp_instance",
+            "label": "Data table",
+            "sys_readonly": false,
+            "type": "table_name",
+            "mandatory": true,
+            "displayValue": "sp_instance",
+            "readonly": false,
+            "hint": "",
+            "name": "data_table",
+            "attributes": {
+                "base_table": "sp_instance",
+                "base_start": "true"
+            },
+            "choice": 0,
+            "choices": [],
+            "value": "sp_instance",
+            "max_length": 80,
+            "ed": {
+                "name": "data_table"
+            }
+        },
+        "name": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "label": "Name",
+            "sys_readonly": false,
+            "type": "translated_field",
+            "mandatory": true,
+            "displayValue": "Close/Reopen Ticket",
+            "readonly": false,
+            "hint": "",
+            "name": "name",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "Close/Reopen Ticket",
+            "max_length": 40,
+            "ed": {
+                "name": "name"
+            }
+        },
+        "sys_scope": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "Application",
+            "sys_readonly": true,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sys_scope",
+            "reference_type": "table",
+            "displayValue": "Global",
+            "readonly": true,
+            "hint": "Application containing this record",
+            "name": "sys_scope",
+            "attributes": {
+                "encode_utf8": "false",
+                "list_force_default": "true",
+                "readonly_clickthrough": "true",
+                "ignore_filter_on_new": "true"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": true,
+            "choice": 0,
+            "value": "global",
+            "max_length": 32,
+            "ed": {
+                "reference": "sys_scope",
+                "searchField": "name",
+                "defaultOperator": "STARTSWITH",
+                "name": "sys_scope"
+            }
+        },
+        "id": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "ID",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "close_reopen_ticket",
+            "readonly": false,
+            "hint": "Identifier for $sp.embedWidget()",
+            "name": "id",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "close_reopen_ticket",
+            "max_length": 40,
+            "ed": {
+                "name": "id"
+            }
+        },
+        "field_list": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dependentField": "data_table",
+            "dbType": -1,
+            "label": "Fields",
+            "sys_readonly": false,
+            "type": "field_list",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "field_list",
+            "attributes": {
+                "is_multi_text": "false"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 1000,
+            "ed": {
+                "dependent_value": "sp_instance",
+                "name": "field_list"
+            }
+        },
+        "controller_as": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "controllerAs",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "c",
+            "readonly": false,
+            "hint": "Identifier name for a reference to the controller in the directive's scope",
+            "name": "controller_as",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "c",
+            "max_length": 100,
+            "ed": {
+                "name": "controller_as"
+            }
+        }
+    }
+}

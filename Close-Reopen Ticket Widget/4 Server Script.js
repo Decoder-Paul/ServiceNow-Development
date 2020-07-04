@@ -1,8 +1,19 @@
 // populate the 'data' object
 // e.g., data.table = $sp.getValue('table');
+data.actTask=false;
 var gr = $sp.getRecord();
 //c.data.table = gr.getDisplayValue('sys_class_name');
 //data.filter = "sys_id="+gr.getValue('sys_id');
+if(gr && gr.getValue('sys_class_name')=='sc_req_item'){
+	console.log('ritm ticket');
+	var ot = new GlideRecord('sc_task');
+	ot.addQuery('request_item',gr.sys_id);
+	ot.addActiveQuery();
+	ot.query();
+	if(ot.hasNext()){
+		data.actTask=true;
+	}
+}
 
 if (input && gr) {
 	switch(input.actType) {

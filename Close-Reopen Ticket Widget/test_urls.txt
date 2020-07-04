@@ -1,0 +1,3 @@
+https://trianzjacobsdev.service-now.com/$sp.do?id=sp-preview&sys_id=215be5cfdbdad34429253220ad961969
+https://trianzjacobsdev.service-now.com/sp_config?id=close_reopen_ticket
+https://trianzjacobsdev.service-now.com/sp?id=close_reopen_ticket
