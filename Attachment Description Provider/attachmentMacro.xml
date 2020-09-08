@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false"
+    xmlns:j="jelly:core"
+    xmlns:g="glide"
+    xmlns:j2="null"
+    xmlns:g2="null">
+    <style>
+	   .not_available_icon:focus, .not_available_file:focus {
+		   outline: 5px auto #1f8476;
+		   outline-offset: -2px;
+	   }
+    </style>
+    <g:macro show_link="true" />
+
+    <g:evaluate var="jvar_edge_invalid" copyToRhino="true">
+        var atd = GlideTableDescriptor.get(sys_attachment.table_name);
+        atd.getED().hasAttachmentsEncrypted() ${AND} !gs.isEdgeEncryptedSession();
+    </g:evaluate>
+
+    <!-- Check no_attachment attribute in order to override if necessary. -->
+    <g:evaluate var="jvar_no_attachment">
+                var atd = GlideTableDescriptor.get(sys_attachment.table_name);
+		atd.getED().getBooleanAttribute("no_attachment")
+    </g:evaluate>
+
+    <j:if test="${empty(jvar_document_viewer_enabled)}">
+        <g:evaluate var="jvar_document_viewer_enabled" copyToRhino="true">
+		var plugin_enabled = GlidePluginManager.isActive('com.snc.documentviewer');
+		var prop_enabled = gs.getProperty('com.snc.documentviewer.enable_document_viewer','true') === 'true' ? true : false;
+		var atd = GlideTableDescriptor.get(sys_attachment.table_name);
+		var attr_enabled = atd.getED().getBooleanAttribute("use_document_viewer");
+		plugin_enabled ${AND} prop_enabled ${AND} attr_enabled;
+        </g:evaluate>
+    </j:if>
+
+    <g:evaluate var="jvar_not_available" copyToRhino="true">
+		sys_attachment.state == 'not_available';
+    </g:evaluate>
+
+    <g:evaluate var="jvar_can_write_to_record">
+		sys_attachment.canWrite();
+    </g:evaluate>
+
+    <j:if test="${jvar_edge_invalid or gs.getProperty('glide.ui.disable_attachment_view') == 'true'}">
+        <j:set var="jvar_show_link" value="false" />
+    </j:if>
+    <j:set var="jvar_can_add_attachments" value="false" />
+    <j:if test="${jvar_no_attachment == 'false'}">
+        <j:if test="${jvar_can_write_to_record == 'true'}">
+            <j:set var="jvar_can_add_attachments" value="true" />
+        </j:if>
+    </j:if>
+
+    <j:if test="${jvar_edge_invalid or RP.getWindowProperties().get('attachment_disabled') == 'true'}">
+        <j:set var="jvar_can_add_attachments" value="false" />
+    </j:if>
+
+    <!-- determine which icon to use and what title text to display -->
+    <j:set var="jvar_random_id" value="${new GlideGuid.generate(null)}" />
+    <j:set var="jvar_encrypt_context" value="${sys_attachment.encryption_context}" />
+
+    <j:set var="jvar_sys_id" value="${sys_attachment.sys_id}" />
+    <g:inline template="gr_to_icon_path.xml" />
+
+    <j:set var="jvar_attachment_icon" value="${jvar_icon_path}" />
+    <j:if test="${!empty(jvar_encrypt_context)}">
+        <j:set var="jvar_attachment_alt" value="${gs.getMessage('Attached by')} ${sys_attachment.sys_created_by} ${gs.getMessage('on')} ${sys_attachment.sys_created_on.getDisplayValue()}, ${gs.getMessage('Encrypted')}: ${sys_attachment.encryption_context.getDisplayValue()}" />
+    </j:if>
+    <j:if test="${empty(jvar_encrypt_context)}">
+        <j:set var="jvar_attachment_alt" value="${gs.getMessage('Attached by')} ${sys_attachment.sys_created_by} ${gs.getMessage('on')} ${sys_attachment.sys_created_on.getDisplayValue()}" />
+    </j:if>
+
+    <j:set var="jvar_common_attachment_style" value="overflow:hidden; vertical-align:middle; margin-right: 5px;" />
+    <g:set_if var="jvar_attachment_style" test="${jvar_use_ellipsis}" true="display: inline-block; text-overflow: ellipsis; white-space: nowrap; ${jvar_common_attachment_style}" false="display: inline; max-width: 75%; ${jvar_common_attachment_style}" />
+    <g:evaluate var="jvar_attachment_action_title" copyToRhino="true">
+	   var action_title = gs.getMessage('[download]');
+	   if(jvar_document_viewer_enabled === 'true')
+	  	action_title = 	gs.getMessage('[view]');
+	   else
+	   	action_title = gs.getProperty('glide.ui.attachment.force_download_all_mime_types') === 'true' ? gs.getMessage('[download]') : gs.getMessage('[view]');
+	   action_title;
+    </g:evaluate>
+
+    <g:evaluate var="jvar_attachment_aria_label" copyToRhino="true">
+	   var aria_label = gs.getMessage('Download {0}', sys_attachment.file_name)
+	   if(jvar_document_viewer_enabled === 'true')
+	   	aria_label = gs.getMessage('View {0}', sys_attachment.file_name);
+	   else 
+	   	aria_label = gs.getProperty('glide.ui.attachment.force_download_all_mime_types') === 'true' ? gs.getMessage('Download {0}', sys_attachment.file_name) : gs.getMessage('View {0}', sys_attachment.file_name);
+	   aria_label;
+    </g:evaluate>
+
+    <!-- output the icon with title text and file name -->
+    <j:choose>
+        <j:when test="${jvar_edge_invalid}">
+            <img src="${jvar_attachment_icon}" alt="${jvar_attachment_alt}" />
+${HTML:sys_attachment.file_name}
+        </j:when>
+        <j:when test="${jvar_not_available}">
+            <img class="not_available_icon" style="opacity:0.5" tabindex="-1" src="${jvar_attachment_icon}" alt="${jvar_attachment_alt}" onclick="pushNotAvailableMessage('${JS,HTML:sys_attachment.file_name}')"/>
+            <span data-use-ellipsis="${jvar_use_ellipsis}" class="not_available_file" style="opacity:0.66; ${jvar_attachment_style}" tabindex="0" id="${jvar_random_id}" data-id="${sys_attachment.sys_id}" onclick="pushNotAvailableMessage('${JS,HTML:sys_attachment.file_name}')" aria-label="${HTML:gs.getMessage('Attachment {0} unavailable', sys_attachment.file_name)}">${HTML:sys_attachment.file_name}</span>
+        </j:when>
+        <j:otherwise>
+            <a href="sys_attachment.do?sys_id=${sys_attachment.sys_id}&amp;sysparm_this_url=${RP.getReferringURL()}" title="${jvar_attachment_alt}" onclick="window.location = this.getAttribute('href'); return false;" click-on-enter='true' tabindex="-1">
+                <img src="${jvar_attachment_icon}" alt="${jvar_attachment_alt}" />
+            </a>
+            <a href="sys_attachment.do?sys_id=${sys_attachment.sys_id}&amp;sysparm_this_url=${RP.getReferringURL()}" data-use-ellipsis="${jvar_use_ellipsis}" style="${jvar_attachment_style}" id="${jvar_random_id}" data-id="${sys_attachment.sys_id}" onkeydown="allowInPlaceEditModification(this, event);" onclick="if ($(this).readAttribute('contentediD
+          ') != 'true') window.location.href=this.getAttribute('href'); return false;" aria-label="${HTML:gs.getMessage('Download {0}', sys_attachment.file_name)}">
+            ${HTML:sys_attachment.file_name}
+            </a>
+        </j:otherwise>
+    </j:choose>
+
+    <j:if test="${jvar_can_add_attachments and !jvar_not_available}">
+        <a class='attachment rename_${sys_attachment.sys_id}' href="#" click-on-enter='true' onclick='$("${jvar_random_id}").beginEdit();' aria-label="${HTML:gs.getMessage('Rename {0}', sys_attachment.file_name)}" role="button">
+      ${gs.getMessage('[rename]')}
+        </a>
+
+        <script defer="true">
+        addLoadEvent(function() {
+          var elementID = "${jvar_random_id}"
+          var elm = $(elementID);
+          elm.inPlaceEdit({
+              selectOnStart: true,
+              turnClickEditingOff: true,
+          onBeforeEdit: function() {
+              elm.lastAriaLabel = elm.getAttribute("aria-label");
+              elm.removeAttribute("aria-label");
+              elm.setAttribute("role", "textbox");
+              elm.removeAttribute("onclick");
+          },
+          onEditCancelled: function() {
+              elm.removeAttribute("role");
+              if (elm.lastAriaLabel) {
+                  elm.setAttribute("aria-label", elm.lastAriaLabel);
+              }
+              elm.setAttribute("onclick", "if ($(this).readAttribute('contentediD') != 'true') window.location.href='sys_attachment.do?sys_id=${sys_attachment.sys_id}'; return false;");
+          },
+          onAfterEdit: function(newName) {
+                 var oldName = this.oldValue;
+                 var ga = new GlideAjax('AttachmentAjax');
+                 ga.addParam('sysparm_type', 'rename');
+                 ga.addParam('sysparm_value', '${sys_attachment.sys_id}');
+                 ga.addParam('sysparm_name', newName);
+                 ga.getXML(function(response) {
+                     var answer = response.responseXML.documentElement.getAttribute("answer");
+                     if (answer !== '0')
+                         alert(new GwtMessage().getMessage("Renaming attachment {0} to new name {1} is not allowed", oldName, newName)); $$('a[data-id="${sys_attachment.sys_id}"]').each(function(elem){
+                         elem.innerHTML = (answer === '0') ? newName : oldName;
+                     }); $$('span[data-id="${sys_attachment.sys_id}"]').each(function(el){
+                         el.innerHTML = (answer === '0') ? newName : oldName;
+                     });
+
+                     getMessage(["Download {0}", "View {0}", "Rename {0}"], function(msg) {
+                          var id = '${sys_attachment.sys_id}';
+                          var newDownloadText = new GwtMessage().format(msg["Download {0}"], newName);
+                          var newViewText = new GwtMessage().format(msg["View {0}"], newName);
+                          var newRenameText = new GwtMessage().format(msg["Rename {0}"], newName); $$('a[data-id="' + id + '"]').each(function(elem){
+                              elem.setAttribute("aria-label", newDownloadText);
+                          })
+
+                          $$('.view_' + id).each(function(elem){
+                              elem.setAttribute("aria-label", newViewText);
+                          })
+
+                          $$('.rename_' + id).each(function(elem){
+                              elem.setAttribute("aria-label", newRenameText);
+                          })
+                     })
+                     elm.removeAttribute("role");
+                     elm.setAttribute("onclick", "if ($(this).readAttribute('contentediD') != 'true') window.location.href='sys_attachment.do?sys_id=${sys_attachment.sys_id}'; return false;");
+                 });
+              }
+           });
+        });
+        </script>
+    </j:if>
+
+    <!-- in some cases we want a "view" link to be displayed after the file name -->
+    <j:if test="${jvar_show_link and !jvar_not_available}">
+        <j:choose>
+            <j:when test="${gs.getProperty('glide.ui.attachment_popup')=='false'}">
+                <a class="attachment view_${sys_attachment.sys_id}" href="sys_attachment.do?sys_id=${sys_attachment.sys_id}&amp;view=true" aria-label="${HTML:jvar_attachment_aria_label}">
+           ${jvar_attachment_action_title}
+                </a>
+            </j:when>
+            <j:otherwise>
+                <a class="attachment view_${sys_attachment.sys_id}" click-on-enter="true" href="#" onclick="tearOffAttachment('${sys_attachment.sys_id}');" aria-label="${HTML:jvar_attachment_aria_label}">
+           ${jvar_attachment_action_title}
+                </a>
+            </j:otherwise>
+        </j:choose>
+    </j:if>
+
+    <j:if test="${jvar_not_available}">
+        <span style="display:inline-block; height:31px; line-height:2.4; opacity:0.66" aria-label="${HTML:gs.getMessage('Attachment {0} unavailable', sys_attachment.file_name)}">
+         ${gs.getMessage('[unavailable]')}
+        </span>
+    </j:if>
+    
+    <j:if test="${sys_attachment.table_name=='incident'}">
+    <a class='attachment description_${sys_attachment.sys_id}' href="#" click-on-enter='true' onclick="updateDescription('${sys_attachment.sys_id}', '${sys_attachment.file_name}');" aria-label="${HTML:gs.getMessage('Description {0}', sys_attachment.file_name)}" role="button">
+      ${gs.getMessage('[description]')}</a>
+    </j:if>
+    
+    <script>
+    function updateDescription(attch_id, file_name) {
+        var ga = new GlideAjax('attachmentDescription');
+        ga.addParam('sysparm_name','getDescription');
+        ga.addParam('sysparm_id', attch_id);
+        ga.getXMLAnswer(callback, null, attch_id);
+        function callback(answer, attch_id){
+            var gm = new GlideModal('attachment_description', false, 500);
+            gm.setTitle(file_name);
+            gm.setPreference('target_desc', answer);
+            <!-- g_dialog.setPreference('target_sys_id', sys_id); -->
+            <!-- gm.renderWithContent('<p><label>Please provide the description below</label><textarea id="attachment_desc" style="width: 100%;
+min-height: 75px;outline: none;resize: none;border: 1px solid grey;border-radius: 5px" type="hidden" rows="5" cols="96" spellcheck="true" maxlength="225">'+answer+'</textarea></p><input type="button" class="btn btn-primary float-right" value="Save" onclick="sendDesc( gel(\'attachment_desc\').value);"></input>'); -->
+            gm.render();
+            sendDesc=function (val){
+                var ga = new GlideAjax('attachmentDescription');
+                ga.addParam('sysparm_name','setDescription');
+                ga.addParam('sysparm_id', attch_id);
+                ga.addParam('sysparm_desc', val);
+                ga.getXMLAnswer(function(answer){
+                    alert(answer);
+                });
+                gm.destroy();
+            }
+        }
+    }
+    </script>
+</j:jelly>

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<j:jelly trim="false" xmlns:g="glide" xmlns:g2="null" xmlns:j="jelly:core" xmlns:j2="null">
+  <j:set var="jvar_target_sys_id" value="${JS:RP.getWindowProperties().get('target_sys_id')}" />
+  <j:set var="jvar_target_table" value="${JS:RP.getWindowProperties().get('target_table')}" />
+  <j:set var="jvar_attachment_disabled" value="${RP.getWindowProperties().get('attachment_disabled')}" />
+  <j:set var="jvar_sc_override" value="${RP.getWindowProperties().get('sc_override')}" />
+  <j:set var="jvar_show_link" value="true" />
+  <j:if test="${gs.getProperty('glide.ui.disable_attachment_view') == 'true'}">
+    <j:set var="jvar_show_link" value="false" />
+  </j:if>
+  <input type="hidden" id="ni.show_attachment_view" name="ni.show_attachment_view" value="${jvar_show_link}" />
+  <j:set var="jvar_show_link_popup" value="true" />
+  <j:if test="${gs.getProperty('glide.ui.attachment_popup')=='false'}">
+    <j:set var="jvar_show_link_popup" value="false" />
+  </j:if>
+
+  <!-- Check no_attachment attribute in order to override if necessary. -->
+  <g:evaluate var="jvar_no_attachment" jelly="true">
+    var gr = new GlideRecord(jelly.jvar_target_table);
+    gr.getED().getBooleanAttribute("no_attachment");
+  </g:evaluate>
+
+  <!-- Check if attachements are edge encrypted to show Download all only is not edge encrypted. -->
+  <g:evaluate var="jvar_attachments_edge_encrypted" jelly="true">
+    var gr = new GlideRecord(jelly.jvar_target_table);
+    gr.getED().hasAttachmentsEncrypted();
+  </g:evaluate>
+
+  <g:evaluate var="jvar_have_not_available_attachments" jelly="true">
+    var count = new GlideAggregate('sys_attachment');
+    count.addQuery('table_name', jelly.jvar_target_table);
+    count.addQuery('table_sys_id', jelly.jvar_target_sys_id);
+    count.addQuery('state', 'not_available');
+    count.addAggregate('COUNT');
+    count.query();
+    count.next() &amp;&amp; (count.getAggregate('COUNT') > 0);
+  </g:evaluate>
+
+  <g:evaluate var="jvar_kmfcleprop" jelly="true">
+    gs.getProperty('glide_encryption.cle_replatforming_with_kmf');
+  </g:evaluate>
+
+  <!-- Store if attachements are edge encrypted for use in javascript -->
+  <script>
+    var edgeEncryptionEnabledForAttachments = '${jvar_attachments_edge_encrypted}';
+  </script>
+
+  <g:evaluate var="jvar_cloudedge_invalid" jelly="true">
+    <!-- If attachments are edge encrypted and not edge session -->
+    (jelly.jvar_attachments_edge_encrypted == "true") ${AMP}${AMP} !gs.isEdgeEncryptedSession();
+  </g:evaluate>
+
+  <!-- Check Users Ability to Attach -->
+  <g:evaluate var="jvar_attachrole" expression="gs.getProperty('glide.attachment.role')" />
+
+  <g:evaluate var="jvar_can_write_to_record" jelly="true">
+    (jelly.jvar_sc_override == 'true') ||
+    new AttachmentSecurity().canWriteTarget(jelly.jvar_target_table, jelly.jvar_target_sys_id);
+  </g:evaluate>
+
+  <j:if test="${jvar_attachment_disabled == 'true'}">
+    <j:set var="jvar_can_write_to_record" value='false' />
+  </j:if>
+
+  <g:evaluate var="jvar_email_client_override" jelly="true">
+    var ret = jelly.sysparm_this_url.startsWith('email_client.do');
+    ret;
+  </g:evaluate>
+
+  <!-- Store parent sys_id for use in javascript -->
+  <script>
+    var attachmentParentSysId = '${jvar_target_sys_id}';
+  </script>
+
+  <j:set var="jvar_can_add_attachments" value="false" />
+  <j:set var="jvar_can_edit_attachments" value="false" />
+
+  <j:if test="${jvar_email_client_override == 'true'|| jvar_sc_override == 'true'}">
+    <j:set var="jvar_can_add_attachments" value="true" />
+    <j:set var="jvar_can_edit_attachments" value="true" />
+  </j:if>
+  <j:if test="${jvar_email_client_override == 'false'}">
+    <j:if test="${jvar_no_attachment == 'false'}">
+      <j:if test="${jvar_can_write_to_record == 'true'}">
+        <j:set var="jvar_can_edit_attachments" value="true" />
+        <j:if test="${jvar_session.hasRole(jvar_attachrole)}">
+          <j:set var="jvar_can_add_attachments" value="true" />
+        </j:if>
+      </j:if>
+    </j:if>
+  </j:if>
+
+  <j:if test="${jvar_attachment_disabled == 'true' || jvar_cloudedge_invalid == 'true'}">
+    <j:set var="jvar_can_add_attachments" value="false" />
+    <j:set var="jvar_can_edit_attachments" value="false" />
+  </j:if>
+
+  <input type="hidden" id="ni.show_rename_link" name="ni.show_rename_link" value="${jvar_can_add_attachments}" />
+
+  <input type="hidden" id="ni.show_attachment_popup" name="ni.show_attachment_popup" value="${jvar_show_link_popup}" />
+  <div id="alert_container"></div>
+  <table width="100%" style="table-layout:fixed;">
+    <tbody>
+      <j:if test="${jvar_can_add_attachments}">
+        <tr>
+          <td>
+            <div class="caption" style="display:none;">
+              <span>${gs.getMessage('Choose a file to attach')}:</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <FORM id="sys_attachment" name="sys_attachment" action="sys_attachment.do" enctype="multipart/form-data"
+              method="post" onsubmit="return validateAttachment();" target="upload_target" style="display: none;">
+              <j:if test="${jvar_can_add_attachments}">
+                <script>$('sys_attachment').style.display = 'block';</script>
+              </j:if>
+              <input name="attachments_modified" id="attachments_modified" type="hidden" value="" />
+              <input name="sysparm_sys_id" type="hidden" value="${jvar_target_sys_id}" />
+              <input name="sysparm_table" type="hidden" value="${jvar_target_table}" />
+              <input name="max_size" type="hidden" value="${gs.getProperty('com.glide.attachment.max_size')}" />
+              <input name="file_types" type="hidden" value="${gs.getProperty('glide.attachment.extensions')}" />
+              <input name="sysparm_nostack" type="hidden" value="yes" />
+              <input name="sysparm_redirect" type="hidden"
+                value="attachment_uploaded.do?sysparm_domain_restore=false&amp;sysparm_nostack=yes" />
+              <input id="sysparm_encryption_context" name="sysparm_encryption_context" type="hidden" value="" />
+              <table id="attachmentTable" width="100%" style="table-layout:fixed;" role="presentation">
+                <TR class="attachmentRow">
+                  <g2:set_if var="jvar_td_styles" test="$[GlideMobileExtensions.getDeviceType() == 'm']"
+                    true="visibility: hidden; width: 0;" false="" />
+                  <td style="$[jvar_td_styles]" id="attachFileCell" colspan="3">
+                    <input id="attachFile" name="attachFile"
+                      onChange="checkAndSetAttachButton(); setDeleteButton(this.value); $('attachButton').click();"
+                      size="41" type="file" multiple="true"
+                      style="width: 0.1px;height: 0.1px;opacity: 0;overflow: hidden;position: absolute;z-index: -1;"
+                      tabindex="-1">
+                    <input type="button" title="${gs.getMessage('Attach')}" id="loadFileXml"
+                      value="${gs.getMessage('file_attach')}" onclick="document.getElementById('attachFile').click();">
+                    $[SP]$[SP]${gs.getMessage('no_file_chosen')} </input>
+                    </input>
+                    <a href="#" class="attachfile-delete"
+                      onclick="clearAttachmentField($(this).up().up()); setDeleteButton(this.value);"
+                      style="cursor: default;display:none;">
+                      <img src="images/icons/kb_no_disabled.gif" />
+                    </a>
+                    <input style="display:none;" disabled="true" class="attachfile-attach button" id="attachButton"
+                      type="submit" value="${gs.getMessage('Attach')}" />
+                  </td>
+
+                  <script>document.getElementById("loadFileXml").focus()</script>
+
+                  <j2:if test="$[GlideMobileExtensions.getDeviceType() == 'm']">
+                    <g:requires name="scripts/snm/cabrillo/js_includes_cabrillo.js" includes="true" />
+
+                    <td colspan="3">
+                      <button id="cabrilloAttach" title="${gs.getMessage('Attach')}"
+                        size="41">${gs.getMessage('Attach')}</button>
+                      <script>
+                          (function ($, cabrillo) {
+                            var cabrilloTable = '${JS:jvar_target_table}';
+                            var cabrilloSysId = '${JS:jvar_target_sys_id}';
+                            $('#cabrilloAttach').on('click', function saveCabrilloAttachments(event) {
+                              event.preventDefault();
+                              cabrillo.attachments.addFile(cabrilloTable, cabrilloSysId).then(
+                                function (data) {
+                                  var url = $('[name=sysparm_redirect]').val();
+                                  url += "${AMP}sysparm_name=" + data.sys_id;
+                                  $('#upload_target').attr('src', url);
+                                  validateAttachment();
+                                },
+                                function (err) {
+                                  console.error("Upload failed", error);
+                                }
+                              );
+                            });
+                          })(jQuery, snmCabrillo);
+                      </script>
+
+                    </td>
+                  </j2:if>
+                </TR>
+                <j:if test="${jvar_kmfcleprop != 'opt_in'}">
+                  <g2:attachment_encrypt />
+                </j:if>
+
+                <TR>
+                  <td>
+                    <input style="display:none;" type="button" value="${gs.getMessage('Add Another Attachment')}"
+                      onclick="addRowToTable()" class="button"></input>
+                  </td>
+                </TR>
+              </table>
+            </FORM>
+          </td>
+        </tr>
+      </j:if>
+      <j:if test="${jvar_cloudedge_invalid}">
+        <tr>
+          <td>
+            <div class="caption">
+              <p>${gs.getMessage('The attachments are encrypted and all actions are disabled until you connect to your
+                company network.')}</p>
+            </div>
+          </td>
+        </tr>
+      </j:if>
+      <tr>
+        <td>
+          <img style="margin: 6px 3px 6px 3px;display:none;" id="please_wait" src="images/please_wait.gifx"
+            alt="${gs.getMessage('Please Wait')}" />
+          <div class="caption" style="display:none;">
+            <span>${gs.getMessage('Current file attachments')}:</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <FORM action="sys_attachment.do?DELETE" method="post" target="upload_target"
+            onsubmit="return startRemoveAttachments()">
+            <input name="sysparm_nostack" type="hidden" value="yes" />
+            <input name="sysparm_this_url" id="sysparm_this_url" type="hidden" value="" />
+            <input name="deleted_sys_ids" id="deleted_sys_ids" type="hidden" value="" />
+            <table width="100%" style="table-layout:fixed;">
+              <TR>
+                <TD style="white-space:nowrap;">
+                  <div id="current_attachments" style="display:block">
+                    <div style="margin-top:4px;">
+                      <div id="attachment_dialog_list">
+                        <table width="100%" style="table-layout:fixed;">
+                          <tbody id="attachment_table_body">
+                            <j2:set value="false" var="jvar_some_deletable" />
+                            <g2:attachment_list_by_availability sys_id="${jvar_target_sys_id}"
+                              table="${jvar_target_table}" available="true">
+                              <g2:for_each_record file_variable="sys_attachment" var="attachment">
+                                <j2:set value="true" var="jvar_have_attachments" />
+                                <g2:evaluate var="jvar_checkbox_label">
+                                  gs.getMessage("Select attachment {0} for deletion", sys_attachment.file_name);
+                                </g2:evaluate>
+                                <j2:set value="$[sys_attachment.encryption_context.getDisplayValue()]"
+                                  var="jvar_encrypt_context" />
+                                <TR>
+                                  <TD colspan="2" style="white-space:nowrap;">
+                                    <j2:set var="jvar_can_delete" value="$[sys_attachment.canDelete()]" />
+                                    <j2:if test="${jvar_can_edit_attachments}">
+                                      <j2:if test="$[jvar_can_delete]">
+                                        <input name="sys_id_$[sys_attachment.sys_id]"
+                                          id="sys_id_$[sys_attachment.sys_id]" title="$[HTML:jvar_checkbox_label]"
+                                          onclick="setRemoveButton(this);" type="checkbox"
+                                          aria-label="$[HTML:jvar_checkbox_label]" />
+                                        <j2:set value="true" var="jvar_some_deletable" />
+                                      </j2:if>
+                                    </j2:if>
+                                    <input name="Name" type="hidden" value="false" />
+                                    <input type="hidden" id="$[sys_attachment.sys_id]" class="attachment_sys_id" />
+                                    <g2:attachment_entry />
+                                  </TD>
+                                </TR>
+                              </g2:for_each_record>
+                            </g2:attachment_list_by_availability>
+                            <j2:set var="jvar_no_attachments_display" value="block" />
+                            <j2:if test="$[jvar_have_attachments]">
+                              <j2:set var="jvar_no_attachments_display" value="none" />
+                            </j2:if>
+                            <tr id="no_attachments" style="display:none;">
+                              <td colspan="2">${gs.getMessage("None")}</td>
+                            </tr>
+                          </tbody>
+                          <j2:set var="jvar_show_not_available_header" value="none" />
+                          <j2:if test="${jvar_have_not_available_attachments}">
+                            <j2:set var="jvar_show_not_available_header" value="block" />
+                          </j2:if>
+                          <td id="not_available_files_header"
+                            style="padding-top:10px; display:$[jvar_show_not_available_header]">
+                            ${gs.getMessage('Potential security risks')}</td>
+                          <g2:attachment_list_by_availability sys_id="${jvar_target_sys_id}"
+                            table="${jvar_target_table}" available="false">
+                            <g2:for_each_record file_variable="sys_attachment" var="attachment">
+                              <j2:set value="true" var="jvar_have_not_available_attachments" />
+                              <g2:evaluate var="jvar_checkbox_label">
+                                gs.getMessage("Select attachment {0} for deletion", sys_attachment.file_name);
+                              </g2:evaluate>
+                              <j2:set value="$[sys_attachment.encryption_context.getDisplayValue()]"
+                                var="jvar_encrypt_context" />
+                              <TR>
+                                <TD colspan="2" style="white-space:nowrap;">
+                                  <j2:if test="${jvar_can_edit_attachments}">
+                                    <j2:if test="$[sys_attachment.canDelete()]">
+                                      <input name="sys_id_$[sys_attachment.sys_id]" id="sys_id_$[sys_attachment.sys_id]"
+                                        title="$[HTML:jvar_checkbox_label]" onclick="setRemoveButton(this);"
+                                        type="checkbox" class="not_available"
+                                        aria-label="$[HTML:jvar_checkbox_label]" />
+                                      <j2:set value="true" var="jvar_some_deletable" />
+                                    </j2:if>
+                                  </j2:if>
+                                  <g2:attachment_entry />
+                                </TD>
+                              </TR>
+                            </g2:for_each_record>
+                          </g2:attachment_list_by_availability>
+                        </table>
+                      </div>
+                      <j2:if test="${jvar_can_edit_attachments}">
+                        <table width="100%" style="table-layout:fixed;">
+                          <tr>
+                            <td>
+                              <j2:set var="jvar_show_download_all_button" value="none" />
+                              <!-- Show download all only if the attachments are not edge encrypted -->
+                              <j2:if test="${!jvar_attachments_edge_encrypted}">
+                                <j2:if test="$[jvar_have_attachments]">
+                                  <j2:set var="jvar_show_download_all_button" value="inline" />
+                                </j2:if>
+                              </j2:if>
+                              <input style="display:$[jvar_show_download_all_button];" id="download_all_button"
+                                type="button" class="btn btn-default" value="${gs.getMessage('Download All')}"
+                                onclick="downloadAllAttachments()" />
+                            </td>
+                            <td>
+                              <span id="delete_button_span" style="float:right; text-align:right; display:none;">
+                                <input disabled="true" id="removeButton" class="btn btn-destructive-subdued"
+                                  title="${gs.getMessage('Remove')}" type="submit" value="${gs.getMessage('Remove')}" />
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </j2:if>
+                    </div>
+                  </div>
+                </TD>
+              </TR>
+            </table>
+          </FORM>
+          <j2:if test="$[jvar_some_deletable]">
+            <script>document.getElementById('delete_button_span').style.display
+                = "inline";</script>
+          </j2:if>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- this is where we send our form submissions so that the dialog stays
+		up -->
+  <iframe id="upload_target" name="upload_target" title="${gs.getMessage('Attachments')}"
+    src="blank.do?sysparm_domain_restore=false"
+    style="position:fixed;clip: rect(0,0,0,0);width:100%;height:0;border:0px solid #fff;">$[SP]</iframe>
+</j:jelly>

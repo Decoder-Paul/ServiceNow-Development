@@ -1,0 +1,9 @@
+<!-- <j:set var="jvar_table" value="${target_table}"/>
+  <j:set var="jvar_sys_id" value="${target_sys_id}"/> -->
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+  <j:set var="jvar_desc" value="${JS:RP.getWindowProperties().get('target_desc')}" />
+  <p><label>Please provide the description below</label><textarea id="attachment_desc" style="width: 100%;
+  min-height: 75px;outline: none;resize: none;border: 1px solid grey;border-radius: 5px" type="hidden" rows="5"
+      cols="96" spellcheck="true" maxlength="225">${jvar_desc}</textarea></p><input type="button"
+    class="btn btn-primary float-right" value="Save" onclick="sendDesc(gel('attachment_desc').value);"></input>
+</j:jelly>
