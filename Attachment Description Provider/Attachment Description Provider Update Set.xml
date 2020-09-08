@@ -1,0 +1,1531 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2020-09-07 16:35:51">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description/>
+<inserted/>
+<name>Development of Fetching Attachment Description</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date/>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>8d0ec4d12f43101004f83f96f699b601</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2020-09-07 16:35:50</sys_created_on>
+<sys_id>5933aaee2fc3101004f83f96f699b6a3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2020-09-07 16:35:50</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_documentation_sys_attachment_u_description_en</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_documentation element="u_description" label="Description" language="en" table="sys_attachment"><sys_documentation action="INSERT_OR_UPDATE"><element>u_description</element><help/><hint/><label>Description</label><language>en</language><name>sys_attachment</name><plural>Descriptions</plural><sys_class_name>sys_documentation</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-09-03 20:47:33</sys_created_on><sys_id>1d767e552fc7101004f83f96f699b6ef</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Description</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_documentation_sys_attachment_u_description_en</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-09-03 20:47:33</sys_updated_on><url/><url_target/></sys_documentation></sys_documentation></record_update>]]></payload>
+<payload_hash>529816597</payload_hash>
+<remote_update_set display_value="Development of Fetching Attachment Description">5933aaee2fc3101004f83f96f699b6a3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2020-09-07 16:35:50</sys_created_on>
+<sys_id>1133aaee2fc3101004f83f96f699b6a4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>17455b97dcb0000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2020-09-07 16:35:50</sys_updated_on>
+<table>sys_attachment</table>
+<target_name>Attachment.Description</target_name>
+<type>Field Label</type>
+<update_domain>global</update_domain>
+<update_guid>a9767e550ec71010937f16e59ddbfffd</update_guid>
+<update_guid_history>a9767e550ec71010937f16e59ddbfffd:529816597</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_page_b1b390890a0a0b1e00f6ae8a31ee2697</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_page"&gt;&lt;sys_ui_page action="INSERT_OR_UPDATE"&gt;&lt;category/&gt;&lt;client_script&gt;&lt;![CDATA[/**
+ * Validate the attachments to see if at least
+ * one file is attached. Otherwise, show an alert.
+ *
+ * @returns {Boolean}
+ */
+function validateAttachment() {
+	var form = $('sys_attachment');
+	var fileFields = form.select('.attachmentRow');
+
+	for (var i = 0; i &lt; fileFields.size(); i++) {
+		if (fileFields[i] &amp;&amp; fileFields[i].value != "") {
+			setAttachButton(""); //disable
+			$('please_wait').style.display = "";
+			return true;
+		}
+	}
+
+	alert("${JS:gs.getMessage('Choose a file to attach')}");
+    return false;
+}
+
+/**
+ * Does the first attachment input field have a value?
+ * If not, use the grey button and change type of cursor.
+ * @param value
+ */
+function setDeleteButton(value) {
+	var field = $$('.attachmentRow')[0];
+	var text = field.select('input')[0];
+	var deleteButton = field.select('a.attachfile-delete img')[0];
+	if (!text.getValue().empty()) {
+		deleteButton.setAttribute('src', 'images/icons/kb_no.gif');
+		deleteButton.up().style.cursor = 'pointer';
+	} else {
+		deleteButton.setAttribute('src', 'images/icons/kb_no_disabled.gif');
+		deleteButton.up().style.cursor = 'default';
+	}
+}
+
+
+/**
+ * If the value passed in is an empty string,
+ * set the button to disabled state, otherwise
+ * enabled.
+ *
+ * @param value
+ */
+function setAttachButton(value) {
+  var attachButton = $("attachButton");
+  if (value == "")
+    attachButton.disabled = "true";
+  else
+    attachButton.disabled = "";
+}
+
+/**
+ * This controls the remove button for all attachments.
+ * If there are attachments in the list enable the button.
+ * Else keep disabled.
+ *
+ * @param e
+ */
+function setRemoveButton(e) {
+  var removeButton = gel("removeButton");
+  var deletedSysIdsElement = gel("deleted_sys_ids");
+  var deletedSysIds = new Array();
+  var deletedString = deletedSysIdsElement.value;
+  if (deletedString)
+     deletedSysIds = deletedString.split(";");
+  var thisId = e.name.substring(7);
+  if (e.checked) {
+    removeButton.disabled = "";
+    deletedSysIds.push(thisId);
+  } else {
+    var index = deletedSysIds.indexOf(thisId);
+    deletedSysIds.splice(index, 1);
+
+    // are there any left checked?
+    var inputs = document.getElementsByTagName("input");
+    var nonechecked = true;
+    var i = 0;
+    while(i &lt; inputs.length &amp;&amp; nonechecked) {
+      if (inputs[i].type == "checkbox" &amp;&amp; inputs[i].name.substring(0, 7) == "sys_id_")
+        if (inputs[i].checked)
+          nonechecked = false;
+        i++;
+    }
+    if (nonechecked) {
+      removeButton.disabled = "true";
+    }
+  }
+  deletedSysIds = deletedSysIds.join(";");
+  deletedSysIdsElement.value = deletedSysIds;
+}
+
+function startRemoveAttachments() {
+  var removeButton = gel("removeButton");
+  removeButton.disabled = true;
+  gel('please_wait').style.display = "";
+  var thisUrl = gel("sysparm_this_url");
+  thisUrl.value = "attachment_deleted.do?sysparm_domain_restore=false&amp;sysparm_nostack=yes&amp;sysparm_deleted=" + gel("deleted_sys_ids").value;
+  return true;
+}
+
+/**
+ * Clear and Remove the attachment field that is
+ * passed in.
+ *
+ * @param field_id
+ */
+function clearAttachmentField(field) {
+	var form = $('sys_attachment');
+	var fileFields = form.select('.attachmentRow');
+
+	fileFields[0].setAttribute('data-position', 'first');
+	if (fileFields.size() &gt; 1 &amp;&amp; (field.readAttribute('data-position') != "first")) {
+
+		//check if field you are removing has a 3rd column (does it have an attach button?)
+		var needToAttachButton;
+        var attachButton = field.select('td')[2];
+        if (attachButton)
+        	needToAttachButton = true;
+
+        //remove the field
+		field.remove();
+
+		//if you removed a field with a third column, add an attachbutton onto the new "first" field.
+		if (attachButton) {
+			var attachButton = new Element('input', {
+			   "type": "submit",
+			   "id": "attachButton",
+			   "disabled": "true",
+			   "value": "${gs.getMessage('Attach')}" });
+			var td = new Element('td', {align: 'right'}).update(attachButton);
+			Element.extend(td);
+			form.select('.attachmentRow').first().select('td')[1].insert({'after': td});
+		}
+	}
+	else
+		clearFileField(field.select('td').first().select('input').first());
+	checkAndSetAttachButton();
+}
+
+/**
+ * Check all attachment input fields. If there is not attachment
+ * currently, disable the attachment button, else enable it.
+ *
+ * @returns
+ */
+function checkAndSetAttachButton() {
+	var form = $('sys_attachment');
+	var fileFields = form.select('.attachmentRow');
+        var validFileCount = 0;
+	for (var i = 0; i &lt; fileFields.size(); i++) {
+			var field = fileFields[i].select('td').first().select('input').first();
+			if (field.getValue() != "") {
+				if (window.File &amp;&amp; window.FileReader &amp;&amp; window.FileList)
+					validFileCount += validateSizeandExt(field);
+				else
+					validFileCount += 1;
+			}
+        }
+        if (validFileCount == 0)
+	        setAttachButton("");
+        else
+			setAttachButton("true");
+}
+
+function validateSizeandExt(field) {
+	var form = $('sys_attachment');
+	var maxSize = (form.max_size &amp;&amp; form.max_size.value) ? form.max_size.value : 0;
+	var fileTypes = (form.file_types &amp;&amp; form.file_types.value) ? form.file_types.value : "";
+	var files = field.files;
+	var allowedSize = maxSize * 1048576;
+    var warningString = "";
+	var checkJEXL = true;
+
+	for (var i = 0; i &lt; files.length; i++) {
+		if (checkJEXL &amp;&amp; isJEXLExpression(files[i].name)) {
+			warningString += files[i].name + "${JS:gs.getMessage(' is an invalid file name.\n')}";
+		}
+
+		if (files[i].size &gt; allowedSize &amp;&amp; allowedSize != 0)
+			warningString += files[i].name + "${JS:gs.getMessage(' is ')}" + getDisplaySize(files[i].size) + "${JS:gs.getMessage('. The maximum file size is ')}" + getDisplaySize(allowedSize) + ".\n";
+                if (!isValidFileType(files[i], fileTypes))
+                        warningString += files[i].name + "${JS:gs.getMessage(' has a prohibited file extension.')}" + "\n";
+
+	}
+        if (warningString != "") {
+                alert(warningString);
+                clearFileField(field);
+                return 0;
+        }
+
+        return 1;
+}
+
+function isJEXLExpression(fileName) {
+	var phaseOneOpening = fileName.indexOf("$" + "{");
+	var phaseTwoOpening = fileName.indexOf("$" + "[");
+	if (phaseOneOpening != -1 || phaseTwoOpening != -1) {
+		return true;
+	}
+	return false;
+}
+
+function getDisplaySize(sizeInBytes) {
+	var kilobytes = Math.round(sizeInBytes / 1024);
+	if (kilobytes &lt; 1)
+		kilobytes = 1;
+	var reportSize = kilobytes + "K";
+	if (kilobytes &gt; 1024)
+		reportSize = Math.round(kilobytes / 1024) + "MB";
+	return reportSize;
+}
+
+function isValidFileType(file, types) {
+	var extensions = types || "";
+        if (extensions != "") {
+		extensions.toLowerCase();
+		extensions = extensions.split(",");
+		var periodIndex = file.name.lastIndexOf(".");
+        var extension = file.name.substring(periodIndex+1).toLowerCase();
+        if (extensions.indexOf(extension) == -1)
+			return false;
+	}
+
+        return true;
+}
+
+/**
+ * Clear a given field's contents.
+ *
+ * @param field
+ * 				the field element.
+ */
+function clearFileField(field) {
+	$(field).clear();
+	$(field).parentNode.innerHTML = $(field).parentNode.innerHTML;
+	checkAndSetAttachButton();
+}
+
+/**
+ * If the attachments are uploaded, clear any extra attachment input fields so
+ * they do not take up as much screen space. Additionally, clear the first field
+ * and keep it showing.
+ */
+function clearAttachmentFields() {
+   var form = $('sys_attachment');
+   var fileFields = form.select('.attachmentRow');
+   for (var i = 0; i &lt; fileFields.size(); i++) {
+	   if (i == 0)
+		   clearFileField(fileFields[0].select('td').first().select('input').first());
+	   if (i &gt; 0)
+		   fileFields[i].remove();
+   }
+   checkAndSetAttachButton();
+   setDeleteButton();
+}
+
+// this get called after an attachment is uploaded to update the display
+function refreshAttachments(id, fileName, canDelete, createdBy, createdOn, contentType, encryption, iconPath) {
+  refreshLiveFeedAttachments(id, fileName, contentType, iconPath);
+  var encryptCheck = gel("encrypt_checkbox");
+  if (encryptCheck) {
+     encryptCheck.checked = false;
+     $('sysparm_encryption_context').value = "";
+  }
+  gel("please_wait").style.display = "none";
+
+  // if we didn't get an id, we could not read the attachment due to business rules so we're done
+  if (typeof id == "undefined")
+     return;
+  var noAttachments = gel("no_attachments");
+  if (noAttachments.style.display == "block")
+     noAttachments.style.display = "none";
+
+  // add the new upload to the display
+  var table = gel("attachment_table_body");
+  var tr = cel("tr");
+  var td = cel("td");
+  td.style.whiteSpace = "nowrap";
+  td.colspan = "2";
+
+  if (canDelete=="true") {
+     var input = cel("input");
+     var checkId = "sys_id_" + id;
+     input.name = checkId;
+     input.id = checkId;
+     input.type = "checkbox";
+     input.onclick = function() {setRemoveButton(gel(checkId));};
+     td.appendChild(input);
+
+     gel("delete_button_span").style.display = "inline";
+     var text = document.createTextNode(" ");
+     td.appendChild(text);
+
+     input = cel("input");
+     input.type = "hidden";
+     input.name = "Name";
+     input.value = "false";
+     td.appendChild(input);
+  }
+  var attachment_input = cel("input");
+  attachment_input.className = "attachment_sys_id";
+  attachment_input.type = "hidden";
+  attachment_input.id = id;
+
+  td.appendChild(attachment_input);
+
+
+  var anchor = cel("a");
+  anchor.style.marginRight = "4px";
+  var thisURL = getCurrentPageURL();
+  anchor.href = "sys_attachment.do?sys_id=" + id + "&amp;sysparm_this_url=" + thisURL;
+  anchor.title = "${JS:gs.getMessage('Attached by')} " + createdBy + " ${JS:gs.getMessage('on')} " + createdOn;
+  anchor.tabIndex = "-1";
+  var imgSrc = iconPath;
+  if (encryption != "") {
+     anchor.title += ", ${JS:gs.getMessage('Encrypted')}: " + encryption;
+     imgSrc = "images/icons/attachment_encrypted.gifx";
+  }
+  var img = cel("img");
+  img.src = imgSrc;
+  img.alt = anchor.title;
+  anchor.appendChild(img);
+
+  var text = $(cel('a'));
+  getMessage("Download {0}", function(msg) {
+	  text.setAttribute("aria-label", new GwtMessage().format(msg, fileName));
+  });
+  text.href = "sys_attachment.do?sys_id=" + id + "&amp;sysparm_this_url=" + thisURL;
+  text.onkeydown = function(event){return allowInPlaceEditModification(text, event);};
+  text.style.marginRight = "5px";
+  text.style.maxWidth = "75%";
+  text.style.display = "inline-block";
+  text.style.overflow = "hidden";
+  text.style.verticalAlign = "middle";
+  if ('innerText' in text)
+      text.innerText = fileName;
+  else
+      text.textContent = fileName;
+  text.setAttribute("data-id", id);
+  text.inPlaceEdit({
+      selectOnStart: true,
+      turnClickEditingOff: true,
+	  onBeforeEdit: function() {
+		  text.lastAriaLabel = text.getAttribute("aria-label");
+		  text.removeAttribute("aria-label");
+		  text.setAttribute("role", "textbox");
+	  },
+	  onEditCancelled: function() {
+		  text.removeAttribute("role");
+		  if (text.lastAriaLabel) {
+			  text.setAttribute("aria-label", text.lastAriaLabel);
+		  }
+	  },
+      onAfterEdit: function(newName) {
+          var oldName = this.oldValue;
+          var ga = new GlideAjax('AttachmentAjax');
+          ga.addParam('sysparm_type', 'rename');
+          ga.addParam('sysparm_value', id);
+          ga.addParam('sysparm_name', newName);
+          ga.getXML(function(response){
+             var answer = response.responseXML.documentElement.getAttribute("answer");
+  	         if (answer !== '0')
+                 alert(new GwtMessage().getMessage("Renaming attachment {0} to new name {1} is not allowed", oldName, newName));
+
+             $$('a[data-id="' + id + '"]').each(function(elem){
+                 if ('innerText' in elem)
+                     elem.innerText = (answer === '0') ? newName : oldName;
+                 else
+                     elem.textContent = (answer === '0') ? newName : oldName;
+             });
+             $$('span[data-id="' + id + '"]').each(function(elem){
+                 if ('innerText' in elem)
+                     elem.innerText = (answer === '0') ? newName : oldName;
+                 else
+                     elem.textContent = (answer === '0') ? newName : oldName;
+             });
+
+		  	 /*
+		  	 	This routine updates the attachment in the attachment modal AND the same attachment on the parent form
+		  	 */
+			 getMessage(["Download {0}", "View {0}", "Rename {0}"], function(msg) {
+				 var newDownloadText = new GwtMessage().format(msg["Download {0}"], newName);
+				 var newViewText = new GwtMessage().format(msg["View {0}"], newName);
+				 var newRenameText = new GwtMessage().format(msg["Rename {0}"], newName);
+				 $$('a[data-id="' + id + '"]').each(function(elem){
+					 elem.setAttribute("aria-label", newDownloadText);
+				 })
+
+				 $$('.view_' + id).each(function(elem){
+					 elem.setAttribute("aria-label", newViewText);
+				 })
+
+				 $$('.rename_' + id).each(function(elem){
+					 elem.setAttribute("aria-label", newRenameText);
+				 })
+			 })
+
+			  text.removeAttribute("role");
+           });
+      }
+  });
+
+  if (contentType == "text/html")
+     anchor.target = "_blank";
+  td.appendChild(anchor);
+  td.appendChild(text);
+
+  var allowRename = gel('ni.show_rename_link').value;
+  if (allowRename == "true") {
+	  var renameAttachment = $(cel('a'));
+	  renameAttachment.href = "#";
+	  renameAttachment.setAttribute("role", "button");
+	  getMessage("Rename {0}", function(msg) {
+		  renameAttachment.setAttribute("aria-label", new GwtMessage().format(msg, fileName));
+	  });
+	  renameAttachment.className = 'attachment rename_' + id;
+	  renameAttachment.onclick = function() {
+	    text.beginEdit();
+	  };
+	 renameAttachment.innerHTML = '${JS:gs.getMessage("[rename]")}';
+	  td.appendChild(renameAttachment);
+  }
+
+  var showView = gel("ni.show_attachment_view").value;
+  if (showView == "true") {
+      var blank = document.createTextNode(" ");
+      tr.appendChild(blank);
+      var view = cel("a");
+	  view.href = "#";
+	  var downloadAttachment = NOW &amp;&amp; NOW.g_forceDownloadAttachments;
+      var setAriaLabel = function(msg) {
+	    view.setAttribute("aria-label", new GwtMessage().format(msg, fileName));
+      };
+      if (downloadAttachment)
+        getMessage("Download {0}", setAriaLabel);
+      else
+        getMessage("View {0}", setAriaLabel);
+      var newText = document.createTextNode(downloadAttachment ? getMessage("[download]") : getMessage("[view]"));
+      view.appendChild(newText);
+      view.className = "attachment view_" + id;
+      if (showPopup == "false")
+          view.href = "sys_attachment.do?sys_id=" + id + "&amp;view=true";
+      else
+          view.onclick = function() {
+              tearOffAttachment(id)
+          };
+      td.appendChild(blank);
+      td.appendChild(view);
+  }
+  var showPopup = gel("ni.show_attachment_popup").value;
+///////////////|*******************************************************|////////////////
+//*************| Customised only for Incident Table to add description |*************//
+//*************|_______________________________________________________|************//
+if(g_form.getTableName()=="incident"){
+  
+  var attachDesc = $(cel('a'));
+  attachDesc.href = "#";
+  attachDesc.setAttribute("role", "button");
+  getMessage("Description {0}", function(msg) {
+    attachDesc.setAttribute("aria-label", new GwtMessage().format(msg, fileName));
+  });
+  attachDesc.id = "sys_"+id;
+  attachDesc.className = 'attachment description_' + id;
+  attachDesc.onclick = function() {
+    updateDescription(id, fileName);
+  };
+  attachDesc.innerHTML = '${JS:gs.getMessage("[description]")}';
+  td.appendChild(blank);
+  td.appendChild(attachDesc);
+}
+//__________________________________________________________________________________//  
+//////////////////////////////////////////////////////////////////////////////////////
+  tr.appendChild(td);
+
+  table.appendChild(tr);
+
+	//If a new attachment is added check if attachments are marked for edge encryption before showing the Download all button
+	if (!edgeEncryptionEnabledForAttachments &amp;&amp; hasAttachments()){
+	  gel("download_all_button").style.display = "inline";
+  }
+
+  var form_table_id = "";
+  if(gel("sys_uniqueValue") || gel("sysparm_attachment_cart_id")){
+	  form_table_id = (gel("sys_uniqueValue") || gel("sysparm_attachment_cart_id")).value;
+  }
+  if(form_table_id &amp;&amp; attachmentParentSysId != form_table_id){
+	  CustomEvent.fire('record.attachment.uploaded', {
+		  sysid: id,
+		  name: fileName,
+		  hoverText: anchor.title,
+		  image: imgSrc,
+		  showRename: allowRename,
+		  showView: showView,
+		  showPopup: showPopup
+	  });
+  }else{
+	  addAttachmentNameToForm(id, fileName, anchor.title, imgSrc, allowRename, showView, showPopup);
+  }
+
+  gel("sys_"+id).click();
+  if (g_accessibility)
+	addInfoAlert(fileName + ' ' + anchor.title);
+
+  $j('#loadFileXml').focus();
+
+}
+
+function addInfoAlert(message) {
+	var alert = '&lt;span class="sr-only" role="alert"&gt;' + message + '&lt;/span&gt;';
+
+	$j('#alert_container span').remove();
+	$j('#alert_container').append(alert);
+}
+
+function refreshLiveFeedAttachments(sys_id, fileName, contentType, iconPath) {
+	var p = gel('live_feed_message_images');
+	if (!p)
+		return;
+
+	if (!contentType)
+		return;
+
+    if (contentType.indexOf('image') != 0 || contentType.indexOf('image/tif') == 0)
+		refreshLiveFeedNonImages(p, sys_id, iconPath, fileName);
+	else
+		refreshLiveFeedImages(p, sys_id, fileName);
+
+	var container = $('live_feed_image_container');
+	if (container)
+		container.show();
+
+}
+
+function refreshLiveFeedNonImages(p, sys_id, iconPath, fileName) {
+	var a = cel('a');
+    a.onclick = function() {tearOffAttachment(sys_id)};
+    a.title = fileName;
+    a.className = "live_feed_attachment_link";
+
+    var img = cel('img');
+    img.src = iconPath;
+    img.className = 'live_feed_image_thumbnail';
+	img.setAttribute("data-sys_id", sys_id);
+    a.appendChild(img);
+	var span = cel('span');
+    span.setAttribute('data-id', sys_id);
+	if ('innerText' in span)
+		span.innerText = fileName;
+	else
+		span.textContet = fileName;
+	a.appendChild(span);
+    p.appendChild(a);
+	p.appendChild(cel('br'));
+    setTimeout(this.hideLoading.bind(this), 200);
+}
+
+function refreshLiveFeedImages(p, sys_id, fileName) {
+	var imageName = "sys_attachment.do?sys_id=" + sys_id;
+	var a = cel('a');
+    a.onclick = function() {tearOffAttachment(sys_id)};
+    a.title = fileName;
+    a.className = "live_feed_attachment_link";
+
+    var img = cel('img');
+    img.src = imageName;
+    img.className = 'live_feed_image_thumbnail';
+	img.setAttribute("data-sys_id", sys_id);
+    a.appendChild(img);
+    p.appendChild(a);
+	p.appendChild(cel('br'));
+    setTimeout(this.hideLoading.bind(this), 200);
+}
+
+// this get called after attachments are deleted to update the display
+function deletedAttachments(sysIds) {
+	var form_table_id = "";
+	if(gel("sys_uniqueValue") || gel("sysparm_attachment_cart_id")){
+		form_table_id = (gel("sys_uniqueValue") || gel("sysparm_attachment_cart_id")).value;
+	}
+	if (form_table_id &amp;&amp; attachmentParentSysId !== form_table_id)
+		CustomEvent.fire('record.attachment.deleted', sysIds);
+	deleteLiveFeedAttachments(sysIds);
+	var modified = $("attachments_modified");
+	if (modified)
+		modified.value = "true";
+   var header_attachment = $('header_attachment');
+   gel("deleted_sys_ids").value = ""; // there should be none on the list once we return
+   var idArray = sysIds.split(";");
+   for (var i=0; i&lt;idArray.length; i++) {
+      var id = idArray[i];
+      if (form_table_id &amp;&amp; attachmentParentSysId === form_table_id)
+		changeCount(attachmentParentSysId, 'decrease');
+      var e = gel("sys_id_" + id);
+      var tr = e.parentNode.parentNode;
+      rel(tr);
+      e = gel("attachment_" + id);
+      if (e)
+         rel(e);
+   }
+
+   var inputs = document.getElementsByTagName("input");
+   var hasAvailableAttachments = false;
+   var hasNotAvailableAttachments = false;
+   var i = 0;
+   while(i &lt; inputs.length &amp;&amp; (!hasAvailableAttachments || !hasNotAvailableAttachments)) {
+      if (inputs[i].type == "checkbox" &amp;&amp; inputs[i].name.substring(0, 7) == "sys_id_")
+         if (inputs[i].classList.contains("not_available"))
+            hasNotAvailableAttachments = true;
+         else
+            hasAvailableAttachments = true;
+
+      i++;
+   }
+
+   if (!hasAvailableAttachments &amp;&amp; !hasNotAvailableAttachments) {
+      var noAttachments = gel("no_attachments");
+      noAttachments.style.display = "none";
+      var removeButton = gel("removeButton");
+      removeButton.disabled = true;
+	  gel('delete_button_span').style.display = "none";
+	  hideObject($("header_attachment_list_label"));
+
+      if (header_attachment)
+    	  header_attachment.style.height = "auto";
+      var line = $("header_attachment_line");
+      if (line) {
+         line.style.visibility = "hidden";
+         line.style.display = "none";
+      }
+   }
+
+   if (!hasAvailableAttachments)
+      gel("download_all_button").style.display = "none";
+
+   if(!hasNotAvailableAttachments)
+      gel("not_available_files_header").style.display = "none";
+
+   gel("please_wait").style.display = "none";
+
+   var more_attachments = $('more_attachments');
+   if (more_attachments &amp;&amp; header_attachment)
+   if( (computeAttachmentWidth() - 20) &gt;= (header_attachment.getWidth() - more_attachments.getWidth()))
+       more_attachments.style.display = 'block';
+   else
+       more_attachments.style.display = 'none';
+
+   if (typeof adjustAttachmentsVisibility === 'function')
+       adjustAttachmentsVisibility();
+}
+
+function deleteLiveFeedAttachments(sysIds) {
+	var p = $('live_feed_message_images');
+	if (!p)
+		return;
+
+	if (!p.visible())
+		return;
+
+	idArray = sysIds.split(";");
+	for (var i=0; i&lt;idArray.length; i++) {
+		var imgs = p.select("img.live_feed_image_thumbnail");
+		if (imgs.length &lt; 1)
+			return;
+
+		for (var j=0; j&lt;imgs.length; j++) {
+			if (imgs[j].getAttribute("data-sys_id") == idArray[i]) {
+				var elem = imgs[j].up("a.live_feed_attachment_link");
+				elem.remove();
+				if (elem.next() &amp;&amp; (elem.next().tagName.toLowerCase() == "br"))
+					elem.next().remove();
+			}
+		}
+	}
+
+	if (p.select("img.live_feed_image_thumbnail").length &gt; 0)
+		return;
+
+	var container = $('live_feed_image_container');
+	if (container)
+		container.hide();
+
+}
+
+function computeAttachmentWidth() {
+	var temp = $('header_attachment_list').select('li');
+	var totalWidth = 0;
+	for (var i = 0; i &lt; temp.length; i++) {
+		totalWidth += temp[i].getWidth();
+	}
+	return totalWidth;
+}
+
+function closeAttachmentWindow() {
+  GlideDialogWindow.get().destroy();
+}
+
+/**
+ * Add an input field to the file browser in the dialog.
+ * This is called when the "Add Another Attachment" button
+ * is clicked.
+ * */
+function addRowToTable() {
+   var formRows = $('sys_attachment').select(".attachmentRow");
+   var input = "&lt;input type='file' title='${gs.getMessage('Attach')}' " +
+		"name='attachFile' onchange='checkAndSetAttachButton(); setDeleteButton(this.value);'" +
+		"size=41 multiple=true /&gt;";
+   var img = "&lt;a href='#' onclick='clearAttachmentField($(this).up().up()); setDeleteButton(this.value);'&gt;" +
+		"&lt;img src='images/icons/kb_no.gif'/&gt;&lt;/a&gt;";
+	var row = "&lt;tr class='attachmentRow'&gt;&lt;td&gt; "
+		+ input + "&lt;/td&gt;&lt;td align='right'&gt;" + img + "&lt;/td&gt;&lt;/tr&gt;";
+	formRows.last().insert({ "after" : row });
+}
+
+/**
+ * Download all attachments
+ */
+function downloadAllAttachments(){
+	var downloadUrl = window.location.protocol + '//' + window.location.host + '/download_all_attachments.do?sysparm_sys_id=' + attachmentParentSysId
+		+ "&amp;sysparm_this_url=" + getCurrentPageURL();
+	window.location = downloadUrl;
+}
+
+function hasAttachments(){
+	return document.getElementsByClassName("attachment_sys_id").length &gt; 0;
+}]]&gt;&lt;/client_script&gt;&lt;description&gt;Dialog which allows user to attach files.&lt;/description&gt;&lt;direct&gt;false&lt;/direct&gt;&lt;endpoint/&gt;&lt;html&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;j:jelly trim="false" xmlns:g="glide" xmlns:g2="null" xmlns:j="jelly:core"
+	xmlns:j2="null"&gt;
+	&lt;j:set var="jvar_target_sys_id" value="${JS:RP.getWindowProperties().get('target_sys_id')}" /&gt;
+	&lt;j:set var="jvar_target_table" value="${JS:RP.getWindowProperties().get('target_table')}" /&gt;
+    &lt;j:set var="jvar_attachment_disabled" value="${RP.getWindowProperties().get('attachment_disabled')}" /&gt;
+    &lt;j:set var="jvar_sc_override" value="${RP.getWindowProperties().get('sc_override')}" /&gt;
+	&lt;j:set var="jvar_show_link" value="true" /&gt;
+	&lt;j:if test="${gs.getProperty('glide.ui.disable_attachment_view') == 'true'}"&gt;
+		&lt;j:set var="jvar_show_link" value="false" /&gt;
+	&lt;/j:if&gt;
+	&lt;input type="hidden" id="ni.show_attachment_view" name="ni.show_attachment_view"
+		value="${jvar_show_link}" /&gt;
+	&lt;j:set var="jvar_show_link_popup" value="true" /&gt;
+	&lt;j:if test="${gs.getProperty('glide.ui.attachment_popup')=='false'}"&gt;
+		&lt;j:set var="jvar_show_link_popup" value="false" /&gt;
+	&lt;/j:if&gt;
+
+   &lt;!-- Check no_attachment attribute in order to override if necessary. --&gt;
+   &lt;g:evaluate var="jvar_no_attachment" jelly="true"&gt;
+		var gr = new GlideRecord(jelly.jvar_target_table);
+		gr.getED().getBooleanAttribute("no_attachment");
+	&lt;/g:evaluate&gt;
+
+	&lt;!-- Check if attachements are edge encrypted to show Download all only is not edge encrypted. --&gt;
+	&lt;g:evaluate var="jvar_attachments_edge_encrypted" jelly="true"&gt;
+		var gr = new GlideRecord(jelly.jvar_target_table);
+		gr.getED().hasAttachmentsEncrypted();
+	&lt;/g:evaluate&gt;
+
+	&lt;g:evaluate var="jvar_have_not_available_attachments" jelly="true"&gt;
+		var count = new GlideAggregate('sys_attachment');
+		count.addQuery('table_name', jelly.jvar_target_table);
+		count.addQuery('table_sys_id', jelly.jvar_target_sys_id);
+		count.addQuery('state', 'not_available');
+		count.addAggregate('COUNT');
+		count.query();
+		count.next() &amp;amp;&amp;amp; (count.getAggregate('COUNT') &gt; 0);
+	&lt;/g:evaluate&gt;
+	
+	&lt;g:evaluate var="jvar_kmfcleprop" jelly="true"&gt;
+		gs.getProperty('glide_encryption.cle_replatforming_with_kmf');
+	&lt;/g:evaluate&gt;
+
+	&lt;!-- Store if attachements are edge encrypted for use in javascript --&gt;
+	&lt;script&gt;
+		var edgeEncryptionEnabledForAttachments = '${jvar_attachments_edge_encrypted}';
+	&lt;/script&gt;
+
+	&lt;g:evaluate var="jvar_cloudedge_invalid" jelly="true"&gt;
+		&lt;!-- If attachments are edge encrypted and not edge session --&gt;
+		(jelly.jvar_attachments_edge_encrypted == "true") ${AMP}${AMP} !gs.isEdgeEncryptedSession();
+	&lt;/g:evaluate&gt;
+
+   &lt;!-- Check Users Ability to Attach --&gt;
+   &lt;g:evaluate var="jvar_attachrole" expression="gs.getProperty('glide.attachment.role')" /&gt;
+
+   &lt;g:evaluate var="jvar_can_write_to_record" jelly="true"&gt;
+	   (jelly.jvar_sc_override == 'true') ||
+	   new AttachmentSecurity().canWriteTarget(jelly.jvar_target_table, jelly.jvar_target_sys_id);
+   &lt;/g:evaluate&gt;
+
+   &lt;j:if test="${jvar_attachment_disabled == 'true'}" &gt;
+        &lt;j:set var="jvar_can_write_to_record" value='false' /&gt;
+   &lt;/j:if&gt;
+
+   &lt;g:evaluate var="jvar_email_client_override" jelly="true"&gt;
+   		var ret = jelly.sysparm_this_url.startsWith('email_client.do');
+   		ret;
+   &lt;/g:evaluate&gt;
+
+   &lt;!-- Store parent sys_id for use in javascript --&gt;
+   &lt;script&gt;
+		var attachmentParentSysId = '${jvar_target_sys_id}';
+   &lt;/script&gt;
+
+   &lt;j:set var="jvar_can_add_attachments" value="false" /&gt;
+   &lt;j:set var="jvar_can_edit_attachments" value="false" /&gt;
+
+   &lt;j:if test="${jvar_email_client_override == 'true'|| jvar_sc_override == 'true'}" &gt;
+   		&lt;j:set var="jvar_can_add_attachments" value="true" /&gt;
+                &lt;j:set var="jvar_can_edit_attachments" value="true" /&gt;
+   &lt;/j:if&gt;
+   &lt;j:if test="${jvar_email_client_override == 'false'}"&gt;
+	   	&lt;j:if test="${jvar_no_attachment == 'false'}"&gt;
+	   		&lt;j:if test="${jvar_can_write_to_record == 'true'}"&gt;
+	   			&lt;j:set var="jvar_can_edit_attachments" value="true" /&gt;
+	   			&lt;j:if test="${jvar_session.hasRole(jvar_attachrole)}"&gt;
+	   				&lt;j:set var="jvar_can_add_attachments" value="true" /&gt;
+				&lt;/j:if&gt;
+			&lt;/j:if&gt;
+		&lt;/j:if&gt;
+	&lt;/j:if&gt;
+
+    &lt;j:if test="${jvar_attachment_disabled == 'true' || jvar_cloudedge_invalid == 'true'}" &gt;
+        &lt;j:set var="jvar_can_add_attachments" value="false" /&gt;
+        &lt;j:set var="jvar_can_edit_attachments" value="false" /&gt;
+    &lt;/j:if&gt;
+
+	&lt;input type="hidden" id="ni.show_rename_link" name="ni.show_rename_link"
+		value="${jvar_can_add_attachments}" /&gt;
+
+	&lt;input type="hidden" id="ni.show_attachment_popup" name="ni.show_attachment_popup"
+		value="${jvar_show_link_popup}" /&gt;
+	&lt;div id="alert_container"&gt;&lt;/div&gt;
+	&lt;table width="100%" style="table-layout:fixed;"&gt;
+		&lt;tbody&gt;
+			&lt;j:if test="${jvar_can_add_attachments}"&gt;
+				&lt;tr&gt;
+					&lt;td&gt;
+						&lt;div class="caption" style="display:none;"&gt;
+							&lt;span&gt;${gs.getMessage('Choose a file to attach')}:&lt;/span&gt;
+						&lt;/div&gt;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;
+						&lt;FORM id="sys_attachment" name="sys_attachment" action="sys_attachment.do"
+							enctype="multipart/form-data" method="post"
+							onsubmit="return validateAttachment();" target="upload_target"
+							style="display: none;"&gt;
+							&lt;j:if test="${jvar_can_add_attachments}"&gt;
+								&lt;script&gt;$('sys_attachment').style.display = 'block';&lt;/script&gt;
+							&lt;/j:if&gt;
+							&lt;input name="attachments_modified" id="attachments_modified"
+								type="hidden" value="" /&gt;
+							&lt;input name="sysparm_sys_id" type="hidden" value="${jvar_target_sys_id}" /&gt;
+							&lt;input name="sysparm_table" type="hidden" value="${jvar_target_table}" /&gt;
+							&lt;input name="max_size" type="hidden" value="${gs.getProperty('com.glide.attachment.max_size')}" /&gt;
+							&lt;input name="file_types" type="hidden" value="${gs.getProperty('glide.attachment.extensions')}" /&gt;
+							&lt;input name="sysparm_nostack" type="hidden" value="yes" /&gt;
+							&lt;input name="sysparm_redirect" type="hidden"
+								value="attachment_uploaded.do?sysparm_domain_restore=false&amp;amp;sysparm_nostack=yes" /&gt;
+							&lt;input id="sysparm_encryption_context" name="sysparm_encryption_context"
+								type="hidden" value="" /&gt;
+							&lt;table id="attachmentTable" width="100%" style="table-layout:fixed;" role="presentation"&gt;
+								&lt;TR class="attachmentRow"&gt;
+									&lt;g2:set_if var="jvar_td_styles" test="$[GlideMobileExtensions.getDeviceType() == 'm']" true="visibility: hidden; width: 0;" false=""/&gt;
+									&lt;td style="$[jvar_td_styles]" id="attachFileCell" colspan="3"&gt;
+										&lt;input id="attachFile"
+											name="attachFile" onChange="checkAndSetAttachButton(); setDeleteButton(this.value); $('attachButton').click();" size="41"
+											type="file" multiple="true" style="width: 0.1px;height: 0.1px;opacity: 0;overflow: hidden;position: absolute;z-index: -1;" tabindex="-1"&gt;
+										&lt;input type="button" title="${gs.getMessage('Attach')}" id="loadFileXml" value="${gs.getMessage('file_attach')}" onclick="document.getElementById('attachFile').click();" &gt; $[SP]$[SP]${gs.getMessage('no_file_chosen')} &lt;/input&gt;
+										&lt;/input&gt;
+										&lt;a href="#" class="attachfile-delete" onclick="clearAttachmentField($(this).up().up()); setDeleteButton(this.value);" style="cursor: default;display:none;"&gt;
+											&lt;img src="images/icons/kb_no_disabled.gif" /&gt;
+										&lt;/a&gt;
+										&lt;input style="display:none;" disabled="true" class="attachfile-attach button" id="attachButton" type="submit"
+											value="${gs.getMessage('Attach')}" /&gt;
+									&lt;/td&gt;
+
+									&lt;script&gt;document.getElementById("loadFileXml").focus()&lt;/script&gt;
+
+									&lt;j2:if test="$[GlideMobileExtensions.getDeviceType() == 'm']"&gt;
+										&lt;g:requires name="scripts/snm/cabrillo/js_includes_cabrillo.js" includes="true" /&gt;
+
+										&lt;td colspan="3"&gt;
+											&lt;button id="cabrilloAttach" title="${gs.getMessage('Attach')}" size="41"&gt;${gs.getMessage('Attach')}&lt;/button&gt;
+											&lt;script&gt;
+											(function($, cabrillo){
+												var cabrilloTable = '${JS:jvar_target_table}';
+												var cabrilloSysId = '${JS:jvar_target_sys_id}';
+												$('#cabrilloAttach').on('click', function saveCabrilloAttachments(event) {
+													event.preventDefault();
+													cabrillo.attachments.addFile(cabrilloTable, cabrilloSysId).then(
+														function(data) {
+															var url = $('[name=sysparm_redirect]').val();
+															url += "${AMP}sysparm_name=" + data.sys_id;
+															$('#upload_target').attr('src', url);
+															validateAttachment();
+														},
+														function(err) {
+															console.error("Upload failed", error);
+														}
+													);
+												});
+											})(jQuery, snmCabrillo);
+											&lt;/script&gt;
+
+										&lt;/td&gt;
+									&lt;/j2:if&gt;
+								&lt;/TR&gt;
+								&lt;j:if test="${jvar_kmfcleprop != 'opt_in'}"&gt;
+									&lt;g2:attachment_encrypt /&gt;
+								&lt;/j:if&gt;
+								
+								&lt;TR&gt;
+									&lt;td&gt;
+										&lt;input style="display:none;" type="button" value="${gs.getMessage('Add Another Attachment')}"
+											onclick="addRowToTable()" class="button"&gt;&lt;/input&gt;
+									&lt;/td&gt;
+								&lt;/TR&gt;
+							&lt;/table&gt;
+						&lt;/FORM&gt;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/j:if&gt;
+			&lt;j:if test="${jvar_cloudedge_invalid}"&gt;
+				&lt;tr&gt;
+					&lt;td&gt;
+						&lt;div class="caption"&gt;
+							&lt;p&gt;${gs.getMessage('The attachments are encrypted and all actions are disabled until you connect to your company network.')}&lt;/p&gt;
+						&lt;/div&gt;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/j:if&gt;
+			&lt;tr&gt;
+				&lt;td&gt;
+					&lt;img style="margin: 6px 3px 6px 3px;display:none;" id="please_wait"
+						 src="images/please_wait.gifx" alt="${gs.getMessage('Please Wait')}" /&gt;
+					&lt;div class="caption" style="display:none;"&gt;
+						&lt;span&gt;${gs.getMessage('Current file attachments')}:&lt;/span&gt;
+					&lt;/div&gt;
+				&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+				&lt;td&gt;
+					&lt;FORM action="sys_attachment.do?DELETE" method="post" target="upload_target"
+						onsubmit="return startRemoveAttachments()"&gt;
+						&lt;input name="sysparm_nostack" type="hidden" value="yes" /&gt;
+						&lt;input name="sysparm_this_url" id="sysparm_this_url" type="hidden"
+							value="" /&gt;
+						&lt;input name="deleted_sys_ids" id="deleted_sys_ids" type="hidden"
+							value="" /&gt;
+						&lt;table width="100%" style="table-layout:fixed;"&gt;
+							&lt;TR&gt;
+								&lt;TD style="white-space:nowrap;"&gt;
+									&lt;div id="current_attachments" style="display:block"&gt;
+										&lt;div style="margin-top:4px;"&gt;
+											&lt;div id="attachment_dialog_list"&gt;
+													&lt;table width="100%" style="table-layout:fixed;"&gt;
+														&lt;tbody id="attachment_table_body"&gt;
+															&lt;j2:set value="false" var="jvar_some_deletable" /&gt;
+															&lt;g2:attachment_list_by_availability sys_id="${jvar_target_sys_id}"
+																table="${jvar_target_table}" available="true"&gt;
+																&lt;g2:for_each_record file_variable="sys_attachment"
+																	var="attachment"&gt;
+																	&lt;j2:set value="true" var="jvar_have_attachments" /&gt;
+																	&lt;g2:evaluate var="jvar_checkbox_label"&gt;
+																		gs.getMessage("Select attachment {0} for deletion", sys_attachment.file_name);
+																	&lt;/g2:evaluate&gt;
+																	&lt;j2:set
+																		value="$[sys_attachment.encryption_context.getDisplayValue()]"
+																		var="jvar_encrypt_context" /&gt;
+																	&lt;TR&gt;
+																		&lt;TD colspan="2" style="white-space:nowrap;"&gt;
+																			&lt;j2:set var="jvar_can_delete" value="$[sys_attachment.canDelete()]" /&gt;
+																			&lt;j2:if test="${jvar_can_edit_attachments}"&gt;
+																			&lt;j2:if test="$[jvar_can_delete]"&gt;
+																				&lt;input name="sys_id_$[sys_attachment.sys_id]"
+																					id="sys_id_$[sys_attachment.sys_id]" title="$[HTML:jvar_checkbox_label]"
+																					onclick="setRemoveButton(this);" type="checkbox" aria-label="$[HTML:jvar_checkbox_label]"/&gt;
+																				&lt;j2:set value="true" var="jvar_some_deletable" /&gt;
+																			&lt;/j2:if&gt;
+																			&lt;/j2:if&gt;
+																			&lt;input name="Name" type="hidden" value="false" /&gt;
+																			&lt;input type="hidden" id="$[sys_attachment.sys_id]" class="attachment_sys_id" /&gt;
+																			&lt;g2:attachment_entry /&gt;
+																		&lt;/TD&gt;
+																	&lt;/TR&gt;
+																&lt;/g2:for_each_record&gt;
+															&lt;/g2:attachment_list_by_availability&gt;
+															&lt;j2:set var="jvar_no_attachments_display" value="block" /&gt;
+															&lt;j2:if test="$[jvar_have_attachments]"&gt;
+																&lt;j2:set var="jvar_no_attachments_display" value="none" /&gt;
+															&lt;/j2:if&gt;
+															&lt;tr id="no_attachments" style="display:none;"&gt;
+																&lt;td colspan="2"&gt;${gs.getMessage("None")}&lt;/td&gt;
+															&lt;/tr&gt;
+														&lt;/tbody&gt;
+														&lt;j2:set var="jvar_show_not_available_header" value="none" /&gt;
+														&lt;j2:if test="${jvar_have_not_available_attachments}"&gt;
+															&lt;j2:set var="jvar_show_not_available_header" value="block" /&gt;
+														&lt;/j2:if&gt;
+														&lt;td id="not_available_files_header" style="padding-top:10px; display:$[jvar_show_not_available_header]"&gt;${gs.getMessage('Potential security risks')}&lt;/td&gt;
+														&lt;g2:attachment_list_by_availability sys_id="${jvar_target_sys_id}"
+															table="${jvar_target_table}" available="false"&gt;
+															&lt;g2:for_each_record file_variable="sys_attachment"
+																var="attachment"&gt;
+																&lt;j2:set value="true" var="jvar_have_not_available_attachments" /&gt;
+																&lt;g2:evaluate var="jvar_checkbox_label"&gt;
+																	gs.getMessage("Select attachment {0} for deletion", sys_attachment.file_name);
+																&lt;/g2:evaluate&gt;
+																&lt;j2:set value="$[sys_attachment.encryption_context.getDisplayValue()]"
+																	var="jvar_encrypt_context" /&gt;
+																&lt;TR&gt;
+																	&lt;TD colspan="2" style="white-space:nowrap;"&gt;
+																		&lt;j2:if test="${jvar_can_edit_attachments}"&gt;
+																			&lt;j2:if test="$[sys_attachment.canDelete()]"&gt;
+																				&lt;input name="sys_id_$[sys_attachment.sys_id]"
+																					   id="sys_id_$[sys_attachment.sys_id]" title="$[HTML:jvar_checkbox_label]"
+																					   onclick="setRemoveButton(this);" type="checkbox" class="not_available" aria-label="$[HTML:jvar_checkbox_label]"/&gt;
+																				&lt;j2:set value="true" var="jvar_some_deletable" /&gt;
+																			&lt;/j2:if&gt;
+																		&lt;/j2:if&gt;
+																		&lt;g2:attachment_entry /&gt;
+																	&lt;/TD&gt;
+																&lt;/TR&gt;
+															&lt;/g2:for_each_record&gt;
+														&lt;/g2:attachment_list_by_availability&gt;
+													&lt;/table&gt;
+											&lt;/div&gt;
+											&lt;j2:if test="${jvar_can_edit_attachments}"&gt;
+												&lt;table width="100%" style="table-layout:fixed;"&gt;
+													&lt;tr&gt;
+														&lt;td&gt;
+															&lt;j2:set var="jvar_show_download_all_button" value="none" /&gt;
+																&lt;!-- Show download all only if the attachments are not edge encrypted --&gt;
+																&lt;j2:if test="${!jvar_attachments_edge_encrypted}"&gt;
+															&lt;j2:if test="$[jvar_have_attachments]"&gt;
+																&lt;j2:set var="jvar_show_download_all_button" value="inline" /&gt;
+															&lt;/j2:if&gt;
+																&lt;/j2:if&gt;
+															&lt;input style="display:$[jvar_show_download_all_button];" id="download_all_button" type="button" class="btn btn-default" value="${gs.getMessage('Download All')}" onclick="downloadAllAttachments()"/&gt;
+														&lt;/td&gt;
+														&lt;td&gt;
+															&lt;span id="delete_button_span"
+																style="float:right; text-align:right; display:none;"&gt;
+																&lt;input disabled="true" id="removeButton" class="btn btn-destructive-subdued"
+																	title="${gs.getMessage('Remove')}" type="submit" value="${gs.getMessage('Remove')}" /&gt;
+															&lt;/span&gt;
+														&lt;/td&gt;
+													&lt;/tr&gt;
+												&lt;/table&gt;
+											&lt;/j2:if&gt;
+										&lt;/div&gt;
+									&lt;/div&gt;
+								&lt;/TD&gt;
+							&lt;/TR&gt;
+						&lt;/table&gt;
+					&lt;/FORM&gt;
+					&lt;j2:if test="$[jvar_some_deletable]"&gt;
+						&lt;script&gt;document.getElementById('delete_button_span').style.display
+							= "inline";&lt;/script&gt;
+					&lt;/j2:if&gt;
+				&lt;/td&gt;
+			&lt;/tr&gt;
+		&lt;/tbody&gt;
+	&lt;/table&gt;
+	&lt;!-- this is where we send our form submissions so that the dialog stays
+		up --&gt;
+	&lt;iframe id="upload_target" name="upload_target" title="${gs.getMessage('Attachments')}" src="blank.do?sysparm_domain_restore=false"
+		style="position:fixed;clip: rect(0,0,0,0);width:100%;height:0;border:0px solid #fff;"&gt;$[SP]&lt;/iframe&gt;
+&lt;/j:jelly&gt;]]&gt;&lt;/html&gt;&lt;name&gt;attachment&lt;/name&gt;&lt;processing_script/&gt;&lt;sys_class_name&gt;sys_ui_page&lt;/sys_class_name&gt;&lt;sys_created_by&gt;glide.maint&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2008-11-18 22:27:19&lt;/sys_created_on&gt;&lt;sys_id&gt;b1b390890a0a0b1e00f6ae8a31ee2697&lt;/sys_id&gt;&lt;sys_mod_count&gt;432&lt;/sys_mod_count&gt;&lt;sys_name&gt;attachment&lt;/sys_name&gt;&lt;sys_package display_value="UI Pages (define HTML pages and their processing)" source="com.glide.ui_page"&gt;5e6f56612f22101004f83f96f699b621&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_page_b1b390890a0a0b1e00f6ae8a31ee2697&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-09-07 15:45:31&lt;/sys_updated_on&gt;&lt;/sys_ui_page&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-1761656892</payload_hash>
+<remote_update_set display_value="Development of Fetching Attachment Description">5933aaee2fc3101004f83f96f699b6a3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2020-09-07 16:35:51</sys_created_on>
+<sys_id>1d33aaee2fc3101004f83f96f699b6a4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>174693e67af0000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2020-09-07 16:35:51</sys_updated_on>
+<table/>
+<target_name>attachment</target_name>
+<type>UI Page</type>
+<update_domain>global</update_domain>
+<update_guid>00b756aeaac31010a7c24f01180f3725</update_guid>
+<update_guid_history>00b756aeaac31010a7c24f01180f3725:-1761656892,98d51a6666c31010d1b0641a6fcddd9f:166681818,7358c66609c310104f11446ce1a4d83b:-1671056028,3f37ce224ac31010b8b20c3035798829:-1516402944,5670462256c31010dfcbb1be157dcc23:-700657244,c3316aed3dcf1010b3cbba88ca65b65b:-1459593828,d4906aed65cf1010733caf749bcfd452:497015750,2d7c16e9b5cf1010ad4ef5c82d826e81:2004580462,a72c16e9b9cf1010daefa4514a95fa7d:-558142742,881ee5ddb5831010c50d6539eff6de9a:-1293924630,e38581d141c31010f65b132390b6baba:-488474141,153581d1f4c31010088ad6a3c592f2b6:1333258113,3ba3019d2e8310109fd76b831092f551:-1235123574,7c5341118cc31010f6e2123bb9760b7e:-1991329491,484fb8954c4310107ce715c0ddcf0dc6:-1405468287,072fb895624310104694dc9e593f88c2:-887348436,2cad7411ab031010859c504b6554d3f9:-1405468287,6457f89dea4310100d1256813b51f414:-1235123574,74056c11f5831010d24b7fa49496acd4:-816857673,9005e4114f0310101bb9839f8e99a39d:1200335053,8f735411f4031010e8dc6ca6bc97dea0:513234984,8f7354119d031010e0e719bb55d2b29e:-1235123574</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_page_6066e61d2f87101004f83f96f699b6ca</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_page"&gt;&lt;sys_ui_page action="INSERT_OR_UPDATE"&gt;&lt;category&gt;general&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[// function sendDesc(id, val){
+//   var ga = new GlideAjax('attachmentDescription');
+//   ga.addParam('sysparm_name','setDescription');
+//   ga.addParam('sysparm_id', id);
+//   ga.addParam('sysparm_desc', val);
+//   ga.getXMLAnswer(function(answer){
+//     alert(answer);
+//   });
+// }]]&gt;&lt;/client_script&gt;&lt;description/&gt;&lt;direct&gt;false&lt;/direct&gt;&lt;endpoint/&gt;&lt;html&gt;&lt;![CDATA[  &lt;!-- &lt;j:set var="jvar_table" value="${target_table}"/&gt;
+  &lt;j:set var="jvar_sys_id" value="${target_sys_id}"/&gt; --&gt;
+&lt;j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null"&gt;
+  &lt;j:set var="jvar_desc" value="${JS:RP.getWindowProperties().get('target_desc')}"/&gt;
+&lt;p&gt;&lt;label&gt;Please provide the description below&lt;/label&gt;&lt;textarea id="attachment_desc" style="width: 100%;
+min-height: 75px;outline: none;resize: none;border: 1px solid grey;border-radius: 5px" type="hidden" rows="5" cols="96" spellcheck="true" maxlength="225"&gt;${jvar_desc}&lt;/textarea&gt;&lt;/p&gt;&lt;input type="button" class="btn btn-primary float-right" value="Save" onclick="sendDesc(gel('attachment_desc').value);"&gt;&lt;/input&gt;
+	&lt;/j:jelly&gt;
+]]&gt;&lt;/html&gt;&lt;name&gt;attachment_description&lt;/name&gt;&lt;processing_script/&gt;&lt;sys_class_name&gt;sys_ui_page&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-09-03 19:39:23&lt;/sys_created_on&gt;&lt;sys_id&gt;6066e61d2f87101004f83f96f699b6ca&lt;/sys_id&gt;&lt;sys_mod_count&gt;30&lt;/sys_mod_count&gt;&lt;sys_name&gt;attachment_description&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_page_6066e61d2f87101004f83f96f699b6ca&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-09-07 11:42:36&lt;/sys_updated_on&gt;&lt;/sys_ui_page&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-682740097</payload_hash>
+<remote_update_set display_value="Development of Fetching Attachment Description">5933aaee2fc3101004f83f96f699b6a3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2020-09-07 16:35:51</sys_created_on>
+<sys_id>5933aaee2fc3101004f83f96f699b6a4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>174686002d70000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2020-09-07 16:35:51</sys_updated_on>
+<table/>
+<target_name>attachment_description</target_name>
+<type>UI Page</type>
+<update_domain>global</update_domain>
+<update_guid>3510ed6e824310100f831bb45da86687</update_guid>
+<update_guid_history>3510ed6e824310100f831bb45da86687:-682740097,1d274529640f1010062553ccea09c7f4:-682740097,d7268de52a0f1010295c7309d418ae05:203609548,dfa54d69160f10108a0ff4733b601de0:1768256349,a0050d29d80f1010aa6f132be5583e5a:-1212501073,d7f387d906c7101008c8933d07beaa7b:-711007016,40a3075d84c710109fe18bf31985a3d7:-1320471915,c29e329992c710104e41ba8ccd75742e:-1643661807,989efa993cc710100b2588a6bc5392f9:-1383514790,598efa95bcc71010a4c58ea2f331dbae:-1578580173,dc4d3299f1c7101031c287ddf9a7d729:583628560,240dfe19b787101066ec8a3c4877c5ec:2126003383,472cfa959ac71010ad732057b7a03daa:-2096873792,50fbfa9584c71010bd50ba3e570425a6:-421695706,e2bb72599ec71010330532aeee374aa2:55786691,caabfe195d8710106cdb17027820fee7:-378819787,6dfab2d528c7101041644c89cc4cdbb5:-230767470,0207b651c2c710102cda4ac2cf954b29:-436443297,2dd5b651a4c71010f757903c1646e524:1633751973,262532dd72871010208ee1801a7a30c1:-1186142134,ccb132ddde8710106c06ad6b113d0abb:-238269692,0bbea6519dc71010b415c729e2737020:282163163,b07be295d8871010a8f573cc42d15ac2:-214449308,36d62e1d7087101068563c8bb784c930:-1431059454</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_dictionary_sys_attachment_u_description</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update&gt;&lt;sys_dictionary action="INSERT_OR_UPDATE" element="u_description" table="sys_attachment"&gt;&lt;active&gt;true&lt;/active&gt;&lt;array&gt;false&lt;/array&gt;&lt;array_denormalized&gt;false&lt;/array_denormalized&gt;&lt;attributes/&gt;&lt;audit&gt;false&lt;/audit&gt;&lt;calculation&gt;&lt;![CDATA[(function calculatedFieldValue(current) {
+
+	// Add your code here
+	return '';  // return the calculated value
+
+})(current);]]&gt;&lt;/calculation&gt;&lt;choice/&gt;&lt;choice_field/&gt;&lt;choice_table/&gt;&lt;column_label&gt;Description&lt;/column_label&gt;&lt;comments/&gt;&lt;create_roles/&gt;&lt;default_value/&gt;&lt;defaultsort/&gt;&lt;delete_roles/&gt;&lt;dependent/&gt;&lt;dependent_on_field/&gt;&lt;display&gt;false&lt;/display&gt;&lt;dynamic_creation&gt;false&lt;/dynamic_creation&gt;&lt;dynamic_creation_script/&gt;&lt;dynamic_default_value/&gt;&lt;dynamic_ref_qual/&gt;&lt;element&gt;u_description&lt;/element&gt;&lt;element_reference&gt;false&lt;/element_reference&gt;&lt;foreign_database/&gt;&lt;function_definition/&gt;&lt;function_field&gt;false&lt;/function_field&gt;&lt;internal_type display_value=""&gt;string_full_utf8&lt;/internal_type&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;max_length&gt;255&lt;/max_length&gt;&lt;name&gt;sys_attachment&lt;/name&gt;&lt;next_element/&gt;&lt;primary&gt;false&lt;/primary&gt;&lt;read_only&gt;false&lt;/read_only&gt;&lt;read_roles/&gt;&lt;reference/&gt;&lt;reference_cascade_rule/&gt;&lt;reference_floats&gt;false&lt;/reference_floats&gt;&lt;reference_key/&gt;&lt;reference_qual/&gt;&lt;reference_qual_condition/&gt;&lt;reference_type/&gt;&lt;sizeclass/&gt;&lt;spell_check&gt;false&lt;/spell_check&gt;&lt;staged&gt;false&lt;/staged&gt;&lt;sys_class_name&gt;sys_dictionary&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-09-03 20:47:32&lt;/sys_created_on&gt;&lt;sys_id&gt;a21276d12fc7101004f83f96f699b64a&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Description&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_dictionary_sys_attachment_u_description&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-09-03 20:47:32&lt;/sys_updated_on&gt;&lt;table_reference&gt;false&lt;/table_reference&gt;&lt;text_index&gt;false&lt;/text_index&gt;&lt;unique&gt;false&lt;/unique&gt;&lt;use_dependent_field&gt;false&lt;/use_dependent_field&gt;&lt;use_dynamic_default&gt;false&lt;/use_dynamic_default&gt;&lt;use_reference_qualifier&gt;simple&lt;/use_reference_qualifier&gt;&lt;virtual&gt;false&lt;/virtual&gt;&lt;widget/&gt;&lt;write_roles/&gt;&lt;xml_view&gt;false&lt;/xml_view&gt;&lt;/sys_dictionary&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-1197431266</payload_hash>
+<remote_update_set display_value="Development of Fetching Attachment Description">5933aaee2fc3101004f83f96f699b6a3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2020-09-07 16:35:50</sys_created_on>
+<sys_id>5d33aaee2fc3101004f83f96f699b6a3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>17455b97d7d0000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2020-09-07 16:35:50</sys_updated_on>
+<table>sys_attachment</table>
+<target_name>Attachment.Description</target_name>
+<type>Dictionary</type>
+<update_domain>global</update_domain>
+<update_guid>ad767e55bbc710102ebfaf46743ff2fb</update_guid>
+<update_guid_history>ad767e55bbc710102ebfaf46743ff2fb:-1197431266</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_macro_2c43bf710a0a0b39001e825b1ea82b4f</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_macro"&gt;&lt;sys_ui_macro action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;category&gt;general&lt;/category&gt;&lt;description&gt;Displays an attachment icon and filename.  This is used in places such as the attachment page and at the top of forms.&lt;/description&gt;&lt;media_type/&gt;&lt;name&gt;attachment_entry&lt;/name&gt;&lt;scoped_name/&gt;&lt;sys_class_name&gt;sys_ui_macro&lt;/sys_class_name&gt;&lt;sys_created_by&gt;glide.maint&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2008-12-12 17:49:16&lt;/sys_created_on&gt;&lt;sys_id&gt;2c43bf710a0a0b39001e825b1ea82b4f&lt;/sys_id&gt;&lt;sys_mod_count&gt;389&lt;/sys_mod_count&gt;&lt;sys_name&gt;attachment_entry&lt;/sys_name&gt;&lt;sys_package display_value="UI Pages (define HTML pages and their processing)" source="com.glide.ui_page"&gt;5e6f56612f22101004f83f96f699b621&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_macro_2c43bf710a0a0b39001e825b1ea82b4f&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-09-04 13:50:37&lt;/sys_updated_on&gt;&lt;xml&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;j:jelly trim="false"
+    xmlns:j="jelly:core"
+    xmlns:g="glide"
+    xmlns:j2="null"
+    xmlns:g2="null"&gt;
+    &lt;style&gt;
+	   .not_available_icon:focus, .not_available_file:focus {
+		   outline: 5px auto #1f8476;
+		   outline-offset: -2px;
+	   }
+    &lt;/style&gt;
+    &lt;g:macro show_link="true" /&gt;
+
+    &lt;g:evaluate var="jvar_edge_invalid" copyToRhino="true"&gt;
+        var atd = GlideTableDescriptor.get(sys_attachment.table_name);
+        atd.getED().hasAttachmentsEncrypted() ${AND} !gs.isEdgeEncryptedSession();
+    &lt;/g:evaluate&gt;
+
+    &lt;!-- Check no_attachment attribute in order to override if necessary. --&gt;
+    &lt;g:evaluate var="jvar_no_attachment"&gt;
+                var atd = GlideTableDescriptor.get(sys_attachment.table_name);
+		atd.getED().getBooleanAttribute("no_attachment")
+    &lt;/g:evaluate&gt;
+
+    &lt;j:if test="${empty(jvar_document_viewer_enabled)}"&gt;
+        &lt;g:evaluate var="jvar_document_viewer_enabled" copyToRhino="true"&gt;
+		var plugin_enabled = GlidePluginManager.isActive('com.snc.documentviewer');
+		var prop_enabled = gs.getProperty('com.snc.documentviewer.enable_document_viewer','true') === 'true' ? true : false;
+		var atd = GlideTableDescriptor.get(sys_attachment.table_name);
+		var attr_enabled = atd.getED().getBooleanAttribute("use_document_viewer");
+		plugin_enabled ${AND} prop_enabled ${AND} attr_enabled;
+        &lt;/g:evaluate&gt;
+    &lt;/j:if&gt;
+
+    &lt;g:evaluate var="jvar_not_available" copyToRhino="true"&gt;
+		sys_attachment.state == 'not_available';
+    &lt;/g:evaluate&gt;
+
+    &lt;g:evaluate var="jvar_can_write_to_record"&gt;
+		sys_attachment.canWrite();
+    &lt;/g:evaluate&gt;
+
+    &lt;j:if test="${jvar_edge_invalid or gs.getProperty('glide.ui.disable_attachment_view') == 'true'}"&gt;
+        &lt;j:set var="jvar_show_link" value="false" /&gt;
+    &lt;/j:if&gt;
+    &lt;j:set var="jvar_can_add_attachments" value="false" /&gt;
+    &lt;j:if test="${jvar_no_attachment == 'false'}"&gt;
+        &lt;j:if test="${jvar_can_write_to_record == 'true'}"&gt;
+            &lt;j:set var="jvar_can_add_attachments" value="true" /&gt;
+        &lt;/j:if&gt;
+    &lt;/j:if&gt;
+
+    &lt;j:if test="${jvar_edge_invalid or RP.getWindowProperties().get('attachment_disabled') == 'true'}"&gt;
+        &lt;j:set var="jvar_can_add_attachments" value="false" /&gt;
+    &lt;/j:if&gt;
+
+    &lt;!-- determine which icon to use and what title text to display --&gt;
+    &lt;j:set var="jvar_random_id" value="${new GlideGuid.generate(null)}" /&gt;
+    &lt;j:set var="jvar_encrypt_context" value="${sys_attachment.encryption_context}" /&gt;
+
+    &lt;j:set var="jvar_sys_id" value="${sys_attachment.sys_id}" /&gt;
+    &lt;g:inline template="gr_to_icon_path.xml" /&gt;
+
+    &lt;j:set var="jvar_attachment_icon" value="${jvar_icon_path}" /&gt;
+    &lt;j:if test="${!empty(jvar_encrypt_context)}"&gt;
+        &lt;j:set var="jvar_attachment_alt" value="${gs.getMessage('Attached by')} ${sys_attachment.sys_created_by} ${gs.getMessage('on')} ${sys_attachment.sys_created_on.getDisplayValue()}, ${gs.getMessage('Encrypted')}: ${sys_attachment.encryption_context.getDisplayValue()}" /&gt;
+    &lt;/j:if&gt;
+    &lt;j:if test="${empty(jvar_encrypt_context)}"&gt;
+        &lt;j:set var="jvar_attachment_alt" value="${gs.getMessage('Attached by')} ${sys_attachment.sys_created_by} ${gs.getMessage('on')} ${sys_attachment.sys_created_on.getDisplayValue()}" /&gt;
+    &lt;/j:if&gt;
+
+    &lt;j:set var="jvar_common_attachment_style" value="overflow:hidden; vertical-align:middle; margin-right: 5px;" /&gt;
+    &lt;g:set_if var="jvar_attachment_style" test="${jvar_use_ellipsis}" true="display: inline-block; text-overflow: ellipsis; white-space: nowrap; ${jvar_common_attachment_style}" false="display: inline; max-width: 75%; ${jvar_common_attachment_style}" /&gt;
+    &lt;g:evaluate var="jvar_attachment_action_title" copyToRhino="true"&gt;
+	   var action_title = gs.getMessage('[download]');
+	   if(jvar_document_viewer_enabled === 'true')
+	  	action_title = 	gs.getMessage('[view]');
+	   else
+	   	action_title = gs.getProperty('glide.ui.attachment.force_download_all_mime_types') === 'true' ? gs.getMessage('[download]') : gs.getMessage('[view]');
+	   action_title;
+    &lt;/g:evaluate&gt;
+
+    &lt;g:evaluate var="jvar_attachment_aria_label" copyToRhino="true"&gt;
+	   var aria_label = gs.getMessage('Download {0}', sys_attachment.file_name)
+	   if(jvar_document_viewer_enabled === 'true')
+	   	aria_label = gs.getMessage('View {0}', sys_attachment.file_name);
+	   else 
+	   	aria_label = gs.getProperty('glide.ui.attachment.force_download_all_mime_types') === 'true' ? gs.getMessage('Download {0}', sys_attachment.file_name) : gs.getMessage('View {0}', sys_attachment.file_name);
+	   aria_label;
+    &lt;/g:evaluate&gt;
+
+    &lt;!-- output the icon with title text and file name --&gt;
+    &lt;j:choose&gt;
+        &lt;j:when test="${jvar_edge_invalid}"&gt;
+            &lt;img src="${jvar_attachment_icon}" alt="${jvar_attachment_alt}" /&gt;
+${HTML:sys_attachment.file_name}
+        &lt;/j:when&gt;
+        &lt;j:when test="${jvar_not_available}"&gt;
+            &lt;img class="not_available_icon" style="opacity:0.5" tabindex="-1" src="${jvar_attachment_icon}" alt="${jvar_attachment_alt}" onclick="pushNotAvailableMessage('${JS,HTML:sys_attachment.file_name}')"/&gt;
+            &lt;span data-use-ellipsis="${jvar_use_ellipsis}" class="not_available_file" style="opacity:0.66; ${jvar_attachment_style}" tabindex="0" id="${jvar_random_id}" data-id="${sys_attachment.sys_id}" onclick="pushNotAvailableMessage('${JS,HTML:sys_attachment.file_name}')" aria-label="${HTML:gs.getMessage('Attachment {0} unavailable', sys_attachment.file_name)}"&gt;${HTML:sys_attachment.file_name}&lt;/span&gt;
+        &lt;/j:when&gt;
+        &lt;j:otherwise&gt;
+            &lt;a href="sys_attachment.do?sys_id=${sys_attachment.sys_id}&amp;amp;sysparm_this_url=${RP.getReferringURL()}" title="${jvar_attachment_alt}" onclick="window.location = this.getAttribute('href'); return false;" click-on-enter='true' tabindex="-1"&gt;
+                &lt;img src="${jvar_attachment_icon}" alt="${jvar_attachment_alt}" /&gt;
+            &lt;/a&gt;
+            &lt;a href="sys_attachment.do?sys_id=${sys_attachment.sys_id}&amp;amp;sysparm_this_url=${RP.getReferringURL()}" data-use-ellipsis="${jvar_use_ellipsis}" style="${jvar_attachment_style}" id="${jvar_random_id}" data-id="${sys_attachment.sys_id}" onkeydown="allowInPlaceEditModification(this, event);" onclick="if ($(this).readAttribute('contentediD
+          ') != 'true') window.location.href=this.getAttribute('href'); return false;" aria-label="${HTML:gs.getMessage('Download {0}', sys_attachment.file_name)}"&gt;
+            ${HTML:sys_attachment.file_name}
+            &lt;/a&gt;
+        &lt;/j:otherwise&gt;
+    &lt;/j:choose&gt;
+
+    &lt;j:if test="${jvar_can_add_attachments and !jvar_not_available}"&gt;
+        &lt;a class='attachment rename_${sys_attachment.sys_id}' href="#" click-on-enter='true' onclick='$("${jvar_random_id}").beginEdit();' aria-label="${HTML:gs.getMessage('Rename {0}', sys_attachment.file_name)}" role="button"&gt;
+      ${gs.getMessage('[rename]')}
+        &lt;/a&gt;
+
+        &lt;script defer="true"&gt;
+        addLoadEvent(function() {
+          var elementID = "${jvar_random_id}"
+          var elm = $(elementID);
+          elm.inPlaceEdit({
+              selectOnStart: true,
+              turnClickEditingOff: true,
+          onBeforeEdit: function() {
+              elm.lastAriaLabel = elm.getAttribute("aria-label");
+              elm.removeAttribute("aria-label");
+              elm.setAttribute("role", "textbox");
+              elm.removeAttribute("onclick");
+          },
+          onEditCancelled: function() {
+              elm.removeAttribute("role");
+              if (elm.lastAriaLabel) {
+                  elm.setAttribute("aria-label", elm.lastAriaLabel);
+              }
+              elm.setAttribute("onclick", "if ($(this).readAttribute('contentediD') != 'true') window.location.href='sys_attachment.do?sys_id=${sys_attachment.sys_id}'; return false;");
+          },
+          onAfterEdit: function(newName) {
+                 var oldName = this.oldValue;
+                 var ga = new GlideAjax('AttachmentAjax');
+                 ga.addParam('sysparm_type', 'rename');
+                 ga.addParam('sysparm_value', '${sys_attachment.sys_id}');
+                 ga.addParam('sysparm_name', newName);
+                 ga.getXML(function(response) {
+                     var answer = response.responseXML.documentElement.getAttribute("answer");
+                     if (answer !== '0')
+                         alert(new GwtMessage().getMessage("Renaming attachment {0} to new name {1} is not allowed", oldName, newName)); $$('a[data-id="${sys_attachment.sys_id}"]').each(function(elem){
+                         elem.innerHTML = (answer === '0') ? newName : oldName;
+                     }); $$('span[data-id="${sys_attachment.sys_id}"]').each(function(el){
+                         el.innerHTML = (answer === '0') ? newName : oldName;
+                     });
+
+                     getMessage(["Download {0}", "View {0}", "Rename {0}"], function(msg) {
+                          var id = '${sys_attachment.sys_id}';
+                          var newDownloadText = new GwtMessage().format(msg["Download {0}"], newName);
+                          var newViewText = new GwtMessage().format(msg["View {0}"], newName);
+                          var newRenameText = new GwtMessage().format(msg["Rename {0}"], newName); $$('a[data-id="' + id + '"]').each(function(elem){
+                              elem.setAttribute("aria-label", newDownloadText);
+                          })
+
+                          $$('.view_' + id).each(function(elem){
+                              elem.setAttribute("aria-label", newViewText);
+                          })
+
+                          $$('.rename_' + id).each(function(elem){
+                              elem.setAttribute("aria-label", newRenameText);
+                          })
+                     })
+                     elm.removeAttribute("role");
+                     elm.setAttribute("onclick", "if ($(this).readAttribute('contentediD') != 'true') window.location.href='sys_attachment.do?sys_id=${sys_attachment.sys_id}'; return false;");
+                 });
+              }
+           });
+        });
+        &lt;/script&gt;
+    &lt;/j:if&gt;
+
+    &lt;!-- in some cases we want a "view" link to be displayed after the file name --&gt;
+    &lt;j:if test="${jvar_show_link and !jvar_not_available}"&gt;
+        &lt;j:choose&gt;
+            &lt;j:when test="${gs.getProperty('glide.ui.attachment_popup')=='false'}"&gt;
+                &lt;a class="attachment view_${sys_attachment.sys_id}" href="sys_attachment.do?sys_id=${sys_attachment.sys_id}&amp;amp;view=true" aria-label="${HTML:jvar_attachment_aria_label}"&gt;
+           ${jvar_attachment_action_title}
+                &lt;/a&gt;
+            &lt;/j:when&gt;
+            &lt;j:otherwise&gt;
+                &lt;a class="attachment view_${sys_attachment.sys_id}" click-on-enter="true" href="#" onclick="tearOffAttachment('${sys_attachment.sys_id}');" aria-label="${HTML:jvar_attachment_aria_label}"&gt;
+           ${jvar_attachment_action_title}
+                &lt;/a&gt;
+            &lt;/j:otherwise&gt;
+        &lt;/j:choose&gt;
+    &lt;/j:if&gt;
+
+    &lt;j:if test="${jvar_not_available}"&gt;
+        &lt;span style="display:inline-block; height:31px; line-height:2.4; opacity:0.66" aria-label="${HTML:gs.getMessage('Attachment {0} unavailable', sys_attachment.file_name)}"&gt;
+         ${gs.getMessage('[unavailable]')}
+        &lt;/span&gt;
+    &lt;/j:if&gt;
+    
+    &lt;j:if test="${sys_attachment.table_name=='incident'}"&gt;
+    &lt;a class='attachment description_${sys_attachment.sys_id}' href="#" click-on-enter='true' onclick="updateDescription('${sys_attachment.sys_id}', '${sys_attachment.file_name}');" aria-label="${HTML:gs.getMessage('Description {0}', sys_attachment.file_name)}" role="button"&gt;
+      ${gs.getMessage('[description]')}&lt;/a&gt;
+    &lt;/j:if&gt;
+    
+    &lt;script&gt;
+    function updateDescription(attch_id, file_name) {
+        var ga = new GlideAjax('attachmentDescription');
+        ga.addParam('sysparm_name','getDescription');
+        ga.addParam('sysparm_id', attch_id);
+        ga.getXMLAnswer(callback, null, attch_id);
+        function callback(answer, attch_id){
+            var gm = new GlideModal('attachment_description', false, 500);
+            gm.setTitle(file_name);
+            gm.setPreference('target_desc', answer);
+            &lt;!-- g_dialog.setPreference('target_sys_id', sys_id); --&gt;
+            &lt;!-- gm.renderWithContent('&lt;p&gt;&lt;label&gt;Please provide the description below&lt;/label&gt;&lt;textarea id="attachment_desc" style="width: 100%;
+min-height: 75px;outline: none;resize: none;border: 1px solid grey;border-radius: 5px" type="hidden" rows="5" cols="96" spellcheck="true" maxlength="225"&gt;'+answer+'&lt;/textarea&gt;&lt;/p&gt;&lt;input type="button" class="btn btn-primary float-right" value="Save" onclick="sendDesc( gel(\'attachment_desc\').value);"&gt;&lt;/input&gt;'); --&gt;
+            gm.render();
+            sendDesc=function (val){
+                var ga = new GlideAjax('attachmentDescription');
+                ga.addParam('sysparm_name','setDescription');
+                ga.addParam('sysparm_id', attch_id);
+                ga.addParam('sysparm_desc', val);
+                ga.getXMLAnswer(function(answer){
+                    alert(answer);
+                });
+                gm.destroy();
+            }
+        }
+    }
+    &lt;/script&gt;
+&lt;/j:jelly&gt;]]&gt;&lt;/xml&gt;&lt;/sys_ui_macro&gt;&lt;/record_update&gt;</payload>
+<payload_hash>794919353</payload_hash>
+<remote_update_set display_value="Development of Fetching Attachment Description">5933aaee2fc3101004f83f96f699b6a3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2020-09-07 16:35:51</sys_created_on>
+<sys_id>9533aaee2fc3101004f83f96f699b6a4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>174596220180000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2020-09-07 16:35:51</sys_updated_on>
+<table/>
+<target_name>attachment_entry</target_name>
+<type>Macro</type>
+<update_domain>global</update_domain>
+<update_guid>af906aed78cf1010942875bbfa6aaf56</update_guid>
+<update_guid_history>af906aed78cf1010942875bbfa6aaf56:794919353,13dfdae96d0f10107228f3b636217e58:1921295099,d46f16ade4cf101080cb0b1203315bfc:-1805272169,954fdae526cf10101713b2e8cf6ce475:-976908081,971f9e6daccf1010bd1f717b514d06ae:-420865153,12ae16ad41cf10101a6f35f992c451f8:-742275481,cc1e9e6dfacf1010e335abd34ee1e1a9:1133688045,2a0e9e6d9dcf1010620390dbdcf7a5a5:1807988401,bb9912e9c90f101026a5d4c5908e0c83:622761470,e54749a5bc0f1010c5639f213875e2fe:1765278658,65e601e94f0f10106fbf9def0d2fb27a:117846012,be6605656c0f1010fc079f9b088b19e1:1614223202,5f1585692d0f10105c77181f89b3fbb0:-2064359264,d3050929ef0f1010893581ffe469e5f6:-361956654,a5548569740f101061dff381d2738fac:357721844,0e530929fa0f1010581968719b10caf1:264066287,47330929fe0f1010b4f3280284e5e6ed:133630893,13c049a56d0f101090b142504acdb5fa:1785738525,11700565c80f10107a0bc657595ab6db:109384558,21600125f70f1010e956fdfdfe79eb15:944468293,68ee3025150f1010b70fd3ac7dfdd410:1229731058,c6be7421480f10105c2b903530f6e3a5:1026500026,364eb46d21cb1010d7db1c328aa55f1e:303976874,784d74219c0f10104ab4f578f3a81ca0:336679773,5d8c702d5fcb101026ef4945e945843d:-593620923,0029702dcccb101084bc6fd136ba4039:-470109619,90d7fcedc6cb1010602b5079a340d2fd:1574414076,3c4674215e0f10107090a7db4c2faa9a:829667098,cbb5fced2fcb10101dd5ec22e73f00f8:-2018500956,94723c2da7cb1010c295e1d758ddaf67:-1309028088,b691b46d83cb10100d4e1621042ea917:-365127488,fb11f02ddacb1010d6b09056068ff39c:1149749715,69a03c2d81cb1010d04f73c99cccfe61:1718812967,0480f02d08cb1010dfa0d4e2bd2a6698:458763375,4bbfe0298acb1010dc290bda14ed7296:-1458133654,828f602dd9cb10102d91d9c85bea4332:-572048884,cb2fe0290bcb10108ce780f70e362f91:-1391133592,14dee429034b10107ffaf51193674556:1191150276,852a202158cb1010f149d4d23e6f69d7:-796915836,0449e0290dcb1010da7f241324a6078d:-381710082,4cc72021eacb1010bc526038a1673ad1:-1073198399,ab6e7259e3c7101041139a3110e07aa6:235245815,b0b932d594c7101041895d8d7174a66f:-1710241526,c95832d54bc710107d4223d7ee5b9e6a:-983524685,fd4832d599c71010484f58563366ec65:-1134073165,c0ae26d9438710102e63e1e90e718b39:195696084,1c6e26d983871010831a310e8eac4e34:1839587144,ceda2e59158710101c4ddd5ed6f28920:-1513676092,755426d9da87101037c2dcf0cb924c30:1623991875,84532e59e28710102bee7fe1340f1f1a:61356439,e6b1ae19b7871010f52b332818ff4fd1:1330282089,2311ae19b4871010259e0ae68803aacd:-1134888883,a0a06295ab871010155b210fc900799f:-1221059019,787026d5a9871010ad49319fcdd85224:-2005516123,4b50ae19f887101026c741b26a6f40c8:-220152962,eadfd611d44710107bf6822809a100b6:-2089988580,b29f16d598871010f24d4faf0586a420:1785786748,ca9d16d57e87101073ab298fee9c841b:-1730681486,7d8c1a95f907101075339e7f6fd26ce3:1588858603,f81c52959187101031d2a3087602939a:-45741270,68dbd2955e871010f4f25c1860ea1abc:897615072,7ccbd6116247101033327d6db30966b0:-1089642465,c79bd611a3c3101019c1ef4a980fea27:-821664609,8f9bd611b9c310109f2f264177320124:1748120299</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_include_5e143a152fc7101004f83f96f699b64c</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;global.attachmentDescription&lt;/api_name&gt;&lt;caller_access/&gt;&lt;client_callable&gt;true&lt;/client_callable&gt;&lt;description/&gt;&lt;name&gt;attachmentDescription&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var attachmentDescription = Class.create();
+try{
+	attachmentDescription.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+		setDescription: function(){
+			var gr = new GlideRecord('sys_attachment');
+			gr.get(this.getParameter('sysparm_id'));
+			gr.setValue('u_description', this.getParameter('sysparm_desc'));
+			if(gr.update())
+				return "The attachment's description is updated successfully"; 
+		},
+		getDescription: function(){	
+				var gr = new GlideRecord('sys_attachment');
+				gr.get(this.getParameter('sysparm_id'));
+				return gr.getValue('u_description'); 
+		},
+		type: 'attachmentDescription'
+	});
+}catch(e){
+	gs.addErrorMessage(e);
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-09-03 20:49:49&lt;/sys_created_on&gt;&lt;sys_id&gt;5e143a152fc7101004f83f96f699b64c&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;attachmentDescription&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_5e143a152fc7101004f83f96f699b64c&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-09-04 05:00:35&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-404450786</payload_hash>
+<remote_update_set display_value="Development of Fetching Attachment Description">5933aaee2fc3101004f83f96f699b6a3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2020-09-07 16:35:51</sys_created_on>
+<sys_id>d133aaee2fc3101004f83f96f699b6a4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>174577ce0e10000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2020-09-07 16:35:51</sys_updated_on>
+<table/>
+<target_name>attachmentDescription</target_name>
+<type>Script Include</type>
+<update_domain>global</update_domain>
+<update_guid>ff47e82d960b101036c41af59b39c614</update_guid>
+<update_guid_history>ff47e82d960b101036c41af59b39c614:-404450786,0fe38f5ddec7101046ab446dc47533c2:112326893,705fb29976c7101086b2b439cd69cf9f:-2027766057,22f6325151c7101064ca34f2a03b41d2:-1123149737</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>
