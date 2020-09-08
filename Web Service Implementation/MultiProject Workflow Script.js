@@ -12,10 +12,12 @@ var env = current.variables.NUR_EnvInfo;
 var SoapCallRead;
 var SoapCallSave;
 var SoapCallAdd;
+var PrologUserName = gs.getProperty('Prolog_UserName');
+var PrologPswd = gs.getProperty('Prolog_Password');
+var PrologNonce = gs.getProperty('Prolog_Nonce');
 
 var fName = firstName.substring(0, 3);
 var lName = lastName.substring(0, 3);
-gs.log(RitmNumber + "ContactId: " + contactId + "fName: " + fName + "lName: " + lName);
 var userName = firstName + " " + lastName;
 //check for the environmnet to trigger the environment based soap calls
 
@@ -30,6 +32,13 @@ if (env == 'UK') {
     SoapCallSave = 'Prolog_UserRequest__ReadSaveDocument_UK';
     SoapCallAdd = 'Prolog_UserRequest_AddUpdateUser_UK';
     workflow.scratchpad.urls = "https://convergeeu.jacobs.com/prologconverge/WebClient/";
+}
+
+if (env == 'AUS') {
+    SoapCallRead = 'Prolog_UserRequest__ReadSaveDocument_AUS';
+    SoapCallSave = 'Prolog_UserRequest__ReadSaveDocument_AUS';
+    SoapCallAdd = 'Prolog_UserRequest_AddUpdateUser_AUS';
+    workflow.scratchpad.urls = "https://converge.jacobs.com/prologconverge/WebClient/"; //used in Notification
 }
 // set the enumeration value
 var enumeration;
@@ -47,52 +56,95 @@ if (ProManager == 'false' && Converge == 'true' && Mobile == 'true')
     enumeration = '6';
 if (ProManager == 'true' && Converge == 'true' && Mobile == 'true')
     enumeration = '7';
-gs.log(RitmNumber + "Enumeration: " + enumeration);
+//gs.log(RitmNumber + "Enumeration: " + enumeration);
 // unique username creation
-var fName = firstName.substr(0, 3);
-var lName = lastName.substr(0, 3);
-var baseId = fName + lName;
+var baseId;
+
+if (firstName.substr(0, 3).length == 3) {
+    baseId = firstName.substr(0, 3) + lastName.substr(0, 3);
+} else if (firstName.substr(0, 3).length == 2) {
+    baseId = firstName.substr(0, 2) + lastName.substr(0, 4);
+} else if (firstName.substr(0, 3).length == 1) {
+    baseId = firstName.substr(0, 1) + lastName.substr(0, 5);
+}
+if (baseId.length < 6) {
+    if (lastName.substr(0, 5).length == 5) {
+        baseId = firstName.substr(0, 1) + lastName.substr(0, 5);
+    } else if (lastName.substr(0, 4).length == 4) {
+        baseId = firstName.substr(0, 2) + lastName.substr(0, 4);
+    } else if (lastName.substr(0, 3).length == 3) {
+        baseId = firstName.substr(0, 3) + lastName.substr(0, 3);
+    } else if (lastName.substr(0, 3).length == 2) {
+        baseId = firstName.substr(0, 4) + lastName.substr(0, 2);
+    } else if (lastName.substr(0, 3).length == 1) {
+        baseId = firstName.substr(0, 5) + lastName.substr(0, 1);
+    }
+}
+
 baseId = baseId.toUpperCase();
-var contactId = baseId;
-var mx = -1;
-var suffix = 0;
 
-var gr = new GlideRecord("u_prolog_contacts");
-gr.addEncodedQuery('u_contact_idSTARTSWITH' + contactId);
-gr.orderBy('u_contact_id');
-gr.query();
-
-while (gr.next()) {
-    gs.log("coming in loop");
-    if (gr.u_contact_id == contactId) {
-        mx = 0;
-    } else {
-        if (!isNaN(parseInt(gr.u_contact_id.substr(-2)))) { //joshim01
+if (baseId.length < 6) {
+    var padLen = 6 - baseId.length;
+    var contactId = baseId + '0'.repeat(padLen - 1);
+    if (baseId.length == 5) {
+        contactId = baseId + '0';
+    }
+    var gr = new GlideRecord("u_prolog_contacts");
+    gr.addQuery('u_contact_id', 'STARTSWITH', contactId);
+    gr.orderBy('u_contact_id');
+    gr.query();
+    var mx = 0;
+    while (gr.next()) {
+        if (!isNaN(parseInt(gr.u_contact_id.substr(-2)))) { //TYC0012
             if (mx < parseInt(gr.u_contact_id.substr(-2))) {
                 mx = parseInt(gr.u_contact_id.substr(-2));
             }
-        } else if (!isNaN(parseInt(gr.u_contact_id.substr(-1)))) { //johsim1
+        } else if (!isNaN(parseInt(gr.u_contact_id.substr(-1)))) { //TYC001
             if (mx < parseInt(gr.u_contact_id.substr(-1))) {
                 mx = parseInt(gr.u_contact_id.substr(-1));
             }
-        } else { //JOHSIMM Exists
-            if (mx < 1) {
-                mx = -1;
+        }
+    }
+    contactId = contactId + (mx + 1).toString();
+} else {
+    var contactId;
+    contactId = baseId;
+    var mx = -1;
+    var suffix = 0;
+
+    var gr = new GlideRecord("u_prolog_contacts");
+    gr.addQuery('u_contact_id', 'STARTSWITH', contactId);
+    gr.orderBy('u_contact_id');
+    gr.query();
+
+    while (gr.next()) {
+        if (gr.u_contact_id == contactId) {
+            mx = 0;
+        } else {
+            if (!isNaN(parseInt(gr.u_contact_id.substr(-2)))) { //joshim01
+                if (mx < parseInt(gr.u_contact_id.substr(-2))) {
+                    mx = parseInt(gr.u_contact_id.substr(-2));
+                }
+            } else if (!isNaN(parseInt(gr.u_contact_id.substr(-1)))) { //johsim1
+                if (mx < parseInt(gr.u_contact_id.substr(-1))) {
+                    mx = parseInt(gr.u_contact_id.substr(-1));
+                }
+            } else { //JOHSIMM Exists
+                if (mx < 1) {
+                    mx = -1;
+                }
             }
         }
     }
+    if (mx >= 0 && mx <= 9) {
+        suffix = mx + 1;
+        contactId = baseId + '0' + suffix.toString();
+    } else if (mx > 9) {
+        suffix = mx + 1;
+        contactId = baseId + suffix.toString();
+    }
 }
-if (mx >= 0 && mx < 9) {
-    suffix = mx + 1;
-    contactId = baseId + '0' + suffix.toString();
-    gs.log("contact id " + contactId);
-} else if (mx > 9) {
-    suffix = mx + 1;
-    contactId = baseId + suffix.toString();
-    gs.log("contact id else if is " + contactId);
-} else {
-    gs.log("contact id else is " + contactId);
-}
+gs.log(RitmNumber + "ContactId: " + contactId);
 // auto password generation
 var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP1234567890";
 var pass = "";
@@ -103,7 +155,27 @@ for (var x = 0; x < length; x++) {
 }
 //-----------Grid Information----------------
 var dataGrid = current.variables.NUR_json;
-//----------------------------------------------------------------------------------------------------------------------------// 
+if (current.variables.add_all_projects == 'true') {
+    var TableInfos = [];
+    var i = 0;
+    var s = new GlideRecord('u_prolog_projects');
+    s.addQuery('u_portfolio_name', current.variables.NUR_DatabaseforProj);
+    s.query();
+    while (s.next()) {
+        TableInfos.push({
+            'serialKey': ++i,
+            'field1': current.variables.NUR_DatabaseforProj.toString(),
+            'field2': s.u_project_name.toString(),
+            'field3': current.variables.NUR_Security.toString(),
+            'field4': current.variables.NUR_NameofCompany.toString(),
+            'field5': current.variables.NUR_NameofLocation.toString(),
+            'selected': false
+        });
+    }
+    dataGrid = JSON.stringify(TableInfos);
+    gs.log(RitmNumber + 'Add All Project JSON Object is: ' + dataGrid);
+}
+//----------------------------------------------------------------------------------------------------------------------------//
 //----------------------------------------CODE to Handle Multi Project with Same Database-------------------------------------//
 var list = JSON.parse(dataGrid);
 
@@ -124,47 +196,6 @@ var result = groupBy(list, function (item) {
 
 var obj = result;
 gs.log(RitmNumber + "Data Grid:" + JSON.stringify(result));
-// Example of Obj <- How does it look like after formatting
-// obj=[
-//     [{
-//         "serialKey": 1,
-//         "field1": "ARNG",
-//         "field2": "Cesna-278",
-//         "field3": "B&I-Architect/Engineer",
-//         "field4": "Advance Contracting",
-//         "field5": "Office",
-//         "selected": false,
-//         "$$hashKey": "object:5"
-//     }, {
-//         "serialKey": 3,
-//         "field1": "ARNG",
-//         "field2": "Chennai-104",
-//         "field3": "B&I-Document-Control",
-//         "field4": "Advance Contracting",
-//         "field5": "Office",
-//         "selected": false,
-//         "$$hashKey": "object:21"
-//     }],
-//     [{
-//         "serialKey": 2,
-//         "field1": "Boeing",
-//         "field2": "1.1.1 PMCM Support",
-//         "field3": "B&I-Architect/Engineer-Web",
-//         "field4": "Air Enterprises",
-//         "field5": "Boeing",
-//         "selected": false,
-//         "$$hashKey": "object:13"
-//     }, {
-//         "serialKey": 4,
-//         "field1": "Boeing",
-//         "field2": "1.4.1 Bldg 40-58 CWC",
-//         "field3": "B&I-Document-Control",
-//         "field4": "Air Enterprises",
-//         "field5": "Boeing",
-//         "selected": false,
-//         "$$hashKey": "object:29"
-//     }]
-// ]
 
 var databases = "";
 
@@ -176,7 +207,7 @@ scTask.u_additional_comments_html = "";
 workflow.scratchpad.errorFlag = false;
 
 for (var i = 0; i < obj.length; i++) {
-    
+
     var portfolioString = obj[i][0].field1;
     var portfolio = '<![CDATA[' + portfolioString.toString() + ']]>';
     var projString = obj[i][0].field2;
@@ -195,7 +226,7 @@ for (var i = 0; i < obj.length; i++) {
     gr1.addQuery('u_environment', env);
     gr1.addQuery('u_company_name', companyString);
     gr1.addQuery('u_portfolio_name', portfolioString);
-    // gr1.addQuery('u_name_of_location',location);		
+    // gr1.addQuery('u_name_of_location',location);
     gr1.query();
     gr1.next();
     var companyGUID = gr1.u_company_guid;
@@ -284,8 +315,8 @@ for (var i = 0; i < obj.length; i++) {
         xmlDoc.createElementWithTextValue("Project_DocumentType", "MeridianSystems.Prolog.Business.Administration.Projects.ProjectsDocument");
         xmlDoc.createElementWithTextValue("IsMainProjectContact", "false");
 
-        for(var j=1;j<obj[i].length; j++){
-            
+        for (var j = 1; j < obj[i].length; j++) {
+
             //--u_project_name->u_project_guid(u_prolog_projects)
             var gr_multi = new GlideRecord('u_prolog_projects');
             gr_multi.addQuery('u_environment', env);
@@ -311,9 +342,9 @@ for (var i = 0; i < obj.length; i++) {
             "<s:Header>" +
             "<Security xmlns=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">" +
             "<o:UsernameToken u:id=\"e3bf6ff7-22f3-419e-8df1-82ba66dc388e\" xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\" xmlns:u=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\">" +
-            "<o:Username>ServiceNowTest</o:Username>" +
-            "<o:Password>service123</o:Password>" +
-            "<o:Nonce>MQF6ciZl5K/OWGlQ9ClEptMx2r8=</o:Nonce>" +
+            "<o:Username>" + PrologUserName + "</o:Username>" +
+            "<o:Password>" + PrologPswd + "</o:Password>" +
+            "<o:Nonce>" + PrologNonce + "</o:Nonce>" +
             "</o:UsernameToken>" +
             "</Security>" +
             "<TargetPortfolio xmlns=\"http://www.mps.com/Prolog/webservices\">" + portfolio + "</TargetPortfolio>" +
@@ -355,8 +386,8 @@ for (var i = 0; i < obj.length; i++) {
         gs.log(RitmNumber + "  Iteration: " + i + " | SAVE call Response Body: " + responseBody_Save);
         gs.log(RitmNumber + "  Iteration: " + i + " | SAVE call Error Message: " + responseErrorMsg_Save);
         //Call 6 Request
-        var extraUserProjectPermission=""; //used for multiple Project
-        for(var j=1;j<obj[i].length; j++){
+        var extraUserProjectPermission = ""; //used for multiple Project
+        for (var j = 1; j < obj[i].length; j++) {
             var gr_multi = new GlideRecord('u_prolog_projects');
             gr_multi.addQuery('u_environment', env);
             gr_multi.addQuery('u_portfolio_name', portfolioString);
@@ -372,54 +403,54 @@ for (var i = 0; i < obj.length; i++) {
             gr4_multi.query();
             gr4_multi.next();
             var GroupID_multi = gr4_multi.u_usergroup_id;
-            
-            extraUserProjectPermission +=   "<UserProjectPermission>"+ 
-                                                "<ProjectID>"+projID_multi+"</ProjectID>"+ 
-                                                "<GroupID>"+GroupID_multi+"</GroupID>"+ 
-                                                "<GroupName><![CDATA["+obj[i][j].field3+"]]></GroupName>"+ 
-                                            "</UserProjectPermission>";
+
+            extraUserProjectPermission += "<UserProjectPermission>" +
+                "<ProjectID>" + projID_multi + "</ProjectID>" +
+                "<GroupID>" + GroupID_multi + "</GroupID>" +
+                "<GroupName><![CDATA[" + obj[i][j].field3 + "]]></GroupName>" +
+                "</UserProjectPermission>";
         }
-        var updateRequest = "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">"+ 
-         "<s:Header>"+ 
-             "<Security xmlns=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">"+ 
-                 "<o:UsernameToken u:id=\"8b1f5957-8dda-4657-9d29-02cfddfb7cce\" xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\" xmlns:u=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\">"+ 
-                     "<o:Username>ServiceNowTest</o:Username>"+ 
-                     "<o:Password>service123</o:Password>"+
-                     "<o:Nonce>J7SezqhGt7XG9RZB3VhjnzREbXs=</o:Nonce>"+ 
-                 "</o:UsernameToken>"+ 
-             "</Security>"+ 
-             "<TargetPortfolio xmlns=\"http://www.mps.com/Prolog/webservices\">"+
-                 portfolio+
-             "</TargetPortfolio>"+
-         "</s:Header>"+ 
-         "<s:Body xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"+ 
-             "<AddOrUpdateUser xmlns=\"uri://meridiansystems.com/prolog/connect/administrationservice\">"+ 
-                "<user>"+ 
-                    "<UserName>"+userName+"</UserName>"+ 
-                     "<Password>"+pass+"</Password>"+ 
-                     "<ExpiresOn xsi:type=\"xsd:dateTime\">2020-01-01T08:29:59.5995905-07:00</ExpiresOn>"+ 
-                     "<ContactID>"+contactId+"</ContactID>"+ 
-                     "<DefGroupID>"+GroupID+"</DefGroupID>"+
-                     "<DefGroupName>"+security+"</DefGroupName>"+
-                     "<AllowedApp>"+enumeration+"</AllowedApp>"+ 
-                     "<ProjectPermissions>"+
-                         "<UserProjectPermission>"+ 
-                             "<ProjectID>"+projID+"</ProjectID>"+ 
-                             "<GroupID>"+GroupID+"</GroupID>"+ 
-                             "<GroupName>"+security+"</GroupName>"+ 
-                         "</UserProjectPermission>"+ 
-                         extraUserProjectPermission+
-                     "</ProjectPermissions>"+ 
-                 "</user>"+ 
-                 "<okToCreateIfUserDoesntExist>true</okToCreateIfUserDoesntExist>"+ 
-             "</AddOrUpdateUser>"+ 
-         "</s:Body>"+ 
-     "</s:Envelope>"; 
-        
-        
+        var updateRequest = "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+            "<s:Header>" +
+            "<Security xmlns=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">" +
+            "<o:UsernameToken u:id=\"8b1f5957-8dda-4657-9d29-02cfddfb7cce\" xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\" xmlns:u=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\">" +
+            "<o:Username>" + PrologUserName + "</o:Username>" +
+            "<o:Password>" + PrologPswd + "</o:Password>" +
+            "<o:Nonce>" + PrologNonce + "</o:Nonce>" +
+            "</o:UsernameToken>" +
+            "</Security>" +
+            "<TargetPortfolio xmlns=\"http://www.mps.com/Prolog/webservices\">" +
+            portfolio +
+            "</TargetPortfolio>" +
+            "</s:Header>" +
+            "<s:Body xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
+            "<AddOrUpdateUser xmlns=\"uri://meridiansystems.com/prolog/connect/administrationservice\">" +
+            "<user>" +
+            "<UserName>" + userName + "</UserName>" +
+            "<Password>" + pass + "</Password>" +
+            "<ExpiresOn xsi:type=\"xsd:dateTime\">2020-01-01T08:29:59.5995905-07:00</ExpiresOn>" +
+            "<ContactID>" + contactId + "</ContactID>" +
+            "<DefGroupID>" + GroupID + "</DefGroupID>" +
+            "<DefGroupName>" + security + "</DefGroupName>" +
+            "<AllowedApp>" + enumeration + "</AllowedApp>" +
+            "<ProjectPermissions>" +
+            "<UserProjectPermission>" +
+            "<ProjectID>" + projID + "</ProjectID>" +
+            "<GroupID>" + GroupID + "</GroupID>" +
+            "<GroupName>" + security + "</GroupName>" +
+            "</UserProjectPermission>" +
+            extraUserProjectPermission +
+            "</ProjectPermissions>" +
+            "</user>" +
+            "<okToCreateIfUserDoesntExist>true</okToCreateIfUserDoesntExist>" +
+            "</AddOrUpdateUser>" +
+            "</s:Body>" +
+            "</s:Envelope>";
+
+
         var addUpdateCall = new sn_ws.SOAPMessageV2(SoapCallAdd, 'AdministrationServiceSoap.AddOrUpdateUser');
-         addUpdateCall.setRequestBody(updateRequest);
-         // addUpdateCall.setStringParameterNoEscape('Portfolio_name', portfolio); //portfolio
+        addUpdateCall.setRequestBody(updateRequest);
+        // addUpdateCall.setStringParameterNoEscape('Portfolio_name', portfolio); //portfolio
         // addUpdateCall.setStringParameterNoEscape('Project_name', proj); //projectname
         // addUpdateCall.setStringParameterNoEscape('User_name', userName);
         // addUpdateCall.setStringParameterNoEscape('Password', pass);
@@ -456,7 +487,6 @@ for (var i = 0; i < obj.length; i++) {
         //s.setXMLParameter('documentdata', doc);
     }
 }
-
 //Comments updated with error logs
 scTask.update();
 //below variables are used in workflow notification
