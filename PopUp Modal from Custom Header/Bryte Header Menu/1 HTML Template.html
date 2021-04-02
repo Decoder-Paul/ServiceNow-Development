@@ -1,0 +1,122 @@
+<ul class="nav navbar-nav" aria-label="${Header menu}" role="menubar">
+  <div class="header-loader" ng-class="{'invisible': !loadingIndicator}">
+    <div class="hidden-xs sp-loading-indicator la-sm">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <li ng-repeat="item in visibleItems" ng-class="{dropdown: item.items.length > 0, 'header-menu-item': true}" ng-include="'bryteMenuTemplate'" role="presentation"></li>
+<!-- Wishlist menu -->
+  <li ng-if="options.enable_wishlist && data.isLoggedIn && data.showWishlist" ng-show="!accessibilityEnabled" class="dropdown hidden-xs" role="presentation">
+  	<a role="menuitem" href="javascript:void(0)"
+       data-toggle="dropdown"
+       id="wishlist-menu"
+       title="${Your Wish List currently has} {{wishlistItemCount}} ${items}"
+       aria-label="${Wish List}">
+      <span ng-bind-html="'${Wish List}'" aria-hidden="true"></span>
+      <span ng-if="wishlistItemCount > 0" aria-hidden="true" class="label label-as-badge label-primary sp-navbar-badge-count">{{wishlistItemCount}}</span>
+		</a>
+    <div class="dropdown-menu wishlist-menu">
+      <sp-widget widget="data.wishlistWidget"></sp-widget>
+    </div>
+  </li>
+  <li ng-if="options.enable_wishlist && data.isLoggedIn && data.showWishlist" class="dropdown" ng-class="{'visible-xs': !accessibilityEnabled}" role="presentation">
+  	<a href="?id=sc_wishlist"
+       title="${Wish List}"
+       class="toggle-dropdown"
+       role="menuitem"
+       aria-label="${Your Wish List currently has} {{wishlistItemCount}} ${items}">
+      <span ng-bind-html="'${Wish List}'" aria-hidden="true"></span>
+      <span ng-if="wishlistItemCount > 0" aria-hidden="true" class="label label-as-badge label-primary sp-navbar-badge-count">{{wishlistItemCount}}</span>
+		</a>
+  </li>
+  <!-- Shopping cart stuff -->
+ <li ng-if="::options.enable_cart && data.isLoggedIn" ng-show="::!accessibilityEnabled" class="dropdown hidden-xs header-menu-item" role="presentation">
+  	<a href
+       data-toggle="dropdown"
+       id="cart-dropdown"
+       uib-tooltip-template="'bryte-item-added-tooltip.html'"
+       tooltip-placement="bottom"
+       tooltip-trigger="'none'"
+       tooltip-is-open="$parent.itemAddedTooltipOpen"
+       title="${Your shopping cart currently has} {{cartItemCount}} ${items}"
+       aria-label="${Shopping cart}"
+       role="menuitem">
+    	<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      <span ng-bind-html="'${Cart}'" aria-hidden="true"></span>
+      <span ng-if="cartItemCount > 0" aria-hidden="true" class="label label-as-badge label-primary sp-navbar-badge-count">{{cartItemCount}}</span>
+		</a>
+    <div class="dropdown-menu cart-dropdown">
+      <sp-widget widget="data.cartWidget"></sp-widget>
+    </div>
+  </li>
+  <li ng-if="::options.enable_cart && data.isLoggedIn" class="dropdown header-menu-item" ng-class="::{'visible-xs': !accessibilityEnabled}"  role="presentation">
+  	<a ng-href="?id=sc_cart"
+       ng-click="collapse()"
+       title="${Cart}"
+       class="toggle-dropdown"
+       role="menuitem"
+       aria-label="${Your shopping cart currently has} {{cartItemCount}} ${items}">
+    	<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      <span ng-bind-html="'${Cart}'" aria-hidden="true"></span>
+      <span ng-if="cartItemCount > 0" aria-hidden="true" class="label label-as-badge label-primary sp-navbar-badge-count">{{cartItemCount}}</span>
+	</a>
+  </li>
+  <li ng-if="data.isLoggedIn && data.guidedTours" class="dropdown hidden-xs header-menu-item gtd-dropdown-container" role="presentation">
+    <a href
+       data-toggle="dropdown"
+       id="tour-dropdown"
+       tooltip-placement="bottom"
+       tooltip-trigger="'none'"
+       title="${This page currently has {{data.guidedTours.collection.length}} tours}"
+       aria-label="{{data.guidedTours.label}}"
+       role="menuitem">
+      <span ng-bind-html="'${Tours}'" aria-hidden="true"></span>
+      <span class='badge-container' ng-if="data.guidedTours.collection.length > 0">
+        <span aria-hidden="true" class="label label-as-badge label-primary sp-navbar-badge-count">
+          &nbsp;
+       </span>
+      </span>
+    </a>
+    <div ng-if="data.guidedTours.collection.length < 1" class="dropdown-menu empty-dropdown">
+      <div class="panel ng-scope">
+       <div class="panel-body" aria-hidden="false">
+        <div class="empty-tour-content">
+         <div class="h4">${You have no tours on this page}</div>
+         <p>${Tours appear when your administrator creates them on specific pages}</p>
+        </div>
+       </div>
+      </div>
+    </div>
+    <ul ng-if="data.guidedTours.collection.length > 0" class="dropdown-menu"
+        role="menu" aria-label="${Tours}">
+      <li role="presentation" ng-repeat="mi in data.guidedTours.collection"
+          class="ng-scope dropdown-menu-line">
+        <a role="menuitem" href title="{{::mi.title}}" target="{{::mi.target}}" ng-click="mi.clicked()">
+          {{::mi.title | characters:60}}
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li ng-if="data.isLoggedIn" class="dropdown hidden-xs header-menu-item" >
+    <a href ng-click="c.onWidget('widget-my-assets')" id="my-asset-list" tooltip-placement="bottom" tooltip-trigger="'none'"
+      title="${My Assets}" aria-label="${My Assets}" role="menuitem">
+      <span ng-bind-html="'${My Assets}'" aria-hidden="true"></span>
+    </a>
+  </li>
+  <!-- <li ng-if="data.isLoggedIn && data.myAssets"
+    class="dropdown hidden-xs header-menu-item myAssets">
+    <a href data-toggle="dropdown" id="tour-dropdown" tooltip-placement="bottom" tooltip-trigger="'none'"
+      title="${My Assets}" aria-label="${My Assets}" role="menuitem">
+      <span ng-bind-html="'${My Assets}'" aria-hidden="true"></span>
+    </a>
+    <div class="dropdown-menu empty-dropdown">
+      <div class="panel ng-scope">
+        <div class="panel-body" aria-hidden="false">
+          <sp-widget widget="data.myAssets"/>
+        </div>
+      </div>
+    </div>
+  </li> -->
+</ul>

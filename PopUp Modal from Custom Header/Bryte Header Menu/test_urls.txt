@@ -1,0 +1,3 @@
+https://brytedev.service-now.com/$sp.do?id=sp-preview&sys_id=6fe8cc7c1ba2ac104c3943f1b24bcb2b
+https://brytedev.service-now.com/sp_config?id=
+https://brytedev.service-now.com/sp?id=

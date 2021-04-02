@@ -1,0 +1,424 @@
+{
+    "instance": {
+        "name": "brytedev",
+        "url": "https://brytedev.service-now.com",
+        "g_ck": "6f34b2011b53e8504c3943f1b24bcbf02c2be4121f1b72be89bee49f7b071167db3f44d9"
+    },
+    "action": "saveWidget",
+    "tableName": "sp_widget",
+    "name": "Bryte Header Menu",
+    "sys_id": "6fe8cc7c1ba2ac104c3943f1b24bcb2b",
+    "widget": {
+        "template": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Body HTML template",
+            "sys_readonly": false,
+            "type": "html_template",
+            "mandatory": false,
+            "displayValue": "<ul class=\"nav navbar-nav\" aria-label=\"${Header menu}\" role=\"menubar\">\r\n  <div class=\"header-loader\" ng-class=\"{'invisible': !loadingIndicator}\">\r\n    <div class=\"hidden-xs sp-loading-indicator la-sm\">\r\n      <div></div>\r\n      <div></div>\r\n      <div></div>\r\n    </div>\r\n  </div>\r\n  <li ng-repeat=\"item in visibleItems\" ng-class=\"{dropdown: item.items.length > 0, 'header-menu-item': true}\" ng-include=\"'bryteMenuTemplate'\" role=\"presentation\"></li>\r\n<!-- Wishlist menu -->\r\n  <li ng-if=\"options.enable_wishlist && data.isLoggedIn && data.showWishlist\" ng-show=\"!accessibilityEnabled\" class=\"dropdown hidden-xs\" role=\"presentation\">\r\n  \t<a role=\"menuitem\" href=\"javascript:void(0)\"\r\n       data-toggle=\"dropdown\"\r\n       id=\"wishlist-menu\"\r\n       title=\"${Your Wish List currently has} {{wishlistItemCount}} ${items}\"\r\n       aria-label=\"${Wish List}\">\r\n      <span ng-bind-html=\"'${Wish List}'\" aria-hidden=\"true\"></span>\r\n      <span ng-if=\"wishlistItemCount > 0\" aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">{{wishlistItemCount}}</span>\r\n\t\t</a>\r\n    <div class=\"dropdown-menu wishlist-menu\">\r\n      <sp-widget widget=\"data.wishlistWidget\"></sp-widget>\r\n    </div>\r\n  </li>\r\n  <li ng-if=\"options.enable_wishlist && data.isLoggedIn && data.showWishlist\" class=\"dropdown\" ng-class=\"{'visible-xs': !accessibilityEnabled}\" role=\"presentation\">\r\n  \t<a href=\"?id=sc_wishlist\"\r\n       title=\"${Wish List}\"\r\n       class=\"toggle-dropdown\"\r\n       role=\"menuitem\"\r\n       aria-label=\"${Your Wish List currently has} {{wishlistItemCount}} ${items}\">\r\n      <span ng-bind-html=\"'${Wish List}'\" aria-hidden=\"true\"></span>\r\n      <span ng-if=\"wishlistItemCount > 0\" aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">{{wishlistItemCount}}</span>\r\n\t\t</a>\r\n  </li>\r\n  <!-- Shopping cart stuff -->\r\n <li ng-if=\"::options.enable_cart && data.isLoggedIn\" ng-show=\"::!accessibilityEnabled\" class=\"dropdown hidden-xs header-menu-item\" role=\"presentation\">\r\n  \t<a href\r\n       data-toggle=\"dropdown\"\r\n       id=\"cart-dropdown\"\r\n       uib-tooltip-template=\"'bryte-item-added-tooltip.html'\"\r\n       tooltip-placement=\"bottom\"\r\n       tooltip-trigger=\"'none'\"\r\n       tooltip-is-open=\"$parent.itemAddedTooltipOpen\"\r\n       title=\"${Your shopping cart currently has} {{cartItemCount}} ${items}\"\r\n       aria-label=\"${Shopping cart}\"\r\n       role=\"menuitem\">\r\n    \t<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>\r\n      <span ng-bind-html=\"'${Cart}'\" aria-hidden=\"true\"></span>\r\n      <span ng-if=\"cartItemCount > 0\" aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">{{cartItemCount}}</span>\r\n\t\t</a>\r\n    <div class=\"dropdown-menu cart-dropdown\">\r\n      <sp-widget widget=\"data.cartWidget\"></sp-widget>\r\n    </div>\r\n  </li>\r\n  <li ng-if=\"::options.enable_cart && data.isLoggedIn\" class=\"dropdown header-menu-item\" ng-class=\"::{'visible-xs': !accessibilityEnabled}\"  role=\"presentation\">\r\n  \t<a ng-href=\"?id=sc_cart\"\r\n       ng-click=\"collapse()\"\r\n       title=\"${Cart}\"\r\n       class=\"toggle-dropdown\"\r\n       role=\"menuitem\"\r\n       aria-label=\"${Your shopping cart currently has} {{cartItemCount}} ${items}\">\r\n    \t<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>\r\n      <span ng-bind-html=\"'${Cart}'\" aria-hidden=\"true\"></span>\r\n      <span ng-if=\"cartItemCount > 0\" aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">{{cartItemCount}}</span>\r\n\t</a>\r\n  </li>\r\n  <li ng-if=\"data.isLoggedIn && data.guidedTours\" class=\"dropdown hidden-xs header-menu-item gtd-dropdown-container\" role=\"presentation\">\r\n    <a href\r\n       data-toggle=\"dropdown\"\r\n       id=\"tour-dropdown\"\r\n       tooltip-placement=\"bottom\"\r\n       tooltip-trigger=\"'none'\"\r\n       title=\"${This page currently has {{data.guidedTours.collection.length}} tours}\"\r\n       aria-label=\"{{data.guidedTours.label}}\"\r\n       role=\"menuitem\">\r\n      <span ng-bind-html=\"'${Tours}'\" aria-hidden=\"true\"></span>\r\n      <span class='badge-container' ng-if=\"data.guidedTours.collection.length > 0\">\r\n        <span aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">\r\n          &nbsp;\r\n       </span>\r\n      </span>\r\n    </a>\r\n    <div ng-if=\"data.guidedTours.collection.length < 1\" class=\"dropdown-menu empty-dropdown\">\r\n      <div class=\"panel ng-scope\">\r\n       <div class=\"panel-body\" aria-hidden=\"false\">\r\n        <div class=\"empty-tour-content\">\r\n         <div class=\"h4\">${You have no tours on this page}</div>\r\n         <p>${Tours appear when your administrator creates them on specific pages}</p>\r\n        </div>\r\n       </div>\r\n      </div>\r\n    </div>\r\n    <ul ng-if=\"data.guidedTours.collection.length > 0\" class=\"dropdown-menu\"\r\n        role=\"menu\" aria-label=\"${Tours}\">\r\n      <li role=\"presentation\" ng-repeat=\"mi in data.guidedTours.collection\"\r\n          class=\"ng-scope dropdown-menu-line\">\r\n        <a role=\"menuitem\" href title=\"{{::mi.title}}\" target=\"{{::mi.target}}\" ng-click=\"mi.clicked()\">\r\n          {{::mi.title | characters:60}}\r\n        </a>\r\n      </li>\r\n    </ul>\r\n  </li>\r\n  <li ng-if=\"data.isLoggedIn\" class=\"dropdown hidden-xs header-menu-item\" >\r\n    <a href ng-click=\"c.onWidget('widget-my-assets')\" id=\"my-asset-list\" tooltip-placement=\"bottom\" tooltip-trigger=\"'none'\"\r\n      title=\"${My Assets}\" aria-label=\"${My Assets}\" role=\"menuitem\">\r\n      <span ng-bind-html=\"'${My Assets}'\" aria-hidden=\"true\"></span>\r\n    </a>\r\n  </li>\r\n  <!-- <li ng-if=\"data.isLoggedIn && data.myAssets\"\r\n    class=\"dropdown hidden-xs header-menu-item myAssets\">\r\n    <a href data-toggle=\"dropdown\" id=\"tour-dropdown\" tooltip-placement=\"bottom\" tooltip-trigger=\"'none'\"\r\n      title=\"${My Assets}\" aria-label=\"${My Assets}\" role=\"menuitem\">\r\n      <span ng-bind-html=\"'${My Assets}'\" aria-hidden=\"true\"></span>\r\n    </a>\r\n    <div class=\"dropdown-menu empty-dropdown\">\r\n      <div class=\"panel ng-scope\">\r\n        <div class=\"panel-body\" aria-hidden=\"false\">\r\n          <sp-widget widget=\"data.myAssets\"/>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </li> -->\r\n</ul>",
+            "readonly": false,
+            "hint": "",
+            "name": "template",
+            "attributes": {},
+            "choice": 0,
+            "value": "<ul class=\"nav navbar-nav\" aria-label=\"${Header menu}\" role=\"menubar\">\r\n  <div class=\"header-loader\" ng-class=\"{'invisible': !loadingIndicator}\">\r\n    <div class=\"hidden-xs sp-loading-indicator la-sm\">\r\n      <div></div>\r\n      <div></div>\r\n      <div></div>\r\n    </div>\r\n  </div>\r\n  <li ng-repeat=\"item in visibleItems\" ng-class=\"{dropdown: item.items.length > 0, 'header-menu-item': true}\" ng-include=\"'bryteMenuTemplate'\" role=\"presentation\"></li>\r\n<!-- Wishlist menu -->\r\n  <li ng-if=\"options.enable_wishlist && data.isLoggedIn && data.showWishlist\" ng-show=\"!accessibilityEnabled\" class=\"dropdown hidden-xs\" role=\"presentation\">\r\n  \t<a role=\"menuitem\" href=\"javascript:void(0)\"\r\n       data-toggle=\"dropdown\"\r\n       id=\"wishlist-menu\"\r\n       title=\"${Your Wish List currently has} {{wishlistItemCount}} ${items}\"\r\n       aria-label=\"${Wish List}\">\r\n      <span ng-bind-html=\"'${Wish List}'\" aria-hidden=\"true\"></span>\r\n      <span ng-if=\"wishlistItemCount > 0\" aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">{{wishlistItemCount}}</span>\r\n\t\t</a>\r\n    <div class=\"dropdown-menu wishlist-menu\">\r\n      <sp-widget widget=\"data.wishlistWidget\"></sp-widget>\r\n    </div>\r\n  </li>\r\n  <li ng-if=\"options.enable_wishlist && data.isLoggedIn && data.showWishlist\" class=\"dropdown\" ng-class=\"{'visible-xs': !accessibilityEnabled}\" role=\"presentation\">\r\n  \t<a href=\"?id=sc_wishlist\"\r\n       title=\"${Wish List}\"\r\n       class=\"toggle-dropdown\"\r\n       role=\"menuitem\"\r\n       aria-label=\"${Your Wish List currently has} {{wishlistItemCount}} ${items}\">\r\n      <span ng-bind-html=\"'${Wish List}'\" aria-hidden=\"true\"></span>\r\n      <span ng-if=\"wishlistItemCount > 0\" aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">{{wishlistItemCount}}</span>\r\n\t\t</a>\r\n  </li>\r\n  <!-- Shopping cart stuff -->\r\n <li ng-if=\"::options.enable_cart && data.isLoggedIn\" ng-show=\"::!accessibilityEnabled\" class=\"dropdown hidden-xs header-menu-item\" role=\"presentation\">\r\n  \t<a href\r\n       data-toggle=\"dropdown\"\r\n       id=\"cart-dropdown\"\r\n       uib-tooltip-template=\"'bryte-item-added-tooltip.html'\"\r\n       tooltip-placement=\"bottom\"\r\n       tooltip-trigger=\"'none'\"\r\n       tooltip-is-open=\"$parent.itemAddedTooltipOpen\"\r\n       title=\"${Your shopping cart currently has} {{cartItemCount}} ${items}\"\r\n       aria-label=\"${Shopping cart}\"\r\n       role=\"menuitem\">\r\n    \t<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>\r\n      <span ng-bind-html=\"'${Cart}'\" aria-hidden=\"true\"></span>\r\n      <span ng-if=\"cartItemCount > 0\" aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">{{cartItemCount}}</span>\r\n\t\t</a>\r\n    <div class=\"dropdown-menu cart-dropdown\">\r\n      <sp-widget widget=\"data.cartWidget\"></sp-widget>\r\n    </div>\r\n  </li>\r\n  <li ng-if=\"::options.enable_cart && data.isLoggedIn\" class=\"dropdown header-menu-item\" ng-class=\"::{'visible-xs': !accessibilityEnabled}\"  role=\"presentation\">\r\n  \t<a ng-href=\"?id=sc_cart\"\r\n       ng-click=\"collapse()\"\r\n       title=\"${Cart}\"\r\n       class=\"toggle-dropdown\"\r\n       role=\"menuitem\"\r\n       aria-label=\"${Your shopping cart currently has} {{cartItemCount}} ${items}\">\r\n    \t<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>\r\n      <span ng-bind-html=\"'${Cart}'\" aria-hidden=\"true\"></span>\r\n      <span ng-if=\"cartItemCount > 0\" aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">{{cartItemCount}}</span>\r\n\t</a>\r\n  </li>\r\n  <li ng-if=\"data.isLoggedIn && data.guidedTours\" class=\"dropdown hidden-xs header-menu-item gtd-dropdown-container\" role=\"presentation\">\r\n    <a href\r\n       data-toggle=\"dropdown\"\r\n       id=\"tour-dropdown\"\r\n       tooltip-placement=\"bottom\"\r\n       tooltip-trigger=\"'none'\"\r\n       title=\"${This page currently has {{data.guidedTours.collection.length}} tours}\"\r\n       aria-label=\"{{data.guidedTours.label}}\"\r\n       role=\"menuitem\">\r\n      <span ng-bind-html=\"'${Tours}'\" aria-hidden=\"true\"></span>\r\n      <span class='badge-container' ng-if=\"data.guidedTours.collection.length > 0\">\r\n        <span aria-hidden=\"true\" class=\"label label-as-badge label-primary sp-navbar-badge-count\">\r\n          &nbsp;\r\n       </span>\r\n      </span>\r\n    </a>\r\n    <div ng-if=\"data.guidedTours.collection.length < 1\" class=\"dropdown-menu empty-dropdown\">\r\n      <div class=\"panel ng-scope\">\r\n       <div class=\"panel-body\" aria-hidden=\"false\">\r\n        <div class=\"empty-tour-content\">\r\n         <div class=\"h4\">${You have no tours on this page}</div>\r\n         <p>${Tours appear when your administrator creates them on specific pages}</p>\r\n        </div>\r\n       </div>\r\n      </div>\r\n    </div>\r\n    <ul ng-if=\"data.guidedTours.collection.length > 0\" class=\"dropdown-menu\"\r\n        role=\"menu\" aria-label=\"${Tours}\">\r\n      <li role=\"presentation\" ng-repeat=\"mi in data.guidedTours.collection\"\r\n          class=\"ng-scope dropdown-menu-line\">\r\n        <a role=\"menuitem\" href title=\"{{::mi.title}}\" target=\"{{::mi.target}}\" ng-click=\"mi.clicked()\">\r\n          {{::mi.title | characters:60}}\r\n        </a>\r\n      </li>\r\n    </ul>\r\n  </li>\r\n  <li ng-if=\"data.isLoggedIn\" class=\"dropdown hidden-xs header-menu-item\" >\r\n    <a href ng-click=\"c.onWidget('widget-my-assets')\" id=\"my-asset-list\" tooltip-placement=\"bottom\" tooltip-trigger=\"'none'\"\r\n      title=\"${My Assets}\" aria-label=\"${My Assets}\" role=\"menuitem\">\r\n      <span ng-bind-html=\"'${My Assets}'\" aria-hidden=\"true\"></span>\r\n    </a>\r\n  </li>\r\n  <!-- <li ng-if=\"data.isLoggedIn && data.myAssets\"\r\n    class=\"dropdown hidden-xs header-menu-item myAssets\">\r\n    <a href data-toggle=\"dropdown\" id=\"tour-dropdown\" tooltip-placement=\"bottom\" tooltip-trigger=\"'none'\"\r\n      title=\"${My Assets}\" aria-label=\"${My Assets}\" role=\"menuitem\">\r\n      <span ng-bind-html=\"'${My Assets}'\" aria-hidden=\"true\"></span>\r\n    </a>\r\n    <div class=\"dropdown-menu empty-dropdown\">\r\n      <div class=\"panel ng-scope\">\r\n        <div class=\"panel-body\" aria-hidden=\"false\">\r\n          <sp-widget widget=\"data.myAssets\"/>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </li> -->\r\n</ul>",
+            "max_length": 65000,
+            "ed": {
+                "name": "template"
+            }
+        },
+        "css": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "CSS",
+            "sys_readonly": false,
+            "type": "css",
+            "mandatory": false,
+            "displayValue": ".header-loader {\n\tfloat: left;\n  \twidth: 24px;\n  \tposition: relative;\n  \ttop: 24px;\n}\n.myAssets .empty-dropdown{\n  width: 420px;\n  padding: 0;\n  z-index: 1000;\n  border-top-left-radius: 4px !important;\n  border-top-right-radius: 4px !important;\n  .panel {\n    margin: 0;\n  }\n  .panel-body{\n    padding: 5px;\n  }\n  .ma-container {\n    overflow-x: hidden;\n    position: relative;\n    width: 100%;\n  }\n  .ma-list {\n    list-style: none;\n    margin: 0;\n    padding: 0;\n    position: relative;\n\n    .ma-cell:first-of-type {\n      font: 12px \"SourceSansProSemibold\", \"Helvetica Neue\", \"Helvetica\", Arial, sans-serif;\n      max-width: 150px;\n      padding-right: 20px;\n      text-align: right;\n      white-space: normal;\n      width: 40%;\n      font-weight: bolder;\n    }\n    .ma-cell {\n      position: relative;\n      word-break: break-word;\n      display: inline-block;\n    }\n  }\n  .ma-list li{\n    align-items: flex-start;\n    border: 0;\n    cursor: default;\n    padding: 3px 15px;\n    overflow: hidden;\n  }\n}\n.cart-dropdown, .wishlist-menu, .gtd-dropdown-container .empty-dropdown {\n  width: 350px;\n  padding: 0;\n  z-index: 1000;\n  border-top-left-radius: 4px !important;\n  border-top-right-radius: 4px !important;\n\n  ul {\n    max-height: 300px;\n    overflow: auto;\n  }\n\n  .subtotal {\n    display: block;\n  }\n\n  .item-image {\n    padding: 0;\n    margin: 0;\n    text-align: center;\n    max-width:100%;\n    height:auto;\n  }\n  label, p {\n    padding: 0;\n    margin: 0;\n  }\n  .media {\n    padding: 0;\n    margin: 0;\n  }\n  .media-left > a {\n    display: block;\n    width: 48px;\n    max-width: 48px;\n  }\n  .media-body {\n    label {\n      font-weight: bold;\n    }\n  }\n  li.media {\n    border-top: 1px solid #cccccc;\n    padding: 1rem;\n  }\n  .panel {\n    margin: 0;\n  }\n  .panel .panel-body {\n    padding: 0;\n  }\n  .btn-clear {\n\t\tcolor: #333;\n    background-color: #fff;\n  }\n  p.quantity-price {\n    padding-top: 0.5rem;\n    span {\n      color: $text-muted;\n      padding-right: 0.5rem;\n    }\n  }\n  .align-right {\n  \ttext-align: right;\n  }\n}\n\n\n\n.item-added-tooltip, wishlist-item-added-tooltip {\n  width: 184px;\n  font-size: 14px;\n}\n\n.gtd-dropdown-container {\n  .empty-tour-content{\n    text-align: center;\n    margin:40px 20px;\n  }\n  .dropdown-menu li {\n    a {\n      cursor: pointer;\n    }\n    min-width: 20em;\n  }\n  .label-as-badge{\n    width: 12px;\n    height: 12px;\n    display: inline-block;\n    padding: 0px;\n    padding-top: 2px;\n  }\n  .badge-container {\n    display: inline-block;\n    width: 12px;\n  }\n}\n\n@media  (max-width: 845px) and (min-width: 768px)  {\n\t.header-menu-item ul {\n\t\tright: auto;\n\t\tleft: auto;\n\t}\n}\n",
+            "readonly": false,
+            "hint": "",
+            "name": "css",
+            "attributes": {},
+            "choice": 0,
+            "value": ".header-loader {\n\tfloat: left;\n  \twidth: 24px;\n  \tposition: relative;\n  \ttop: 24px;\n}\n.myAssets .empty-dropdown{\n  width: 420px;\n  padding: 0;\n  z-index: 1000;\n  border-top-left-radius: 4px !important;\n  border-top-right-radius: 4px !important;\n  .panel {\n    margin: 0;\n  }\n  .panel-body{\n    padding: 5px;\n  }\n  .ma-container {\n    overflow-x: hidden;\n    position: relative;\n    width: 100%;\n  }\n  .ma-list {\n    list-style: none;\n    margin: 0;\n    padding: 0;\n    position: relative;\n\n    .ma-cell:first-of-type {\n      font: 12px \"SourceSansProSemibold\", \"Helvetica Neue\", \"Helvetica\", Arial, sans-serif;\n      max-width: 150px;\n      padding-right: 20px;\n      text-align: right;\n      white-space: normal;\n      width: 40%;\n      font-weight: bolder;\n    }\n    .ma-cell {\n      position: relative;\n      word-break: break-word;\n      display: inline-block;\n    }\n  }\n  .ma-list li{\n    align-items: flex-start;\n    border: 0;\n    cursor: default;\n    padding: 3px 15px;\n    overflow: hidden;\n  }\n}\n.cart-dropdown, .wishlist-menu, .gtd-dropdown-container .empty-dropdown {\n  width: 350px;\n  padding: 0;\n  z-index: 1000;\n  border-top-left-radius: 4px !important;\n  border-top-right-radius: 4px !important;\n\n  ul {\n    max-height: 300px;\n    overflow: auto;\n  }\n\n  .subtotal {\n    display: block;\n  }\n\n  .item-image {\n    padding: 0;\n    margin: 0;\n    text-align: center;\n    max-width:100%;\n    height:auto;\n  }\n  label, p {\n    padding: 0;\n    margin: 0;\n  }\n  .media {\n    padding: 0;\n    margin: 0;\n  }\n  .media-left > a {\n    display: block;\n    width: 48px;\n    max-width: 48px;\n  }\n  .media-body {\n    label {\n      font-weight: bold;\n    }\n  }\n  li.media {\n    border-top: 1px solid #cccccc;\n    padding: 1rem;\n  }\n  .panel {\n    margin: 0;\n  }\n  .panel .panel-body {\n    padding: 0;\n  }\n  .btn-clear {\n\t\tcolor: #333;\n    background-color: #fff;\n  }\n  p.quantity-price {\n    padding-top: 0.5rem;\n    span {\n      color: $text-muted;\n      padding-right: 0.5rem;\n    }\n  }\n  .align-right {\n  \ttext-align: right;\n  }\n}\n\n\n\n.item-added-tooltip, wishlist-item-added-tooltip {\n  width: 184px;\n  font-size: 14px;\n}\n\n.gtd-dropdown-container {\n  .empty-tour-content{\n    text-align: center;\n    margin:40px 20px;\n  }\n  .dropdown-menu li {\n    a {\n      cursor: pointer;\n    }\n    min-width: 20em;\n  }\n  .label-as-badge{\n    width: 12px;\n    height: 12px;\n    display: inline-block;\n    padding: 0px;\n    padding-top: 2px;\n  }\n  .badge-container {\n    display: inline-block;\n    width: 12px;\n  }\n}\n\n@media  (max-width: 845px) and (min-width: 768px)  {\n\t.header-menu-item ul {\n\t\tright: auto;\n\t\tleft: auto;\n\t}\n}\n",
+            "max_length": 8000,
+            "ed": {
+                "name": "css"
+            }
+        },
+        "roles": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "Roles",
+            "sys_readonly": false,
+            "type": "user_roles",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "roles",
+            "attributes": {
+                "no_truncate": "true",
+                "update_exempt": "true",
+                "record_watcher_blacklist": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 255,
+            "ed": {
+                "name": "roles"
+            }
+        },
+        "link": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Link",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "function(scope, elem) {\n\t$(elem).on('keydown','.header-menu-item',function(e){\n\t\tvar target = e.target;\n\t\tif (target.localName == 'a') {\n\t\t\tvar currentMenuItem = $(target).parents('li');\n\t\t\tvar parentUL = currentMenuItem.parents('ul');\n\t\t\tvar allMenuItems = parentUL.children('li:visible');\n\t\t\tvar firstMenuItem = allMenuItems.first();\n\t\t\tvar lastMenuItem = allMenuItems.last();\n\t\t\tvar menuItemToFocus;\n\t\t\tif(e.keyCode == 37) {\n\t\t\t\te.preventDefault();\n\t\t\t\tcurrentMenuItem.removeClass('open');\n\t\t\t\tvar previousMenuItem = currentMenuItem.prevAll('li:visible').first();\n\t\t\t\t//enable circular navigation\n\t\t\t\tmenuItemToFocus = previousMenuItem.length ? previousMenuItem : lastMenuItem;\n\t\t\t\tmenuItemToFocus.find('a').focus();\n\t\t\t} else if(e.keyCode == 39) {\n\t\t\t\te.preventDefault();\n\t\t\t\tcurrentMenuItem.removeClass('open');\n\t\t\t\tvar nextMenuItem = currentMenuItem.nextAll('li:visible').first();\n\t\t\t\t//enable circular navigation\n\t\t\t\tmenuItemToFocus = nextMenuItem.length ? nextMenuItem : firstMenuItem;\n\t\t\t\tmenuItemToFocus.find('a').focus();\n\t\t\t}\n\t\t\tif(e.keyCode == 9) {\n\t\t\t\t$(target).parents('li').removeClass('open');\n\t\t\t}\n\t\t}\n\t\t});\n\t}",
+            "readonly": false,
+            "hint": "",
+            "name": "link",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "function(scope, elem) {\n\t$(elem).on('keydown','.header-menu-item',function(e){\n\t\tvar target = e.target;\n\t\tif (target.localName == 'a') {\n\t\t\tvar currentMenuItem = $(target).parents('li');\n\t\t\tvar parentUL = currentMenuItem.parents('ul');\n\t\t\tvar allMenuItems = parentUL.children('li:visible');\n\t\t\tvar firstMenuItem = allMenuItems.first();\n\t\t\tvar lastMenuItem = allMenuItems.last();\n\t\t\tvar menuItemToFocus;\n\t\t\tif(e.keyCode == 37) {\n\t\t\t\te.preventDefault();\n\t\t\t\tcurrentMenuItem.removeClass('open');\n\t\t\t\tvar previousMenuItem = currentMenuItem.prevAll('li:visible').first();\n\t\t\t\t//enable circular navigation\n\t\t\t\tmenuItemToFocus = previousMenuItem.length ? previousMenuItem : lastMenuItem;\n\t\t\t\tmenuItemToFocus.find('a').focus();\n\t\t\t} else if(e.keyCode == 39) {\n\t\t\t\te.preventDefault();\n\t\t\t\tcurrentMenuItem.removeClass('open');\n\t\t\t\tvar nextMenuItem = currentMenuItem.nextAll('li:visible').first();\n\t\t\t\t//enable circular navigation\n\t\t\t\tmenuItemToFocus = nextMenuItem.length ? nextMenuItem : firstMenuItem;\n\t\t\t\tmenuItemToFocus.find('a').focus();\n\t\t\t}\n\t\t\tif(e.keyCode == 9) {\n\t\t\t\t$(target).parents('li').removeClass('open');\n\t\t\t}\n\t\t}\n\t\t});\n\t}",
+            "max_length": 65000,
+            "ed": {
+                "name": "link"
+            }
+        },
+        "description": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Description",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "Defines what the widget does",
+            "name": "description",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 300,
+            "ed": {
+                "name": "description"
+            }
+        },
+        "demo_data": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Demo data",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "demo_data",
+            "attributes": {},
+            "choice": 0,
+            "value": "",
+            "max_length": 8000,
+            "ed": {
+                "name": "demo_data"
+            }
+        },
+        "option_schema": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Option schema",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "option_schema",
+            "attributes": {},
+            "choice": 0,
+            "value": "",
+            "max_length": 8000,
+            "ed": {
+                "name": "option_schema"
+            }
+        },
+        "script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Server script",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "(function(){\r\n\t// build menus\r\n\tvar menu_id = $sp.getValue('sys_id'); // instance sys_id\r\n\tvar gr = new GlideRecord('sp_instance_menu');\r\n\tgr.get(menu_id);\r\n\tdata.menu = {};\r\n\tdata.menu.items = $sp.getMenuItems(menu_id);\r\n\tdata.isLoggedIn = GlideSession.get().isLoggedIn();\r\n  \tdata.guidedTours = {};\r\n\t// Show tours only if gtd's sp sys property is set\r\n\tdata.showTours = (gs.getProperty('com.snc.guided_tours.sp.enable') === 'true') && data.isLoggedIn;\r\n  \tif (!data.showTours) {\r\n\t  data.guidedTours = null;\r\n\t}\r\n\tvar catalogArr = ($sp.getCatalogs().value + \"\").split(\",\");\r\n  \r\n\tcatalogArr.forEach(function(catalog) {\r\n\t\tdata.showWishlist = data.showWishlist || new sn_sc.Catalog(catalog).isWishlistEnabled();\r\n\t});\r\n\tif (data.isLoggedIn) {\r\n\t\tif (data.showWishlist)\r\n\t\t\tdata.wishlistWidget = $sp.getWidget(\"sc_wishlist_cart\", {wishlistTemplate: \"small_wishlist.html\", auto_update_wishlist:options.auto_update_wishlist});\r\n\t\tif (gs.getProperty(\"glide.sc.portal.use_cart_v2_header\", \"false\") === \"true\")\r\n\t\t\tdata.cartWidget = $sp.getWidget(\"sc-shopping-cart-v2\", {cartTemplate: \"small_shopping_cart_v2.html\", auto_update_cart:options.auto_update_cart});\r\n\t\telse\r\n\t\t\tdata.cartWidget = $sp.getWidget(\"sc-shopping-cart\", {cartTemplate: \"small_shopping_cart.html\", auto_update_cart:options.auto_update_cart});\r\n\t}\r\n})();",
+            "readonly": false,
+            "hint": "",
+            "name": "script",
+            "attributes": {},
+            "choice": 0,
+            "value": "(function(){\r\n\t// build menus\r\n\tvar menu_id = $sp.getValue('sys_id'); // instance sys_id\r\n\tvar gr = new GlideRecord('sp_instance_menu');\r\n\tgr.get(menu_id);\r\n\tdata.menu = {};\r\n\tdata.menu.items = $sp.getMenuItems(menu_id);\r\n\tdata.isLoggedIn = GlideSession.get().isLoggedIn();\r\n  \tdata.guidedTours = {};\r\n\t// Show tours only if gtd's sp sys property is set\r\n\tdata.showTours = (gs.getProperty('com.snc.guided_tours.sp.enable') === 'true') && data.isLoggedIn;\r\n  \tif (!data.showTours) {\r\n\t  data.guidedTours = null;\r\n\t}\r\n\tvar catalogArr = ($sp.getCatalogs().value + \"\").split(\",\");\r\n  \r\n\tcatalogArr.forEach(function(catalog) {\r\n\t\tdata.showWishlist = data.showWishlist || new sn_sc.Catalog(catalog).isWishlistEnabled();\r\n\t});\r\n\tif (data.isLoggedIn) {\r\n\t\tif (data.showWishlist)\r\n\t\t\tdata.wishlistWidget = $sp.getWidget(\"sc_wishlist_cart\", {wishlistTemplate: \"small_wishlist.html\", auto_update_wishlist:options.auto_update_wishlist});\r\n\t\tif (gs.getProperty(\"glide.sc.portal.use_cart_v2_header\", \"false\") === \"true\")\r\n\t\t\tdata.cartWidget = $sp.getWidget(\"sc-shopping-cart-v2\", {cartTemplate: \"small_shopping_cart_v2.html\", auto_update_cart:options.auto_update_cart});\r\n\t\telse\r\n\t\t\tdata.cartWidget = $sp.getWidget(\"sc-shopping-cart\", {cartTemplate: \"small_shopping_cart.html\", auto_update_cart:options.auto_update_cart});\r\n\t}\r\n})();",
+            "max_length": 65000,
+            "ed": {
+                "name": "script"
+            }
+        },
+        "has_preview": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Has preview",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "false",
+            "readonly": false,
+            "hint": "Defines whether preview data is available",
+            "name": "has_preview",
+            "attributes": {},
+            "choice": 0,
+            "value": "false",
+            "max_length": 40,
+            "ed": {
+                "name": "has_preview"
+            }
+        },
+        "public": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Public",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "true",
+            "readonly": false,
+            "hint": "Widget publicly available to unauthenticated users",
+            "name": "public",
+            "attributes": {
+                "update_exempt": "true"
+            },
+            "choice": 0,
+            "value": "true",
+            "max_length": 40,
+            "ed": {
+                "name": "public"
+            }
+        },
+        "docs": {
+            "sys_mandatory": false,
+            "visible": true,
+            "table_attributes": {
+                "update_synch": "true",
+                "synch_attachments": "true"
+            },
+            "dbType": 12,
+            "label": "Docs",
+            "sys_readonly": false,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sp_documentation",
+            "reference_type": "table",
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "docs",
+            "attributes": {
+                "encode_utf8": "false"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": false,
+            "choice": 0,
+            "value": "",
+            "max_length": 32,
+            "ed": {
+                "reference": "sp_documentation",
+                "searchField": "title",
+                "defaultOperator": "STARTSWITH",
+                "name": "docs"
+            }
+        },
+        "client_script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Client controller",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "function ($scope, spUtil, $rootScope, $timeout, spAriaUtil, spGtd, $window, spModal) {\r\n\tvar c = this;\r\n\t$scope.collapse = function() {\r\n\t\t$rootScope.$emit('sp-navbar-collapse');\r\n\t}\r\n\t$scope.loadingIndicator = $rootScope.loadingIndicator;\r\n\t$scope.cartItemCount = 0;\r\n\t$scope.wishlistItemCount = 0;\r\n\t$scope.itemAddedTooltipOpen = false;\r\n\t$scope.accessibilityEnabled = spAriaUtil.g_accessibility === \"true\";\r\n\t$scope.$on(\"$sp.service_catalog.cart.count\", function($evt, count) {\r\n\t\t$scope.cartItemCount = count;\r\n\t});\r\n\t$scope.$on(\"$sp.service_catalog.wishlist.count\", function($evt, count) {\r\n\t\t$scope.wishlistItemCount = count;\r\n\t});\r\n\tvar cancelTooltipPromise;\r\n\t$scope.$on(\"$sp.service_catalog.cart.add_item\", function() {\r\n\t\t$timeout.cancel(cancelTooltipPromise);\r\n\t\t$scope.itemAddedTooltipOpen = true;\r\n\t\tcancelTooltipPromise = $timeout(function() {\r\n\t\t\t$scope.itemAddedTooltipOpen = false;\r\n\t\t}, 3000);\r\n\t});\r\n\t$scope.$on('sp_loading_indicator', function(e, value) {\r\n\t\t$scope.loadingIndicator = value;\r\n\t});\r\n\t$scope.toggleCart = function() {\r\n\t\t$timeout.cancel(cancelTooltipPromise);\r\n\t\t$scope.itemAddedTooltipOpen = false;\r\n\t\t$timeout(function() {\r\n\t\t\t$(\"#cart-dropdown\").dropdown(\"toggle\");\r\n\t\t});\r\n\t};\r\n\t// PRB1108244: visibleItems array is used to improve keyboard nav\r\n\t// in menu, refresh it as needed\r\n\t$scope.$watch('data.menu.items', function() {\r\n\t\t$scope.visibleItems = [];\r\n\t\tif ($scope.data.menu.items) {\r\n\t\t\tfor (var i in $scope.data.menu.items) {\r\n\t\t\t\tvar item = $scope.data.menu.items[i];\r\n\t\t\t\tif (item.items || (item.scriptedItems && item.scriptedItems.count != 0))\r\n\t\t\t\t\t$scope.visibleItems.push(item);\r\n\t\t\t}\r\n\t\t}\r\n\t}, true);\r\n  $scope.$on('sp-menu-update-tours', function(event, tours) {\r\n    $scope.data.showTours = $scope.data.showTours && !spUtil.isMobile();\r\n    if ($scope.data.showTours === false) {\r\n\t\t$scope.data.guidedTours = null;\r\n\t\treturn;\r\n\t};\r\n    var guidedToursLabel = 'Guided Tours';\r\n    $scope.data.guidedTours = {\r\n\t\tlabel: guidedToursLabel,\r\n\t\tcollection: []\r\n\t};\r\n    if (tours.length > 0) {\r\n      $scope.data.guidedTours.collection = tours.map(function(t) {\r\n        return {\r\n          title:  t.name,\r\n          id: t.id,\r\n          clicked: function() {\r\n            spGtd.launch(t.id);\r\n          }\r\n        };\r\n      });\r\n    }\r\n  });\r\n\t\r\n\tc.onWidget = function(widgetId, widgetInput) {\r\n\t\tspModal.open({\r\n\t\t\t\tsize: 'lg',\r\n\t\t\t\ttitle: 'Assigned Assets',\r\n\t\t\t\twidget: widgetId,\r\n\t\t\t\tbuttons: [{label:'${Close}', cancel: true}],\r\n\t\t\t//{ \"table\": 'alm_hardware', \"title\":'Assigned Assets', \"color\":'#FF0000', \"hide_footer\":'true', \"filter\": 'assigned_toDYNAMIC90d1921e5f510100a9ad2572f2b477fe', \"sp_page\": 'form', \"list_page\": 'list', \"fields\": 'asset_tag,serial_number,model,install_status,location', \"o\": 'sys_updated_on', \"d\": 'desc' }\r\n\t\t}).then(function(){\r\n            console.log('widget dismissed');\r\n        });\r\n\t}\r\n\r\n\t// Get list of record watchers\r\n\tvar record_watchers = [];\r\n\tif ($scope.data.menu.items) {\r\n\t\tfor(var i in $scope.data.menu.items) {\r\n\t\t\tvar item = $scope.data.menu.items[i];\r\n\t\t\tif (item.type == 'scripted') {\r\n\t\t\t\tif (item.scriptedItems.record_watchers)\r\n\t\t\t\t\trecord_watchers = record_watchers.concat(item.scriptedItems.record_watchers);\r\n\t\t\t}\r\n\t\t\tif (item.type == 'filtered') {\r\n\t\t\t\trecord_watchers.push({'table':item.table,'filter':item.filter});\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t// Init record watchers\r\n\tfor (var y in record_watchers){\r\n\t\tvar watcher = record_watchers[y];\r\n\t\tspUtil.recordWatch($scope, watcher.table, watcher.filter);\r\n\t}\r\n  $rootScope.$broadcast('sp-header-loaded');\r\n}",
+            "readonly": false,
+            "hint": "",
+            "name": "client_script",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "function ($scope, spUtil, $rootScope, $timeout, spAriaUtil, spGtd, $window, spModal) {\r\n\tvar c = this;\r\n\t$scope.collapse = function() {\r\n\t\t$rootScope.$emit('sp-navbar-collapse');\r\n\t}\r\n\t$scope.loadingIndicator = $rootScope.loadingIndicator;\r\n\t$scope.cartItemCount = 0;\r\n\t$scope.wishlistItemCount = 0;\r\n\t$scope.itemAddedTooltipOpen = false;\r\n\t$scope.accessibilityEnabled = spAriaUtil.g_accessibility === \"true\";\r\n\t$scope.$on(\"$sp.service_catalog.cart.count\", function($evt, count) {\r\n\t\t$scope.cartItemCount = count;\r\n\t});\r\n\t$scope.$on(\"$sp.service_catalog.wishlist.count\", function($evt, count) {\r\n\t\t$scope.wishlistItemCount = count;\r\n\t});\r\n\tvar cancelTooltipPromise;\r\n\t$scope.$on(\"$sp.service_catalog.cart.add_item\", function() {\r\n\t\t$timeout.cancel(cancelTooltipPromise);\r\n\t\t$scope.itemAddedTooltipOpen = true;\r\n\t\tcancelTooltipPromise = $timeout(function() {\r\n\t\t\t$scope.itemAddedTooltipOpen = false;\r\n\t\t}, 3000);\r\n\t});\r\n\t$scope.$on('sp_loading_indicator', function(e, value) {\r\n\t\t$scope.loadingIndicator = value;\r\n\t});\r\n\t$scope.toggleCart = function() {\r\n\t\t$timeout.cancel(cancelTooltipPromise);\r\n\t\t$scope.itemAddedTooltipOpen = false;\r\n\t\t$timeout(function() {\r\n\t\t\t$(\"#cart-dropdown\").dropdown(\"toggle\");\r\n\t\t});\r\n\t};\r\n\t// PRB1108244: visibleItems array is used to improve keyboard nav\r\n\t// in menu, refresh it as needed\r\n\t$scope.$watch('data.menu.items', function() {\r\n\t\t$scope.visibleItems = [];\r\n\t\tif ($scope.data.menu.items) {\r\n\t\t\tfor (var i in $scope.data.menu.items) {\r\n\t\t\t\tvar item = $scope.data.menu.items[i];\r\n\t\t\t\tif (item.items || (item.scriptedItems && item.scriptedItems.count != 0))\r\n\t\t\t\t\t$scope.visibleItems.push(item);\r\n\t\t\t}\r\n\t\t}\r\n\t}, true);\r\n  $scope.$on('sp-menu-update-tours', function(event, tours) {\r\n    $scope.data.showTours = $scope.data.showTours && !spUtil.isMobile();\r\n    if ($scope.data.showTours === false) {\r\n\t\t$scope.data.guidedTours = null;\r\n\t\treturn;\r\n\t};\r\n    var guidedToursLabel = 'Guided Tours';\r\n    $scope.data.guidedTours = {\r\n\t\tlabel: guidedToursLabel,\r\n\t\tcollection: []\r\n\t};\r\n    if (tours.length > 0) {\r\n      $scope.data.guidedTours.collection = tours.map(function(t) {\r\n        return {\r\n          title:  t.name,\r\n          id: t.id,\r\n          clicked: function() {\r\n            spGtd.launch(t.id);\r\n          }\r\n        };\r\n      });\r\n    }\r\n  });\r\n\t\r\n\tc.onWidget = function(widgetId, widgetInput) {\r\n\t\tspModal.open({\r\n\t\t\t\tsize: 'lg',\r\n\t\t\t\ttitle: 'Assigned Assets',\r\n\t\t\t\twidget: widgetId,\r\n\t\t\t\tbuttons: [{label:'${Close}', cancel: true}],\r\n\t\t\t//{ \"table\": 'alm_hardware', \"title\":'Assigned Assets', \"color\":'#FF0000', \"hide_footer\":'true', \"filter\": 'assigned_toDYNAMIC90d1921e5f510100a9ad2572f2b477fe', \"sp_page\": 'form', \"list_page\": 'list', \"fields\": 'asset_tag,serial_number,model,install_status,location', \"o\": 'sys_updated_on', \"d\": 'desc' }\r\n\t\t}).then(function(){\r\n            console.log('widget dismissed');\r\n        });\r\n\t}\r\n\r\n\t// Get list of record watchers\r\n\tvar record_watchers = [];\r\n\tif ($scope.data.menu.items) {\r\n\t\tfor(var i in $scope.data.menu.items) {\r\n\t\t\tvar item = $scope.data.menu.items[i];\r\n\t\t\tif (item.type == 'scripted') {\r\n\t\t\t\tif (item.scriptedItems.record_watchers)\r\n\t\t\t\t\trecord_watchers = record_watchers.concat(item.scriptedItems.record_watchers);\r\n\t\t\t}\r\n\t\t\tif (item.type == 'filtered') {\r\n\t\t\t\trecord_watchers.push({'table':item.table,'filter':item.filter});\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t// Init record watchers\r\n\tfor (var y in record_watchers){\r\n\t\tvar watcher = record_watchers[y];\r\n\t\tspUtil.recordWatch($scope, watcher.table, watcher.filter);\r\n\t}\r\n  $rootScope.$broadcast('sp-header-loaded');\r\n}",
+            "max_length": 8000,
+            "ed": {
+                "name": "client_script"
+            }
+        },
+        "data_table": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "default_value": "sp_instance",
+            "label": "Data table",
+            "sys_readonly": false,
+            "type": "table_name",
+            "mandatory": true,
+            "displayValue": "sp_instance_menu",
+            "readonly": false,
+            "hint": "",
+            "name": "data_table",
+            "attributes": {
+                "base_table": "sp_instance",
+                "base_start": "true"
+            },
+            "choice": 0,
+            "choices": [],
+            "value": "sp_instance_menu",
+            "max_length": 80,
+            "ed": {
+                "name": "data_table"
+            }
+        },
+        "name": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "label": "Name",
+            "sys_readonly": false,
+            "type": "translated_field",
+            "mandatory": true,
+            "displayValue": "Bryte Header Menu",
+            "readonly": false,
+            "hint": "",
+            "name": "name",
+            "attributes": {},
+            "choice": 0,
+            "value": "Bryte Header Menu",
+            "max_length": 40,
+            "ed": {
+                "name": "name"
+            }
+        },
+        "sys_scope": {
+            "sys_mandatory": false,
+            "visible": true,
+            "table_attributes": {},
+            "dbType": 12,
+            "label": "Application",
+            "sys_readonly": true,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sys_scope",
+            "reference_type": "table",
+            "displayValue": "Global",
+            "readonly": true,
+            "hint": "Application containing this record",
+            "name": "sys_scope",
+            "attributes": {
+                "encode_utf8": "false",
+                "list_force_default": "true",
+                "readonly_clickthrough": "true",
+                "ignore_filter_on_new": "true"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": true,
+            "choice": 0,
+            "value": "global",
+            "max_length": 32,
+            "ed": {
+                "reference": "sys_scope",
+                "searchField": "name",
+                "defaultOperator": "STARTSWITH",
+                "name": "sys_scope"
+            }
+        },
+        "id": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "ID",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "Identifier for $sp.embedWidget()",
+            "name": "id",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 40,
+            "ed": {
+                "name": "id"
+            }
+        },
+        "field_list": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dependentField": "data_table",
+            "dbType": -1,
+            "label": "Fields",
+            "sys_readonly": false,
+            "type": "field_list",
+            "mandatory": false,
+            "displayValue": "title",
+            "readonly": false,
+            "hint": "",
+            "name": "field_list",
+            "attributes": {
+                "is_multi_text": "false"
+            },
+            "choice": 0,
+            "value": "title",
+            "max_length": 1000,
+            "ed": {
+                "dependent_value": "sp_instance_menu",
+                "name": "field_list"
+            }
+        },
+        "controller_as": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "controllerAs",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "c",
+            "readonly": false,
+            "hint": "Identifier name for a reference to the controller in the directive's scope",
+            "name": "controller_as",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "c",
+            "max_length": 100,
+            "ed": {
+                "name": "controller_as"
+            }
+        }
+    }
+}
