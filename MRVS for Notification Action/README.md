@@ -1,3 +1,3 @@
-![Action Snap](action_snip.png)
-![Flow Snap](flow_snip.PNG)
-![Table](output.PNG)
+![Action Snap](action_snap.png)
+![Flow Snap](flow_snap.PNG)
+![Table](output_snap.PNG)
