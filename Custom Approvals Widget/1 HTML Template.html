@@ -1,0 +1,122 @@
+<div class="panel panel-{{::options.color}} b">
+  <div class="panel-heading">
+    <h2 class="h4 panel-title">
+      <fa ng-if="::options.glyph.length" name="{{::options.glyph}}" class="m-r-sm" ></fa>
+      ${My Approvals}
+      <label ng-if="data.pagination.showPagination && (data.pagination.from <= data.pagination.to)" class="pull-right text-info">
+        <span ng-if="data.pagination.from != data.pagination.to">
+          {{data.pagination.from}} ${to_lower}
+        </span>
+        {{data.pagination.to}} of {{data.pagination.of}}
+      </label>
+    </h2>
+  </div>
+  <div class="panel-body" ng-class="{'padder-b-none': data.approvals.length != 0}">
+    <div ng-if="data.approvals.length == 0 && data.pagination.of == 0">
+      ${You have no pending approvals}
+    </div>
+    <div ng-if="data.approvals.length == 0 && data.pagination.of != 0">
+      ${Loading approvals...}
+    </div>
+    <div ng-repeat="approval in data.approvals" class="sp-approval m-b-xl">
+      <div class="row">
+      	<div ng-class="contentColClass">
+          <div ng-if="approval.task.request"><label>${Request}</label> {{::approval.task.request}}</div>
+          <div ng-if="approval.task.number || approval.task.short_description">
+            <!-- Modified -->
+            <label class="checkbox-inline"><input type='checkbox' id='approval_checkbox_{{::approval.sys_id}}' ng-model="approval.checkbox" ng-click="updateSelectedAll()" class='chkBox'>
+              <a ng-href="?id=approval&table=sysapproval_approver&sys_id={{::approval.sys_id}}" id="approval_task_{{::approval.sys_id}}"title="{{data.ViewApprovalPageMsg}}">
+                <span ng-if="approval.task.number">{{::approval.task.number}}</span>
+                <span ng-if="approval.task.number && approval.task.short_description"> - </span>
+                <span ng-if="approval.task.short_description">{{::approval.task.short_description}}</span>
+              </a>
+            </label>
+          </div>
+          <div ng-if="approval.task.opened_by"><label>${Requestor}</label> {{::approval.task.opened_by}}</div>
+          <div ng-if="approval.task.approver"><label>${Approver}</label> {{::approval.task.approver}}</div>
+          <div ng-if="approval.task.start_date"><label>${Start}</label> {{::approval.task.start_date}}</div>
+          <div ng-if="approval.task.end_date"><label>${End}</label> {{::approval.task.end_date}}</div>
+          <div ng-if="approval.task.quantity"><label>${Quantity}</label> {{::approval.task.quantity}}</div>
+          <div ng-if="approval.task.price"><label>${Price}</label> {{::approval.task.price}}
+            <span ng-if="approval.task.recurring_price"><label>${Recurring price}</label> {{::approval.task.recurring_price}} {{::approval.task.recurring_frequency}}</span>
+            <label ng-if="approval.task.quantity && approval.task.quantity > 1"> ${each}</label>
+          </div>
+          <div ng-if="approval.items.length == 1">
+            <div ng-repeat="item in approval.items">
+             <sp-widget ng-if="item.variableSummarizerWidget" widget="item.variableSummarizerWidget"></sp-widget> 
+            </div>
+          </div>
+          <sp-widget ng-if="approval.variableSummarizerWidget" widget="approval.variableSummarizerWidget"></sp-widget>
+          
+          </div>
+        <div ng-if="!options.portal" class="col-sm-4">
+          <button name="approve" id="approve_button_{{::approval.sys_id}}" aria-labelledby=" approve_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}" ng-if="approval.state == 'requested'" class="btn btn-primary btn-block" style="border-width:1px;" ng-click="approve(approval.sys_id, approval.requireEsigApproval);">${Approve}</button>
+          <button name="reject" id="reject_button_{{::approval.sys_id}}" aria-labelledby=" reject_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}" ng-if="approval.state == 'requested'" class="btn btn-default btn-block" ng-click="c.openRejModal(approval.sys_id, approval.requireEsigApproval);">${Reject}</button>
+          <button ng-if="approval.state == 'approved'" class="btn btn-success btn-block">{{approval.stateLabel}}</button>
+          <button ng-if="approval.state == 'rejected'" class="btn btn-danger btn-block">{{approval.stateLabel}}</button>
+          <button ng-if="approval.state != 'requested'" class="btn btn-default btn-block" style="visibility:hidden">{{approval.stateLabel}}</button>
+        </div>
+        <div ng-if="options.portal && approval.state == 'requested'" class="col-xs-6">
+          <button name="reject" id="reject_button_{{::approval.sys_id}}" aria-labelledby=" reject_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}" class="btn btn-default btn-block" ng-click="c.openRejModal(approval.sys_id, approval.requireEsigApproval);">${Reject}</button>
+        </div>
+        <div ng-if="options.portal && approval.state == 'requested'" class="col-xs-6">
+          <button name="approve" id="approve_button_{{::approval.sys_id}}" aria-labelledby=" approve_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}" class="btn btn-primary btn-block" ng-click="approve(approval.sys_id, approval.requireEsigApproval);">${Approve}</button>
+        </div>
+        <div ng-if="options.portal && approval.state != 'requested'" class="col-xs-12">
+          <button ng-if="approval.state == 'approved'" class="btn btn-success btn-block">{{approval.stateLabel}}</button>
+          <button ng-if="approval.state == 'rejected'" class="btn btn-danger btn-block">{{approval.stateLabel}}</button>
+        </div>
+      </div>
+    </div> <!-- body -->
+       
+  </div> 
+  <div class="panel-footer clearfix" ng-show="data.approvals.length > 0">
+    <!-- Modified -->
+    <span class="pull-left" style="padding-right: 10px;margin-top:6px">
+      <strong><label class="checkbox-inline" for="select_all"><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">Select All</label></strong>
+    </span>
+    <button class="btn btn-success pull-left" type="submit" ng-click="approveOnlyChecked()">${Approve Selected}</button>
+    <button class="btn btn-danger pull-left" type="submit" ng-click="openMultiRejModal()">${Reject Selected}</button
+    <div ng-if="data.pagination.showPagination">
+      <a id="previous-btn" href="javascript:void(0)" ng-click="previousPage()" ng-show="data.pagination.hasPrevious" class="pull-right btn btn-sm btn-default" aria-label="${Pagination button Previous}">
+        <i class="fa fa-arrow-left m-r-sm" aria-hidden="true"></i>${Previous}</a>
+      <a id="next_btn" href="javascript:void(0)" ng-click="nextPage()" ng-show="data.pagination.hasNext" class="pull-right btn btn-sm btn-default " aria-label="${Pagination button Next}">
+        ${Next}<i class="fa fa-arrow-right m-r-sm col-md-offset-3" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+
+<script  type="text/ng-template" id="modalRejApp">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <button type="button" class="close" ng-click="c.closeModal()">&times;</button>
+      <h4 class="panel-title">${Reject Approval}</h4>
+    </div>
+  <div class="panel-body wrapper-xl">
+    <form name="modalTemplateReject" ng-submit="reject(c.temp_id, c.temp_esig_req)">
+      <div class="form-group">
+        <textarea required sp-autosize="true" ng-required="true" ng-model="c.comments" id="rejectComments" placeholder="Comments Required" class="form-control ng-pristine ng-valid ng-scope ng-empty ng-touched" aria-invalid="false" style="overflow: hidden; word-wrap: break-word; resize: horizontal;"></textarea>
+      </div>
+<!--input class="btn btn-primary" type="submit" /-->
+<!--button class="btn btn-primary" ng-click="closeModal()">${Close}</button-->
+      <button class="btn btn-primary" type="submit" ng-disabled="data.comments.length == 0">${Reject Approval}</button>
+    </form>
+  </div>
+</script>
+<script  type="text/ng-template" id="modalMultiRejectApp">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <button type="button" class="close" ng-click="c.closeModal()">&times;</button>
+      <h4 class="panel-title">${Reject Approvals}</h4>
+    </div>
+  <div class="panel-body wrapper-xl">
+    <form name="modalTemplateReject" ng-submit="rejectOnlyChecked(c.list, c.comments)">
+      <div class="form-group">
+        <textarea required sp-autosize="true" ng-required="true" ng-model="c.comments" id="rejectComments" placeholder="Comments Required" class="form-control ng-pristine ng-valid ng-scope ng-empty ng-touched" aria-invalid="false" style="overflow: hidden; word-wrap: break-word; resize: horizontal;"></textarea>
+      </div>
+<!--input class="btn btn-primary" type="submit" /-->
+<!--button class="btn btn-primary" ng-click="closeModal()">${Close}</button-->
+      <button class="btn btn-primary" type="submit" ng-disabled="data.comments.length == 0">${Reject Approval}</button>
+    </form>
+  </div>
+</script>

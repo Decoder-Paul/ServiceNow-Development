@@ -1,0 +1,17 @@
+.pre-wrap {
+  white-space:pre-wrap;
+}
+
+.col-sm-4 {
+  padding-left: 0px;
+}
+	    
+@media screen and (max-width: 992px) {
+  .col-sm-4 {
+    padding-right: 0px;
+  }
+
+  .col-sm-8 {
+    padding-left: 0px;
+  }
+}

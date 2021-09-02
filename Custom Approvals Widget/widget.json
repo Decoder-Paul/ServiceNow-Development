@@ -1,0 +1,424 @@
+{
+    "instance": {
+        "name": "rbidev",
+        "url": "https://rbidev.service-now.com",
+        "g_ck": "d6f17a52db16f8104349cf5e1396197a940f9664bf58487983100be1cff4b93855ca3409"
+    },
+    "action": "saveWidget",
+    "tableName": "sp_widget",
+    "name": "Approvals Custom",
+    "sys_id": "5cf34d1f1bbfa050885977f58d4bcb33",
+    "widget": {
+        "template": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Body HTML template",
+            "sys_readonly": false,
+            "type": "html_template",
+            "mandatory": false,
+            "displayValue": "<div class=\"panel panel-{{::options.color}} b\">\n  <div class=\"panel-heading\">\n    <h2 class=\"h4 panel-title\">\n      <fa ng-if=\"::options.glyph.length\" name=\"{{::options.glyph}}\" class=\"m-r-sm\" ></fa>\n      ${My Approvals}\n      <label ng-if=\"data.pagination.showPagination && (data.pagination.from <= data.pagination.to)\" class=\"pull-right text-info\">\n        <span ng-if=\"data.pagination.from != data.pagination.to\">\n          {{data.pagination.from}} ${to_lower}\n        </span>\n        {{data.pagination.to}} of {{data.pagination.of}}\n      </label>\n    </h2>\n  </div>\n  <div class=\"panel-body\" ng-class=\"{'padder-b-none': data.approvals.length != 0}\">\n    <div ng-if=\"data.approvals.length == 0 && data.pagination.of == 0\">\n      ${You have no pending approvals}\n    </div>\n    <div ng-if=\"data.approvals.length == 0 && data.pagination.of != 0\">\n      ${Loading approvals...}\n    </div>\n    <div ng-repeat=\"approval in data.approvals\" class=\"sp-approval m-b-xl\">\n      <div class=\"row\">\n      \t<div ng-class=\"contentColClass\">\n          <div ng-if=\"approval.task.request\"><label>${Request}</label> {{::approval.task.request}}</div>\n          <div ng-if=\"approval.task.number || approval.task.short_description\">\n            <!-- Modified -->\n            <label class=\"checkbox-inline\"><input type='checkbox' id='approval_checkbox_{{::approval.sys_id}}' ng-model=\"approval.checkbox\" ng-click=\"updateSelectedAll()\" class='chkBox'>\n              <a ng-href=\"?id=approval&table=sysapproval_approver&sys_id={{::approval.sys_id}}\" id=\"approval_task_{{::approval.sys_id}}\"title=\"{{data.ViewApprovalPageMsg}}\">\n                <span ng-if=\"approval.task.number\">{{::approval.task.number}}</span>\n                <span ng-if=\"approval.task.number && approval.task.short_description\"> - </span>\n                <span ng-if=\"approval.task.short_description\">{{::approval.task.short_description}}</span>\n              </a>\n            </label>\n          </div>\n          <div ng-if=\"approval.task.opened_by\"><label>${Requestor}</label> {{::approval.task.opened_by}}</div>\n          <div ng-if=\"approval.task.approver\"><label>${Approver}</label> {{::approval.task.approver}}</div>\n          <div ng-if=\"approval.task.start_date\"><label>${Start}</label> {{::approval.task.start_date}}</div>\n          <div ng-if=\"approval.task.end_date\"><label>${End}</label> {{::approval.task.end_date}}</div>\n          <div ng-if=\"approval.task.quantity\"><label>${Quantity}</label> {{::approval.task.quantity}}</div>\n          <div ng-if=\"approval.task.price\"><label>${Price}</label> {{::approval.task.price}}\n            <span ng-if=\"approval.task.recurring_price\"><label>${Recurring price}</label> {{::approval.task.recurring_price}} {{::approval.task.recurring_frequency}}</span>\n            <label ng-if=\"approval.task.quantity && approval.task.quantity > 1\"> ${each}</label>\n          </div>\n          <div ng-if=\"approval.items.length == 1\">\n            <div ng-repeat=\"item in approval.items\">\n             <sp-widget ng-if=\"item.variableSummarizerWidget\" widget=\"item.variableSummarizerWidget\"></sp-widget> \n            </div>\n          </div>\n          <sp-widget ng-if=\"approval.variableSummarizerWidget\" widget=\"approval.variableSummarizerWidget\"></sp-widget>\n          \n          </div>\n        <div ng-if=\"!options.portal\" class=\"col-sm-4\">\n          <button name=\"approve\" id=\"approve_button_{{::approval.sys_id}}\" aria-labelledby=\" approve_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}\" ng-if=\"approval.state == 'requested'\" class=\"btn btn-primary btn-block\" style=\"border-width:1px;\" ng-click=\"approve(approval.sys_id, approval.requireEsigApproval);\">${Approve}</button>\n          <button name=\"reject\" id=\"reject_button_{{::approval.sys_id}}\" aria-labelledby=\" reject_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}\" ng-if=\"approval.state == 'requested'\" class=\"btn btn-default btn-block\" ng-click=\"c.openRejModal(approval.sys_id, approval.requireEsigApproval);\">${Reject}</button>\n          <button ng-if=\"approval.state == 'approved'\" class=\"btn btn-success btn-block\">{{approval.stateLabel}}</button>\n          <button ng-if=\"approval.state == 'rejected'\" class=\"btn btn-danger btn-block\">{{approval.stateLabel}}</button>\n          <button ng-if=\"approval.state != 'requested'\" class=\"btn btn-default btn-block\" style=\"visibility:hidden\">{{approval.stateLabel}}</button>\n        </div>\n        <div ng-if=\"options.portal && approval.state == 'requested'\" class=\"col-xs-6\">\n          <button name=\"reject\" id=\"reject_button_{{::approval.sys_id}}\" aria-labelledby=\" reject_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}\" class=\"btn btn-default btn-block\" ng-click=\"c.openRejModal(approval.sys_id, approval.requireEsigApproval);\">${Reject}</button>\n        </div>\n        <div ng-if=\"options.portal && approval.state == 'requested'\" class=\"col-xs-6\">\n          <button name=\"approve\" id=\"approve_button_{{::approval.sys_id}}\" aria-labelledby=\" approve_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}\" class=\"btn btn-primary btn-block\" ng-click=\"approve(approval.sys_id, approval.requireEsigApproval);\">${Approve}</button>\n        </div>\n        <div ng-if=\"options.portal && approval.state != 'requested'\" class=\"col-xs-12\">\n          <button ng-if=\"approval.state == 'approved'\" class=\"btn btn-success btn-block\">{{approval.stateLabel}}</button>\n          <button ng-if=\"approval.state == 'rejected'\" class=\"btn btn-danger btn-block\">{{approval.stateLabel}}</button>\n        </div>\n      </div>\n    </div> <!-- body -->\n       \n  </div> \n  <div class=\"panel-footer clearfix\" ng-show=\"data.approvals.length > 0\">\n    <!-- Modified -->\n    <span class=\"pull-left\" style=\"padding-right: 10px;margin-top:6px\">\n      <strong><label class=\"checkbox-inline\" for=\"select_all\"><input type=\"checkbox\" ng-model=\"selectedAll\" ng-click=\"checkAll()\">Select All</label></strong>\n    </span>\n    <button class=\"btn btn-success pull-left\" type=\"submit\" ng-click=\"approveOnlyChecked()\">${Approve Selected}</button>\n    <button class=\"btn btn-danger pull-left\" type=\"submit\" ng-click=\"openMultiRejModal()\">${Reject Selected}</button\n    <div ng-if=\"data.pagination.showPagination\">\n      <a id=\"previous-btn\" href=\"javascript:void(0)\" ng-click=\"previousPage()\" ng-show=\"data.pagination.hasPrevious\" class=\"pull-right btn btn-sm btn-default\" aria-label=\"${Pagination button Previous}\">\n        <i class=\"fa fa-arrow-left m-r-sm\" aria-hidden=\"true\"></i>${Previous}</a>\n      <a id=\"next_btn\" href=\"javascript:void(0)\" ng-click=\"nextPage()\" ng-show=\"data.pagination.hasNext\" class=\"pull-right btn btn-sm btn-default \" aria-label=\"${Pagination button Next}\">\n        ${Next}<i class=\"fa fa-arrow-right m-r-sm col-md-offset-3\" aria-hidden=\"true\"></i></a>\n    </div>\n  </div>\n</div>\n\n<script  type=\"text/ng-template\" id=\"modalRejApp\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n      <button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n      <h4 class=\"panel-title\">${Reject Approval}</h4>\n    </div>\n  <div class=\"panel-body wrapper-xl\">\n    <form name=\"modalTemplateReject\" ng-submit=\"reject(c.temp_id, c.temp_esig_req)\">\n      <div class=\"form-group\">\n        <textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.comments\" id=\"rejectComments\" placeholder=\"Comments Required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n      </div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"closeModal()\">${Close}</button-->\n      <button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"data.comments.length == 0\">${Reject Approval}</button>\n    </form>\n  </div>\n</script>\n<script  type=\"text/ng-template\" id=\"modalMultiRejectApp\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n      <button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n      <h4 class=\"panel-title\">${Reject Approvals}</h4>\n    </div>\n  <div class=\"panel-body wrapper-xl\">\n    <form name=\"modalTemplateReject\" ng-submit=\"rejectOnlyChecked(c.list, c.comments)\">\n      <div class=\"form-group\">\n        <textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.comments\" id=\"rejectComments\" placeholder=\"Comments Required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n      </div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"closeModal()\">${Close}</button-->\n      <button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"data.comments.length == 0\">${Reject Approval}</button>\n    </form>\n  </div>\n</script>",
+            "readonly": false,
+            "hint": "",
+            "name": "template",
+            "attributes": {},
+            "choice": 0,
+            "value": "<div class=\"panel panel-{{::options.color}} b\">\n  <div class=\"panel-heading\">\n    <h2 class=\"h4 panel-title\">\n      <fa ng-if=\"::options.glyph.length\" name=\"{{::options.glyph}}\" class=\"m-r-sm\" ></fa>\n      ${My Approvals}\n      <label ng-if=\"data.pagination.showPagination && (data.pagination.from <= data.pagination.to)\" class=\"pull-right text-info\">\n        <span ng-if=\"data.pagination.from != data.pagination.to\">\n          {{data.pagination.from}} ${to_lower}\n        </span>\n        {{data.pagination.to}} of {{data.pagination.of}}\n      </label>\n    </h2>\n  </div>\n  <div class=\"panel-body\" ng-class=\"{'padder-b-none': data.approvals.length != 0}\">\n    <div ng-if=\"data.approvals.length == 0 && data.pagination.of == 0\">\n      ${You have no pending approvals}\n    </div>\n    <div ng-if=\"data.approvals.length == 0 && data.pagination.of != 0\">\n      ${Loading approvals...}\n    </div>\n    <div ng-repeat=\"approval in data.approvals\" class=\"sp-approval m-b-xl\">\n      <div class=\"row\">\n      \t<div ng-class=\"contentColClass\">\n          <div ng-if=\"approval.task.request\"><label>${Request}</label> {{::approval.task.request}}</div>\n          <div ng-if=\"approval.task.number || approval.task.short_description\">\n            <!-- Modified -->\n            <label class=\"checkbox-inline\"><input type='checkbox' id='approval_checkbox_{{::approval.sys_id}}' ng-model=\"approval.checkbox\" ng-click=\"updateSelectedAll()\" class='chkBox'>\n              <a ng-href=\"?id=approval&table=sysapproval_approver&sys_id={{::approval.sys_id}}\" id=\"approval_task_{{::approval.sys_id}}\"title=\"{{data.ViewApprovalPageMsg}}\">\n                <span ng-if=\"approval.task.number\">{{::approval.task.number}}</span>\n                <span ng-if=\"approval.task.number && approval.task.short_description\"> - </span>\n                <span ng-if=\"approval.task.short_description\">{{::approval.task.short_description}}</span>\n              </a>\n            </label>\n          </div>\n          <div ng-if=\"approval.task.opened_by\"><label>${Requestor}</label> {{::approval.task.opened_by}}</div>\n          <div ng-if=\"approval.task.approver\"><label>${Approver}</label> {{::approval.task.approver}}</div>\n          <div ng-if=\"approval.task.start_date\"><label>${Start}</label> {{::approval.task.start_date}}</div>\n          <div ng-if=\"approval.task.end_date\"><label>${End}</label> {{::approval.task.end_date}}</div>\n          <div ng-if=\"approval.task.quantity\"><label>${Quantity}</label> {{::approval.task.quantity}}</div>\n          <div ng-if=\"approval.task.price\"><label>${Price}</label> {{::approval.task.price}}\n            <span ng-if=\"approval.task.recurring_price\"><label>${Recurring price}</label> {{::approval.task.recurring_price}} {{::approval.task.recurring_frequency}}</span>\n            <label ng-if=\"approval.task.quantity && approval.task.quantity > 1\"> ${each}</label>\n          </div>\n          <div ng-if=\"approval.items.length == 1\">\n            <div ng-repeat=\"item in approval.items\">\n             <sp-widget ng-if=\"item.variableSummarizerWidget\" widget=\"item.variableSummarizerWidget\"></sp-widget> \n            </div>\n          </div>\n          <sp-widget ng-if=\"approval.variableSummarizerWidget\" widget=\"approval.variableSummarizerWidget\"></sp-widget>\n          \n          </div>\n        <div ng-if=\"!options.portal\" class=\"col-sm-4\">\n          <button name=\"approve\" id=\"approve_button_{{::approval.sys_id}}\" aria-labelledby=\" approve_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}\" ng-if=\"approval.state == 'requested'\" class=\"btn btn-primary btn-block\" style=\"border-width:1px;\" ng-click=\"approve(approval.sys_id, approval.requireEsigApproval);\">${Approve}</button>\n          <button name=\"reject\" id=\"reject_button_{{::approval.sys_id}}\" aria-labelledby=\" reject_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}\" ng-if=\"approval.state == 'requested'\" class=\"btn btn-default btn-block\" ng-click=\"c.openRejModal(approval.sys_id, approval.requireEsigApproval);\">${Reject}</button>\n          <button ng-if=\"approval.state == 'approved'\" class=\"btn btn-success btn-block\">{{approval.stateLabel}}</button>\n          <button ng-if=\"approval.state == 'rejected'\" class=\"btn btn-danger btn-block\">{{approval.stateLabel}}</button>\n          <button ng-if=\"approval.state != 'requested'\" class=\"btn btn-default btn-block\" style=\"visibility:hidden\">{{approval.stateLabel}}</button>\n        </div>\n        <div ng-if=\"options.portal && approval.state == 'requested'\" class=\"col-xs-6\">\n          <button name=\"reject\" id=\"reject_button_{{::approval.sys_id}}\" aria-labelledby=\" reject_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}\" class=\"btn btn-default btn-block\" ng-click=\"c.openRejModal(approval.sys_id, approval.requireEsigApproval);\">${Reject}</button>\n        </div>\n        <div ng-if=\"options.portal && approval.state == 'requested'\" class=\"col-xs-6\">\n          <button name=\"approve\" id=\"approve_button_{{::approval.sys_id}}\" aria-labelledby=\" approve_button_{{::approval.sys_id}} approval_task_{{::approval.sys_id}}\" class=\"btn btn-primary btn-block\" ng-click=\"approve(approval.sys_id, approval.requireEsigApproval);\">${Approve}</button>\n        </div>\n        <div ng-if=\"options.portal && approval.state != 'requested'\" class=\"col-xs-12\">\n          <button ng-if=\"approval.state == 'approved'\" class=\"btn btn-success btn-block\">{{approval.stateLabel}}</button>\n          <button ng-if=\"approval.state == 'rejected'\" class=\"btn btn-danger btn-block\">{{approval.stateLabel}}</button>\n        </div>\n      </div>\n    </div> <!-- body -->\n       \n  </div> \n  <div class=\"panel-footer clearfix\" ng-show=\"data.approvals.length > 0\">\n    <!-- Modified -->\n    <span class=\"pull-left\" style=\"padding-right: 10px;margin-top:6px\">\n      <strong><label class=\"checkbox-inline\" for=\"select_all\"><input type=\"checkbox\" ng-model=\"selectedAll\" ng-click=\"checkAll()\">Select All</label></strong>\n    </span>\n    <button class=\"btn btn-success pull-left\" type=\"submit\" ng-click=\"approveOnlyChecked()\">${Approve Selected}</button>\n    <button class=\"btn btn-danger pull-left\" type=\"submit\" ng-click=\"openMultiRejModal()\">${Reject Selected}</button\n    <div ng-if=\"data.pagination.showPagination\">\n      <a id=\"previous-btn\" href=\"javascript:void(0)\" ng-click=\"previousPage()\" ng-show=\"data.pagination.hasPrevious\" class=\"pull-right btn btn-sm btn-default\" aria-label=\"${Pagination button Previous}\">\n        <i class=\"fa fa-arrow-left m-r-sm\" aria-hidden=\"true\"></i>${Previous}</a>\n      <a id=\"next_btn\" href=\"javascript:void(0)\" ng-click=\"nextPage()\" ng-show=\"data.pagination.hasNext\" class=\"pull-right btn btn-sm btn-default \" aria-label=\"${Pagination button Next}\">\n        ${Next}<i class=\"fa fa-arrow-right m-r-sm col-md-offset-3\" aria-hidden=\"true\"></i></a>\n    </div>\n  </div>\n</div>\n\n<script  type=\"text/ng-template\" id=\"modalRejApp\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n      <button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n      <h4 class=\"panel-title\">${Reject Approval}</h4>\n    </div>\n  <div class=\"panel-body wrapper-xl\">\n    <form name=\"modalTemplateReject\" ng-submit=\"reject(c.temp_id, c.temp_esig_req)\">\n      <div class=\"form-group\">\n        <textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.comments\" id=\"rejectComments\" placeholder=\"Comments Required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n      </div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"closeModal()\">${Close}</button-->\n      <button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"data.comments.length == 0\">${Reject Approval}</button>\n    </form>\n  </div>\n</script>\n<script  type=\"text/ng-template\" id=\"modalMultiRejectApp\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n      <button type=\"button\" class=\"close\" ng-click=\"c.closeModal()\">&times;</button>\n      <h4 class=\"panel-title\">${Reject Approvals}</h4>\n    </div>\n  <div class=\"panel-body wrapper-xl\">\n    <form name=\"modalTemplateReject\" ng-submit=\"rejectOnlyChecked(c.list, c.comments)\">\n      <div class=\"form-group\">\n        <textarea required sp-autosize=\"true\" ng-required=\"true\" ng-model=\"c.comments\" id=\"rejectComments\" placeholder=\"Comments Required\" class=\"form-control ng-pristine ng-valid ng-scope ng-empty ng-touched\" aria-invalid=\"false\" style=\"overflow: hidden; word-wrap: break-word; resize: horizontal;\"></textarea>\n      </div>\n<!--input class=\"btn btn-primary\" type=\"submit\" /-->\n<!--button class=\"btn btn-primary\" ng-click=\"closeModal()\">${Close}</button-->\n      <button class=\"btn btn-primary\" type=\"submit\" ng-disabled=\"data.comments.length == 0\">${Reject Approval}</button>\n    </form>\n  </div>\n</script>",
+            "max_length": 65000,
+            "ed": {
+                "name": "template"
+            }
+        },
+        "css": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "CSS",
+            "sys_readonly": false,
+            "type": "css",
+            "mandatory": false,
+            "displayValue": ".pre-wrap {\n  white-space:pre-wrap;\n}\n\n.col-sm-4 {\n  padding-left: 0px;\n}\n\t    \n@media screen and (max-width: 992px) {\n  .col-sm-4 {\n    padding-right: 0px;\n  }\n\n  .col-sm-8 {\n    padding-left: 0px;\n  }\n}",
+            "readonly": false,
+            "hint": "",
+            "name": "css",
+            "attributes": {},
+            "choice": 0,
+            "value": ".pre-wrap {\n  white-space:pre-wrap;\n}\n\n.col-sm-4 {\n  padding-left: 0px;\n}\n\t    \n@media screen and (max-width: 992px) {\n  .col-sm-4 {\n    padding-right: 0px;\n  }\n\n  .col-sm-8 {\n    padding-left: 0px;\n  }\n}",
+            "max_length": 8000,
+            "ed": {
+                "name": "css"
+            }
+        },
+        "roles": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "Roles",
+            "sys_readonly": false,
+            "type": "user_roles",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "roles",
+            "attributes": {
+                "no_truncate": "true",
+                "update_exempt": "true",
+                "record_watcher_blacklist": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 255,
+            "ed": {
+                "name": "roles"
+            }
+        },
+        "link": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Link",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "function link(scope, element, attrs, controller) {  }",
+            "readonly": false,
+            "hint": "",
+            "name": "link",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "function link(scope, element, attrs, controller) {  }",
+            "max_length": 65000,
+            "ed": {
+                "name": "link"
+            }
+        },
+        "description": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Description",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "Defines what the widget does",
+            "name": "description",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 300,
+            "ed": {
+                "name": "description"
+            }
+        },
+        "demo_data": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Demo data",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "demo_data",
+            "attributes": {},
+            "choice": 0,
+            "value": "",
+            "max_length": 8000,
+            "ed": {
+                "name": "demo_data"
+            }
+        },
+        "option_schema": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Option schema",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "[{\"hint\":\"If false, buttons are stacked on the right; if true, they are side-by-side\",\"name\":\"portal\",\"section\":\"Presentation\",\"label\":\"Buttons stacked side by side\",\"type\":\"boolean\"},{\"hint\":\"Maximum number of elements that are shown in the list of approvals\",\"name\":\"max_number_of_elements_shown_on_the_list\",\"default_value\":\"1\",\"section\":\"Presentation\",\"label\":\"Max number of elements shown in the list (only positive numbers > 0, 10 otherwise)\",\"type\":\"integer\"}]",
+            "readonly": false,
+            "hint": "",
+            "name": "option_schema",
+            "attributes": {},
+            "choice": 0,
+            "value": "[{\"hint\":\"If false, buttons are stacked on the right; if true, they are side-by-side\",\"name\":\"portal\",\"section\":\"Presentation\",\"label\":\"Buttons stacked side by side\",\"type\":\"boolean\"},{\"hint\":\"Maximum number of elements that are shown in the list of approvals\",\"name\":\"max_number_of_elements_shown_on_the_list\",\"default_value\":\"1\",\"section\":\"Presentation\",\"label\":\"Max number of elements shown in the list (only positive numbers > 0, 10 otherwise)\",\"type\":\"integer\"}]",
+            "max_length": 8000,
+            "ed": {
+                "name": "option_schema"
+            }
+        },
+        "script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Server script",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "g_approval_form_request = true;\n\n//we get only a max number of elements to avoid to have a big list of it\nvar maxNumberOfItemsInTheList = parseInt(options.max_number_of_elements_shown_on_the_list);\n//set 10 if maxnumber is undefined, empty or negative value\nmaxNumberOfItemsInTheList = maxNumberOfItemsInTheList>0 ? maxNumberOfItemsInTheList : 10; \nvar initRow = 0;\nvar lastRow = maxNumberOfItemsInTheList;\nvar currentPage = 0; //0 is the first page\nif (input) {\n\t// update pagination\n\tcurrentPage = input.pagination.currentPage;\n\tinitRow = (currentPage * maxNumberOfItemsInTheList);\n\tlastRow = initRow + maxNumberOfItemsInTheList;\n\t\n\tif (input.op == 'approved' || input.op == 'rejected') {\n\t\tvar app = new GlideRecord(\"sysapproval_approver\");\n\t\tif (app.get(input.target)) {\n\t\t\t//var isMine = gs.hasRole(\"approval_admin\") || (gs.hasRole(\"approver_user\") && isApprovalMine(app));\n\t\t  var isMine = isApprovalMine(app);\n\t\t\tif (isMine) {\n\t\t\t\tapp.state = input.op;\n\t\t\t\tif(input.comments){\n\t\t\t\tapp.comments=\"diff source\"; //input.comments;\n\t\t\t}\n\t\t\t\tapp.update();\n\t\t\t}\n\t\t}\n\t}\n\tif (input && (input.action == \"rejectOnlyChecked\" || input.action == \"approveOnlyChecked\")) {\n\t\tvar operation = input.action == 'approveOnlyChecked' ? 'approved' : 'rejected';\n\t\tvar gr = new GlideRecord(\"sysapproval_approver\");\n\t\tif(input.target_list){\n\t\t\tinput.target_list.forEach(function(item){\n\t\t\t\tif (gr.get(item)) {\n\t\t\t\t\t//var isMine = gs.hasRole(\"approval_admin\") || (gs.hasRole(\"approver_user\") && isApprovalMine(app));\n\t\t\t\t\tvar isMine = isApprovalMine(gr);\n\t\t\t\t\tif (isMine) {\n\t\t\t\t\t\tif(input.comment){\n\t\t\t\t\t\t\tgr.comments = input.comment;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tgr.state = operation;\n\t\t\t\t\t\tgr.update();\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\t\t}\n\t\tdata.status = operation;\n\t}\n\t// if(input.op == 'multi_approved' || input.op == 'multi_rejected'){\n\t// \tvar operation = input.op == 'multi_approved' ? 'approved' : 'rejected';\n\t// \tvar app = new GlideRecord(\"sysapproval_approver\");\n\t// \tif(input.target_list){\n\t// \t\tinput.target_list.forEach(function(item){\n\t// \t\t\tif (app.get(item)) {\n\t// \t\t\t\t//var isMine = gs.hasRole(\"approval_admin\") || (gs.hasRole(\"approver_user\") && isApprovalMine(app));\n\t// \t\t\t\tvar isMine = isApprovalMine(app);\n\t// \t\t\t\tif (isMine) {\n\t// \t\t\t\t\tapp.state = operation;\n\t// \t\t\t\t\tif(input.comments){\n\t// \t\t\t\t\t\tapp.comments=input.comments;\n\t// \t\t\t\t\t}\n\t// \t\t\t\t\tapp.update();\n\t// \t\t\t\t}\n\t// \t\t\t}\n\t// \t\t});\n\t// \t}\n\t// }\n}\n\ndata.ViewApprovalPageMsg = gs.getMessage(\"View approval page\");\ndata.esignature = {\n\tusername:  gs.getUserName(),\n\tuserSysId: gs.getUserID(),\n\te_sig_required: GlidePluginManager.isRegistered('com.glide.e_signature_approvals')\n};\n\nvar esigRequiredMap = {};\nif (data.esignature.e_sig_required) {\n\tvar esigRegistryGR = new GlideRecord(\"e_signature_registry\");\n\tesigRegistryGR.addQuery(\"enabled\", \"true\");\n\tesigRegistryGR.query();\n\twhile(esigRegistryGR.next()) {\n\t\tesigRequiredMap[esigRegistryGR.getValue(\"table_name\")] = true;\n\t}\n}\n\nvar gr = new GlideRecord('sysapproval_approver');\ngr.chooseWindow(initRow, lastRow);\nvar qc1 = gr.addQuery(\"state\", \"requested\");\n//if (input)\n//  qc1.addOrCondition(\"sys_id\", \"IN\", input.ids);\ndata.myApprovals = getMyApprovals();\ngr.addQuery(\"approver\", data.myApprovals);\ngr.orderBy(\"sys_created_on\");\ngr.query();\nvar rowCount = gr.getRowCount();\nvar approvals = [];\nvar ids = [];\nvar source_tables = [];\n\nwhile (gr.next()) {\n  var task = getRecordBeingApproved(gr);\n\tif (!task.isValidRecord())\n\t\tcontinue;\n\n  ids.push(gr.getUniqueValue());\n  var t = {};\n  t.checkbox = false;\n\tif(gr.source_table.toString()=='sc_req_item'){\n\t\tt.request=task.request.number.toString();\n\t}\n  t.number = task.getDisplayValue();\n  t.short_description = task.short_description.toString();\n  if (gr.getValue(\"approver\") != gs.getUserID())\n\t  t.approver = gr.approver.getDisplayValue();\n  if (task.isValidField(\"opened_by\") && !task.opened_by.nil())\n\t  t.opened_by = task.opened_by.getDisplayValue();\n\n  // requestor >> opener\n  if (task.isValidField(\"requested_by\") && !task.requested_by.nil())\n\t  t.opened_by = task.requested_by.getDisplayValue();\n\n  t.start_date = task.start_date.getDisplayValue();\n  t.end_date = task.end_date.getDisplayValue();\n  t.quantity = task.quantity.getDisplayValue();\n  t.table = task.getLabel();\n  if (task.getValue(\"price\") > 0)\n\t  t.price = task.getDisplayValue(\"price\");\n\n  if (task.getValue(\"recurring_price\") > 0)\n\t  t.recurring_price = task.getDisplayValue(\"recurring_price\");\n\n  t.recurring_frequency = task.getDisplayValue(\"recurring_frequency\");\n\n  var items = [];\n  var idx = 0;\n  var itemsGR = new GlideRecord(\"sc_req_item\");\n  itemsGR.addQuery(\"request\", task.sys_id);\n  itemsGR.query();\n  if (itemsGR.getRowCount() > 1)\n    t.short_description = itemsGR.getRowCount() + \" requested items\";\n\n  while (itemsGR.next()) {\n    var item = {};\n\t  item.short_description = itemsGR.short_description.toString();\n    if (itemsGR.getValue(\"price\") > 0)\n      item.price = itemsGR.getDisplayValue(\"price\");\n    if (itemsGR.getValue(\"recurring_price\") > 0) {\n      item.recurring_price = itemsGR.getDisplayValue(\"recurring_price\");\n      item.recurring_frequency = itemsGR.getDisplayValue(\"recurring_frequency\");\n    }\n    if (itemsGR.getRowCount() == 1) {\n\t\t\titem.variables = new GlobalServiceCatalogUtil().getVariablesForTask(itemsGR, true);\n\t\t\titem.variableSummarizerWidget = $sp.getWidget('sc-variable-summarizer', {'variables' : item.variables, 'toggle' : false, 'task' :t.number });\n      t.short_description = itemsGR.short_description.toString();\n    }\n\n    items[idx] = item;\n    idx++;\n  }\n\n  var j = {};\n  j.sys_id = gr.getUniqueValue();\n  j.table = gr.getRecordClassName();\n\tj.approval_source_table = gr.getValue(\"source_table\");\n\tif (!j.approval_source_table)\n\t\tj.approval_source_table = gr.sysapproval.sys_class_name + \"\";\n\tj.requireEsigApproval = esigRequiredMap[j.approval_source_table];\n\tj.task = t;\n  if (task) {\n\t\tj.variables = new GlobalServiceCatalogUtil().getVariablesForTask(task, true);\n\t\tj.variableSummarizerWidget = $sp.getWidget('sc-variable-summarizer', {'variables' : j.variables, 'toggle' : false, 'task': t.number });\n\t}\n  j.items = items;\n  j.state = gr.getValue(\"state\");\n  j.stateLabel = gr.state.getDisplayValue();\n  approvals.push(j);\n}\n\ndata.ids = ids;\ndata.approvals = approvals;\ndata.showApprovals = gs.getUser().hasRole('approver_user');\n// for pagination\ndata.pagination = {};\ndata.pagination.hasNext = (approvals.length == (parseInt(lastRow) - parseInt(initRow)) && lastRow < rowCount);\ndata.pagination.hasPrevious = parseInt(initRow) > 0;\ndata.pagination.from = parseInt(initRow + 1);\ndata.pagination.to = parseInt(lastRow) < parseInt(rowCount) ? parseInt(lastRow) : parseInt(rowCount);\ndata.pagination.of = parseInt(rowCount);\ndata.pagination.showPagination = data.pagination.hasPrevious || data.pagination.hasNext;\ndata.pagination.currentPage = data.pagination.from > data.pagination.to ? currentPage -1 : currentPage;\ndelete g_approval_form_request;\nfunction getRecordBeingApproved(gr) {\n  if (!gr.sysapproval.nil())\n    return gr.sysapproval.getRefRecord();\n\n  return gr.document_id.getRefRecord();\n}\n\t\n\t\n",
+            "readonly": false,
+            "hint": "",
+            "name": "script",
+            "attributes": {},
+            "choice": 0,
+            "value": "g_approval_form_request = true;\n\n//we get only a max number of elements to avoid to have a big list of it\nvar maxNumberOfItemsInTheList = parseInt(options.max_number_of_elements_shown_on_the_list);\n//set 10 if maxnumber is undefined, empty or negative value\nmaxNumberOfItemsInTheList = maxNumberOfItemsInTheList>0 ? maxNumberOfItemsInTheList : 10; \nvar initRow = 0;\nvar lastRow = maxNumberOfItemsInTheList;\nvar currentPage = 0; //0 is the first page\nif (input) {\n\t// update pagination\n\tcurrentPage = input.pagination.currentPage;\n\tinitRow = (currentPage * maxNumberOfItemsInTheList);\n\tlastRow = initRow + maxNumberOfItemsInTheList;\n\t\n\tif (input.op == 'approved' || input.op == 'rejected') {\n\t\tvar app = new GlideRecord(\"sysapproval_approver\");\n\t\tif (app.get(input.target)) {\n\t\t\t//var isMine = gs.hasRole(\"approval_admin\") || (gs.hasRole(\"approver_user\") && isApprovalMine(app));\n\t\t  var isMine = isApprovalMine(app);\n\t\t\tif (isMine) {\n\t\t\t\tapp.state = input.op;\n\t\t\t\tif(input.comments){\n\t\t\t\tapp.comments=\"diff source\"; //input.comments;\n\t\t\t}\n\t\t\t\tapp.update();\n\t\t\t}\n\t\t}\n\t}\n\tif (input && (input.action == \"rejectOnlyChecked\" || input.action == \"approveOnlyChecked\")) {\n\t\tvar operation = input.action == 'approveOnlyChecked' ? 'approved' : 'rejected';\n\t\tvar gr = new GlideRecord(\"sysapproval_approver\");\n\t\tif(input.target_list){\n\t\t\tinput.target_list.forEach(function(item){\n\t\t\t\tif (gr.get(item)) {\n\t\t\t\t\t//var isMine = gs.hasRole(\"approval_admin\") || (gs.hasRole(\"approver_user\") && isApprovalMine(app));\n\t\t\t\t\tvar isMine = isApprovalMine(gr);\n\t\t\t\t\tif (isMine) {\n\t\t\t\t\t\tif(input.comment){\n\t\t\t\t\t\t\tgr.comments = input.comment;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tgr.state = operation;\n\t\t\t\t\t\tgr.update();\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\t\t}\n\t\tdata.status = operation;\n\t}\n\t// if(input.op == 'multi_approved' || input.op == 'multi_rejected'){\n\t// \tvar operation = input.op == 'multi_approved' ? 'approved' : 'rejected';\n\t// \tvar app = new GlideRecord(\"sysapproval_approver\");\n\t// \tif(input.target_list){\n\t// \t\tinput.target_list.forEach(function(item){\n\t// \t\t\tif (app.get(item)) {\n\t// \t\t\t\t//var isMine = gs.hasRole(\"approval_admin\") || (gs.hasRole(\"approver_user\") && isApprovalMine(app));\n\t// \t\t\t\tvar isMine = isApprovalMine(app);\n\t// \t\t\t\tif (isMine) {\n\t// \t\t\t\t\tapp.state = operation;\n\t// \t\t\t\t\tif(input.comments){\n\t// \t\t\t\t\t\tapp.comments=input.comments;\n\t// \t\t\t\t\t}\n\t// \t\t\t\t\tapp.update();\n\t// \t\t\t\t}\n\t// \t\t\t}\n\t// \t\t});\n\t// \t}\n\t// }\n}\n\ndata.ViewApprovalPageMsg = gs.getMessage(\"View approval page\");\ndata.esignature = {\n\tusername:  gs.getUserName(),\n\tuserSysId: gs.getUserID(),\n\te_sig_required: GlidePluginManager.isRegistered('com.glide.e_signature_approvals')\n};\n\nvar esigRequiredMap = {};\nif (data.esignature.e_sig_required) {\n\tvar esigRegistryGR = new GlideRecord(\"e_signature_registry\");\n\tesigRegistryGR.addQuery(\"enabled\", \"true\");\n\tesigRegistryGR.query();\n\twhile(esigRegistryGR.next()) {\n\t\tesigRequiredMap[esigRegistryGR.getValue(\"table_name\")] = true;\n\t}\n}\n\nvar gr = new GlideRecord('sysapproval_approver');\ngr.chooseWindow(initRow, lastRow);\nvar qc1 = gr.addQuery(\"state\", \"requested\");\n//if (input)\n//  qc1.addOrCondition(\"sys_id\", \"IN\", input.ids);\ndata.myApprovals = getMyApprovals();\ngr.addQuery(\"approver\", data.myApprovals);\ngr.orderBy(\"sys_created_on\");\ngr.query();\nvar rowCount = gr.getRowCount();\nvar approvals = [];\nvar ids = [];\nvar source_tables = [];\n\nwhile (gr.next()) {\n  var task = getRecordBeingApproved(gr);\n\tif (!task.isValidRecord())\n\t\tcontinue;\n\n  ids.push(gr.getUniqueValue());\n  var t = {};\n  t.checkbox = false;\n\tif(gr.source_table.toString()=='sc_req_item'){\n\t\tt.request=task.request.number.toString();\n\t}\n  t.number = task.getDisplayValue();\n  t.short_description = task.short_description.toString();\n  if (gr.getValue(\"approver\") != gs.getUserID())\n\t  t.approver = gr.approver.getDisplayValue();\n  if (task.isValidField(\"opened_by\") && !task.opened_by.nil())\n\t  t.opened_by = task.opened_by.getDisplayValue();\n\n  // requestor >> opener\n  if (task.isValidField(\"requested_by\") && !task.requested_by.nil())\n\t  t.opened_by = task.requested_by.getDisplayValue();\n\n  t.start_date = task.start_date.getDisplayValue();\n  t.end_date = task.end_date.getDisplayValue();\n  t.quantity = task.quantity.getDisplayValue();\n  t.table = task.getLabel();\n  if (task.getValue(\"price\") > 0)\n\t  t.price = task.getDisplayValue(\"price\");\n\n  if (task.getValue(\"recurring_price\") > 0)\n\t  t.recurring_price = task.getDisplayValue(\"recurring_price\");\n\n  t.recurring_frequency = task.getDisplayValue(\"recurring_frequency\");\n\n  var items = [];\n  var idx = 0;\n  var itemsGR = new GlideRecord(\"sc_req_item\");\n  itemsGR.addQuery(\"request\", task.sys_id);\n  itemsGR.query();\n  if (itemsGR.getRowCount() > 1)\n    t.short_description = itemsGR.getRowCount() + \" requested items\";\n\n  while (itemsGR.next()) {\n    var item = {};\n\t  item.short_description = itemsGR.short_description.toString();\n    if (itemsGR.getValue(\"price\") > 0)\n      item.price = itemsGR.getDisplayValue(\"price\");\n    if (itemsGR.getValue(\"recurring_price\") > 0) {\n      item.recurring_price = itemsGR.getDisplayValue(\"recurring_price\");\n      item.recurring_frequency = itemsGR.getDisplayValue(\"recurring_frequency\");\n    }\n    if (itemsGR.getRowCount() == 1) {\n\t\t\titem.variables = new GlobalServiceCatalogUtil().getVariablesForTask(itemsGR, true);\n\t\t\titem.variableSummarizerWidget = $sp.getWidget('sc-variable-summarizer', {'variables' : item.variables, 'toggle' : false, 'task' :t.number });\n      t.short_description = itemsGR.short_description.toString();\n    }\n\n    items[idx] = item;\n    idx++;\n  }\n\n  var j = {};\n  j.sys_id = gr.getUniqueValue();\n  j.table = gr.getRecordClassName();\n\tj.approval_source_table = gr.getValue(\"source_table\");\n\tif (!j.approval_source_table)\n\t\tj.approval_source_table = gr.sysapproval.sys_class_name + \"\";\n\tj.requireEsigApproval = esigRequiredMap[j.approval_source_table];\n\tj.task = t;\n  if (task) {\n\t\tj.variables = new GlobalServiceCatalogUtil().getVariablesForTask(task, true);\n\t\tj.variableSummarizerWidget = $sp.getWidget('sc-variable-summarizer', {'variables' : j.variables, 'toggle' : false, 'task': t.number });\n\t}\n  j.items = items;\n  j.state = gr.getValue(\"state\");\n  j.stateLabel = gr.state.getDisplayValue();\n  approvals.push(j);\n}\n\ndata.ids = ids;\ndata.approvals = approvals;\ndata.showApprovals = gs.getUser().hasRole('approver_user');\n// for pagination\ndata.pagination = {};\ndata.pagination.hasNext = (approvals.length == (parseInt(lastRow) - parseInt(initRow)) && lastRow < rowCount);\ndata.pagination.hasPrevious = parseInt(initRow) > 0;\ndata.pagination.from = parseInt(initRow + 1);\ndata.pagination.to = parseInt(lastRow) < parseInt(rowCount) ? parseInt(lastRow) : parseInt(rowCount);\ndata.pagination.of = parseInt(rowCount);\ndata.pagination.showPagination = data.pagination.hasPrevious || data.pagination.hasNext;\ndata.pagination.currentPage = data.pagination.from > data.pagination.to ? currentPage -1 : currentPage;\ndelete g_approval_form_request;\nfunction getRecordBeingApproved(gr) {\n  if (!gr.sysapproval.nil())\n    return gr.sysapproval.getRefRecord();\n\n  return gr.document_id.getRefRecord();\n}\n\t\n\t\n",
+            "max_length": 65000,
+            "ed": {
+                "name": "script"
+            }
+        },
+        "has_preview": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Has preview",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "true",
+            "readonly": false,
+            "hint": "Defines whether preview data is available",
+            "name": "has_preview",
+            "attributes": {},
+            "choice": 0,
+            "value": "true",
+            "max_length": 40,
+            "ed": {
+                "name": "has_preview"
+            }
+        },
+        "public": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Public",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "false",
+            "readonly": false,
+            "hint": "Widget publicly available to unauthenticated users",
+            "name": "public",
+            "attributes": {
+                "update_exempt": "true"
+            },
+            "choice": 0,
+            "value": "false",
+            "max_length": 40,
+            "ed": {
+                "name": "public"
+            }
+        },
+        "docs": {
+            "sys_mandatory": false,
+            "visible": true,
+            "table_attributes": {
+                "update_synch": "true",
+                "synch_attachments": "true"
+            },
+            "dbType": 12,
+            "label": "Docs",
+            "sys_readonly": false,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sp_documentation",
+            "reference_type": "table",
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "docs",
+            "attributes": {
+                "encode_utf8": "false"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": false,
+            "choice": 0,
+            "value": "",
+            "max_length": 32,
+            "ed": {
+                "reference": "sp_documentation",
+                "searchField": "title",
+                "defaultOperator": "STARTSWITH",
+                "name": "docs"
+            }
+        },
+        "client_script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Client controller",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "function ($scope, spUtil, spUIActionsExecuter, $window, $uibModal) {\n\tvar ESIGNATURE = {\n\t\tTYPE: \"form\",\n\t\tAPPROVE_SYS: \"cbfe291147220100ba13a5554ee4904d\",\n\t\tREJECT_SYS: \"580f711147220100ba13a5554ee4904b\"\n\t};\n\tvar c = this;\n\tif ($scope.options.portal == true || $scope.options.portal == 'true') {\n\t\t$scope.contentColClass = \"col-xs-12\";\n\t\t$scope.options.portal = true;\n\t} else {\n\t\t$scope.options.portal = false;\n\t\t$scope.contentColClass = \"col-sm-8\";\n\t}\n\n\t$scope.data.op = \"\";\n\tspUtil.recordWatch($scope, \"sysapproval_approver\", \"state=requested^approverIN\" + $scope.data.myApprovals.toString(), function (data) {\n\t\t// don't double-roundtrip if update came from record just approved/rejected\n\t\tif (data.data.sys_id != $scope.data.target)\n\t\t\tspUtil.update($scope);\n\t});\n\n\tfunction get() {\n\t\tspUtil.update($scope);\n\t}\n\t//checked ALL logic\n\t$scope.checkAll = function(){\n\t\tvar checkStatus = $scope.selectedAll;\n\t\tangular.forEach($scope.data.approvals, function (item) {\n\t\t\titem.checkbox = checkStatus;\n\t\t});\n\t}\n\t$scope.updateSelectedAll = function() {\n\t\tallCheckedFlag = true;\n\t\t$scope.data.approvals.forEach(function(item){\n\t\t\tif(item.checkbox == false){\n\t\t\t\tallCheckedFlag = false;\n\t\t\t}\n\t\t});\n\t\t$scope.selectedAll = allCheckedFlag;\n\t}\n\t//logic of checked task approve\n\tfunction getCheckedList(){\n\t\tvar list =[];\n\t\tangular.forEach($scope.data.approvals, function(item){\n\t\t\tconsole.log(\"cb: \"+item.checkbox+\" id: \"+item.sys_id+\" esig: \"+item.requireEsigApproval);\n\t\t\tif(item.checkbox){\n\t\t\t\tlist.push(item.sys_id);\n\t\t\t}\n\t\t});\n\t\treturn list;\n\t}\n\t// $scope.approveOnlyChecked = function(){\n\t// \t// Process Multiple Approval\n\t// \t$scope.data.op = \"multi_approved\";\n\t// \t$scope.data.target_list = getCheckedList();\n\t// \tget(); //making server call\n\t// }\n\t$scope.approveOnlyChecked = function(){\n\t\tvar list = getCheckedList();\n\t\tif(list.length > 0){\n\t\t\tc.server.get({\n\t\t\t\taction: \"approveOnlyChecked\",\n\t\t\t\ttarget_list: list,\n\t\t\t}).then(function(response){\n\t\t\t\t//Process your response\n\t\t\t\tspUtil.addInfoMessage(\"Selected tasks are \" + response.data.status);\n\t\t\t});\n\t\t}else{\n\t\t\tspUtil.addErrorMessage(\"Select individual task checkbox to approve or reject\");\n\t\t}\n\t}\n\t$scope.rejectOnlyChecked = function(list, comment) {\n\t\tif(list.length > 0){\n\t\t\tc.server.get({\n\t\t\t\taction: \"rejectOnlyChecked\",\n\t\t\t\ttarget_list: list,\n\t\t\t\tcomment: comment\n\t\t\t}).then(function(response){\n\t\t\t\tspUtil.addInfoMessage(\"Selected tasks are \" + response.data.status);\n\t\t\t});\n\t\t\tc.closeModal();\n\t\t}else{\n\t\t\tspUtil.addErrorMessage(\"Select individual task checkbox to approve or reject\");\n\t\t}\n\t}\n\n\t$scope.approve = function (id, esigRequired) {\n\t\tvar requestParams = {\n\t\t\tusername: $scope.data.esignature.username,\n\t\t\tuserSysId: $scope.data.esignature.userSysId\n\t\t};\n\t\tif ($scope.data.esignature.e_sig_required && esigRequired) {\n\t\t\tspUIActionsExecuter.executeFormAction(ESIGNATURE.APPROVE_SYS, \"sysapproval_approver\", id, [], \"\", requestParams).then(function (response) {\n\t\t\t});\n\t\t} else {\n\t\t\t$scope.data.op = \"approved\";\n\t\t\t$scope.data.target = id;\n\t\t\tget();\n\t\t}\n\t}\n\n\t$scope.reject = function (id, esigRequired) {\n\t\tvar requestParams = {\n\t\t\tusername: $scope.data.esignature.username,\n\t\t\tuserSysId: $scope.data.esignature.userSysId\n\t\t};\n\n\t\tif ($scope.data.esignature.e_sig_required && esigRequired) {\n\t\t\tspUIActionsExecuter.executeFormAction(ESIGNATURE.REJECT_SYS, \"sysapproval_approver\", id, [], \"\", requestParams).then(function (response) {\n\t\t\t});\n\t\t} else {\n\t\t\t$scope.data.op = \"rejected\";\n\t\t\t$scope.data.target = id;\n\t\t\t$scope.data.comments = c.comments;\n\t\t\tget();\n\t\t}\n\t\tc.closeModal();\n\t}\n\n\t// pagination\n\t$scope.previousPage = function () {\n\t\t$scope.selectedAll = false;\n\t\tif ($scope.data.pagination.currentPage > 1)\n\t\t\t$scope.data.pagination.currentPage = $scope.data.pagination.currentPage - 1;\n\t\telse\n\t\t\t$scope.data.pagination.currentPage = 0;\n\n\t\tget();\n\t}\n\n\t$scope.nextPage = function () {\n\t\t$scope.selectedAll = false;\n\t\t$scope.data.pagination.currentPage = $scope.data.pagination.currentPage + 1;\n\t\tget();\n\t}\n\n\t$scope.getItemDisplay = function (task) {\n\t\tif (task.number && task.short_description)\n\t\t\treturn task.number + \" - \" + task.short_description;\n\n\t\treturn task.number || task.short_description || \"\";\n\t}\n\n\tc.openRejModal = function (id, esigRequired) {\n\t\tc.comments = '';\n\t\tc.temp_id = id;\n\t\tc.temp_esig_req = esigRequired;\n\t\tc.modalInstance = $uibModal.open({\n\t\t\ttemplateUrl: 'modalRejApp',\n\t\t\tscope: $scope\n\t\t});\n\t}\n\t$scope.openMultiRejModal = function () {\n\t\tc.comments = '';\n\t\tc.list = getCheckedList();\n\t\tc.modalInstance = $uibModal.open({\n\t\t\ttemplateUrl: 'modalMultiRejectApp',\n\t\t\tscope: $scope\n\t\t});\n\n\t}\n\tc.closeModal = function () {\n\t\tc.modalInstance.close();\n\t}\n}",
+            "readonly": false,
+            "hint": "",
+            "name": "client_script",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "function ($scope, spUtil, spUIActionsExecuter, $window, $uibModal) {\n\tvar ESIGNATURE = {\n\t\tTYPE: \"form\",\n\t\tAPPROVE_SYS: \"cbfe291147220100ba13a5554ee4904d\",\n\t\tREJECT_SYS: \"580f711147220100ba13a5554ee4904b\"\n\t};\n\tvar c = this;\n\tif ($scope.options.portal == true || $scope.options.portal == 'true') {\n\t\t$scope.contentColClass = \"col-xs-12\";\n\t\t$scope.options.portal = true;\n\t} else {\n\t\t$scope.options.portal = false;\n\t\t$scope.contentColClass = \"col-sm-8\";\n\t}\n\n\t$scope.data.op = \"\";\n\tspUtil.recordWatch($scope, \"sysapproval_approver\", \"state=requested^approverIN\" + $scope.data.myApprovals.toString(), function (data) {\n\t\t// don't double-roundtrip if update came from record just approved/rejected\n\t\tif (data.data.sys_id != $scope.data.target)\n\t\t\tspUtil.update($scope);\n\t});\n\n\tfunction get() {\n\t\tspUtil.update($scope);\n\t}\n\t//checked ALL logic\n\t$scope.checkAll = function(){\n\t\tvar checkStatus = $scope.selectedAll;\n\t\tangular.forEach($scope.data.approvals, function (item) {\n\t\t\titem.checkbox = checkStatus;\n\t\t});\n\t}\n\t$scope.updateSelectedAll = function() {\n\t\tallCheckedFlag = true;\n\t\t$scope.data.approvals.forEach(function(item){\n\t\t\tif(item.checkbox == false){\n\t\t\t\tallCheckedFlag = false;\n\t\t\t}\n\t\t});\n\t\t$scope.selectedAll = allCheckedFlag;\n\t}\n\t//logic of checked task approve\n\tfunction getCheckedList(){\n\t\tvar list =[];\n\t\tangular.forEach($scope.data.approvals, function(item){\n\t\t\tconsole.log(\"cb: \"+item.checkbox+\" id: \"+item.sys_id+\" esig: \"+item.requireEsigApproval);\n\t\t\tif(item.checkbox){\n\t\t\t\tlist.push(item.sys_id);\n\t\t\t}\n\t\t});\n\t\treturn list;\n\t}\n\t// $scope.approveOnlyChecked = function(){\n\t// \t// Process Multiple Approval\n\t// \t$scope.data.op = \"multi_approved\";\n\t// \t$scope.data.target_list = getCheckedList();\n\t// \tget(); //making server call\n\t// }\n\t$scope.approveOnlyChecked = function(){\n\t\tvar list = getCheckedList();\n\t\tif(list.length > 0){\n\t\t\tc.server.get({\n\t\t\t\taction: \"approveOnlyChecked\",\n\t\t\t\ttarget_list: list,\n\t\t\t}).then(function(response){\n\t\t\t\t//Process your response\n\t\t\t\tspUtil.addInfoMessage(\"Selected tasks are \" + response.data.status);\n\t\t\t});\n\t\t}else{\n\t\t\tspUtil.addErrorMessage(\"Select individual task checkbox to approve or reject\");\n\t\t}\n\t}\n\t$scope.rejectOnlyChecked = function(list, comment) {\n\t\tif(list.length > 0){\n\t\t\tc.server.get({\n\t\t\t\taction: \"rejectOnlyChecked\",\n\t\t\t\ttarget_list: list,\n\t\t\t\tcomment: comment\n\t\t\t}).then(function(response){\n\t\t\t\tspUtil.addInfoMessage(\"Selected tasks are \" + response.data.status);\n\t\t\t});\n\t\t\tc.closeModal();\n\t\t}else{\n\t\t\tspUtil.addErrorMessage(\"Select individual task checkbox to approve or reject\");\n\t\t}\n\t}\n\n\t$scope.approve = function (id, esigRequired) {\n\t\tvar requestParams = {\n\t\t\tusername: $scope.data.esignature.username,\n\t\t\tuserSysId: $scope.data.esignature.userSysId\n\t\t};\n\t\tif ($scope.data.esignature.e_sig_required && esigRequired) {\n\t\t\tspUIActionsExecuter.executeFormAction(ESIGNATURE.APPROVE_SYS, \"sysapproval_approver\", id, [], \"\", requestParams).then(function (response) {\n\t\t\t});\n\t\t} else {\n\t\t\t$scope.data.op = \"approved\";\n\t\t\t$scope.data.target = id;\n\t\t\tget();\n\t\t}\n\t}\n\n\t$scope.reject = function (id, esigRequired) {\n\t\tvar requestParams = {\n\t\t\tusername: $scope.data.esignature.username,\n\t\t\tuserSysId: $scope.data.esignature.userSysId\n\t\t};\n\n\t\tif ($scope.data.esignature.e_sig_required && esigRequired) {\n\t\t\tspUIActionsExecuter.executeFormAction(ESIGNATURE.REJECT_SYS, \"sysapproval_approver\", id, [], \"\", requestParams).then(function (response) {\n\t\t\t});\n\t\t} else {\n\t\t\t$scope.data.op = \"rejected\";\n\t\t\t$scope.data.target = id;\n\t\t\t$scope.data.comments = c.comments;\n\t\t\tget();\n\t\t}\n\t\tc.closeModal();\n\t}\n\n\t// pagination\n\t$scope.previousPage = function () {\n\t\t$scope.selectedAll = false;\n\t\tif ($scope.data.pagination.currentPage > 1)\n\t\t\t$scope.data.pagination.currentPage = $scope.data.pagination.currentPage - 1;\n\t\telse\n\t\t\t$scope.data.pagination.currentPage = 0;\n\n\t\tget();\n\t}\n\n\t$scope.nextPage = function () {\n\t\t$scope.selectedAll = false;\n\t\t$scope.data.pagination.currentPage = $scope.data.pagination.currentPage + 1;\n\t\tget();\n\t}\n\n\t$scope.getItemDisplay = function (task) {\n\t\tif (task.number && task.short_description)\n\t\t\treturn task.number + \" - \" + task.short_description;\n\n\t\treturn task.number || task.short_description || \"\";\n\t}\n\n\tc.openRejModal = function (id, esigRequired) {\n\t\tc.comments = '';\n\t\tc.temp_id = id;\n\t\tc.temp_esig_req = esigRequired;\n\t\tc.modalInstance = $uibModal.open({\n\t\t\ttemplateUrl: 'modalRejApp',\n\t\t\tscope: $scope\n\t\t});\n\t}\n\t$scope.openMultiRejModal = function () {\n\t\tc.comments = '';\n\t\tc.list = getCheckedList();\n\t\tc.modalInstance = $uibModal.open({\n\t\t\ttemplateUrl: 'modalMultiRejectApp',\n\t\t\tscope: $scope\n\t\t});\n\n\t}\n\tc.closeModal = function () {\n\t\tc.modalInstance.close();\n\t}\n}",
+            "max_length": 8000,
+            "ed": {
+                "name": "client_script"
+            }
+        },
+        "data_table": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "default_value": "sp_instance",
+            "label": "Data table",
+            "sys_readonly": false,
+            "type": "table_name",
+            "mandatory": true,
+            "displayValue": "sp_instance",
+            "readonly": false,
+            "hint": "",
+            "name": "data_table",
+            "attributes": {
+                "base_table": "sp_instance",
+                "base_start": "true"
+            },
+            "choice": 0,
+            "choices": [],
+            "value": "sp_instance",
+            "max_length": 80,
+            "ed": {
+                "name": "data_table"
+            }
+        },
+        "name": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "label": "Name",
+            "sys_readonly": false,
+            "type": "translated_field",
+            "mandatory": true,
+            "displayValue": "Approvals Custom",
+            "readonly": false,
+            "hint": "",
+            "name": "name",
+            "attributes": {},
+            "choice": 0,
+            "value": "Approvals Custom",
+            "max_length": 40,
+            "ed": {
+                "name": "name"
+            }
+        },
+        "sys_scope": {
+            "sys_mandatory": false,
+            "visible": true,
+            "table_attributes": {},
+            "dbType": 12,
+            "label": "Application",
+            "sys_readonly": true,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sys_scope",
+            "reference_type": "table",
+            "displayValue": "Global",
+            "readonly": true,
+            "hint": "Application containing this record",
+            "name": "sys_scope",
+            "attributes": {
+                "encode_utf8": "false",
+                "list_force_default": "true",
+                "readonly_clickthrough": "true",
+                "ignore_filter_on_new": "true"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": true,
+            "choice": 0,
+            "value": "global",
+            "max_length": 32,
+            "ed": {
+                "reference": "sys_scope",
+                "searchField": "name",
+                "defaultOperator": "STARTSWITH",
+                "name": "sys_scope"
+            }
+        },
+        "id": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "ID",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "approvals_custom",
+            "readonly": false,
+            "hint": "Identifier for $sp.embedWidget()",
+            "name": "id",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "approvals_custom",
+            "max_length": 40,
+            "ed": {
+                "name": "id"
+            }
+        },
+        "field_list": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dependentField": "data_table",
+            "dbType": -1,
+            "label": "Fields",
+            "sys_readonly": false,
+            "type": "field_list",
+            "mandatory": false,
+            "displayValue": "color,glyph",
+            "readonly": false,
+            "hint": "",
+            "name": "field_list",
+            "attributes": {
+                "is_multi_text": "false"
+            },
+            "choice": 0,
+            "value": "color,glyph",
+            "max_length": 1000,
+            "ed": {
+                "dependent_value": "sp_instance",
+                "name": "field_list"
+            }
+        },
+        "controller_as": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "controllerAs",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "c",
+            "readonly": false,
+            "hint": "Identifier name for a reference to the controller in the directive's scope",
+            "name": "controller_as",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "c",
+            "max_length": 100,
+            "ed": {
+                "name": "controller_as"
+            }
+        }
+    }
+}
