@@ -1,0 +1,423 @@
+{
+    "instance": {
+        "name": "trianzdemo6",
+        "url": "https://trianzdemo6.service-now.com",
+        "g_ck": "0359f4ed1bf97c108b6eda86cc4bcbf6d835c4c94fe71636c44de1e6fecd606fd08c8a30"
+    },
+    "action": "saveWidget",
+    "tableName": "sp_widget",
+    "name": "Custom Announcements",
+    "sys_id": "c7ebdaa3db44cf0029253220ad9619c1",
+    "widget": {
+        "template": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Body HTML template",
+            "sys_readonly": false,
+            "type": "html_template",
+            "mandatory": false,
+            "displayValue": "<div ng-show=\"{{::options.access}}\" class=\"alert alert-info alert-dismissable\"> \n   <a href=\"javascript:void(0)\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>\n <marquee behavior=\"scroll\" direction=\"left\" scrolldelay=\"75\" onmouseover=\"this.stop();\" onmouseout=\"this.start();\">\n      <a ng-href=\"{{item.url}}\" ng-repeat=\"item in data.list\" class=\"btn btn-info\">{{::item.display_field}} </a> \n    </marquee>  \n</div>\n\n\n \n",
+            "readonly": false,
+            "hint": "",
+            "name": "template",
+            "attributes": {},
+            "choice": 0,
+            "value": "<div ng-show=\"{{::options.access}}\" class=\"alert alert-info alert-dismissable\"> \n   <a href=\"javascript:void(0)\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>\n <marquee behavior=\"scroll\" direction=\"left\" scrolldelay=\"75\" onmouseover=\"this.stop();\" onmouseout=\"this.start();\">\n      <a ng-href=\"{{item.url}}\" ng-repeat=\"item in data.list\" class=\"btn btn-info\">{{::item.display_field}} </a> \n    </marquee>  \n</div>\n\n\n \n",
+            "max_length": 65000,
+            "ed": {
+                "name": "template"
+            }
+        },
+        "css": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "CSS",
+            "sys_readonly": false,
+            "type": "css",
+            "mandatory": false,
+            "displayValue": ".btn{\r\n  color:white;\r\n  background-color:$brand-secondary;\r\n  border:0px;\r\n  border-radius:0px;\r\n  padding-left:30px;\r\n  padding-right:30px;\r\n  padding-top:0px;\r\n  padding-bottom:0px;\r\n  font-size: 16px !important;\r\n}\r\n.alert{\r\n  background-color:$brand-secondary;\r\n  padding-bottom:15px;\r\n  padding-top:0px;\r\n  border:0px;\r\n  border-radius:0px;\r\n  margin:0px;\r\n}\r\n.close{\r\n  color:#ffffff;\r\n}",
+            "readonly": false,
+            "hint": "",
+            "name": "css",
+            "attributes": {},
+            "choice": 0,
+            "value": ".btn{\r\n  color:white;\r\n  background-color:$brand-secondary;\r\n  border:0px;\r\n  border-radius:0px;\r\n  padding-left:30px;\r\n  padding-right:30px;\r\n  padding-top:0px;\r\n  padding-bottom:0px;\r\n  font-size: 16px !important;\r\n}\r\n.alert{\r\n  background-color:$brand-secondary;\r\n  padding-bottom:15px;\r\n  padding-top:0px;\r\n  border:0px;\r\n  border-radius:0px;\r\n  margin:0px;\r\n}\r\n.close{\r\n  color:#ffffff;\r\n}",
+            "max_length": 8000,
+            "ed": {
+                "name": "css"
+            }
+        },
+        "roles": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "Roles",
+            "sys_readonly": false,
+            "type": "user_roles",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "roles",
+            "attributes": {
+                "no_truncate": "true",
+                "update_exempt": "true",
+                "record_watcher_blacklist": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 255,
+            "ed": {
+                "name": "roles"
+            }
+        },
+        "link": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Link",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "link",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 65000,
+            "ed": {
+                "name": "link"
+            }
+        },
+        "description": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Description",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "Defines what the widget does",
+            "name": "description",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 300,
+            "ed": {
+                "name": "description"
+            }
+        },
+        "demo_data": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Demo data",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "demo_data",
+            "attributes": {},
+            "choice": 0,
+            "value": "",
+            "max_length": 8000,
+            "ed": {
+                "name": "demo_data"
+            }
+        },
+        "option_schema": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Option schema",
+            "sys_readonly": false,
+            "type": "json",
+            "mandatory": false,
+            "displayValue": "[{\"name\":\"interval\",\"label\":\"Interval\",\"type\":\"string\"},{\"name\":\"filter\",\"label\":\"Filter\",\"type\":\"string\"},{\"name\":\"show_incident_alerts\",\"default_value\":\"\",\"label\":\"Show Incident Alerts\",\"type\":\"boolean\"}]",
+            "readonly": false,
+            "hint": "",
+            "name": "option_schema",
+            "attributes": {},
+            "choice": 0,
+            "value": "[{\"name\":\"interval\",\"label\":\"Interval\",\"type\":\"string\"},{\"name\":\"filter\",\"label\":\"Filter\",\"type\":\"string\"},{\"name\":\"show_incident_alerts\",\"default_value\":\"\",\"label\":\"Show Incident Alerts\",\"type\":\"boolean\"}]",
+            "max_length": 8000,
+            "ed": {
+                "name": "option_schema"
+            }
+        },
+        "script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Server script",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "//options are being populated by each instance options variables\nif (!options.table) {\n  options.table = \"kb_knowledge\";\n}\nif (!options.filter) {\n  options.filter = \"workflow_state=published^kb_category=0a212a76db98c30005af3ebf9d961955\";\n}\noptions.access = true;\n\ndata.list = [];\n//data.table='kb_knowledge';\n\n//kb_category=d9204b994fa32a0026547f75f110c7f3 Announcement category under IT knowledge base;\nvar gr = new GlideRecord(options.table);\ngr.addEncodedQuery(\"workflow_state=published^kb_knowledge_base.sys_id=a7e8a78bff0221009b20ffffffffff17^kb_category=b85c6552ff0131009b20ffffffffffd4\");\ngr.orderByDesc('sys_created_on');\n//gr.setLimit(5);\ngr.query();\nwhile (gr.next()) {\n  var test = {};\n  test.display_field = gr.short_description.getDisplayValue();\n  test.sys_id = gr.sys_id.getDisplayValue();\n  //data.list.push(gr.getValue('short_description'));\n  test.url = \"?id=kb_article&sys_id=\" + test.sys_id;\n  //data.url=\"?id=kb_article&sys_id=\"+record.sys_id;\n  data.list.push(test);\n}",
+            "readonly": false,
+            "hint": "",
+            "name": "script",
+            "attributes": {},
+            "choice": 0,
+            "value": "//options are being populated by each instance options variables\nif (!options.table) {\n  options.table = \"kb_knowledge\";\n}\nif (!options.filter) {\n  options.filter = \"workflow_state=published^kb_category=0a212a76db98c30005af3ebf9d961955\";\n}\noptions.access = true;\n\ndata.list = [];\n//data.table='kb_knowledge';\n\n//kb_category=d9204b994fa32a0026547f75f110c7f3 Announcement category under IT knowledge base;\nvar gr = new GlideRecord(options.table);\ngr.addEncodedQuery(\"workflow_state=published^kb_knowledge_base.sys_id=a7e8a78bff0221009b20ffffffffff17^kb_category=b85c6552ff0131009b20ffffffffffd4\");\ngr.orderByDesc('sys_created_on');\n//gr.setLimit(5);\ngr.query();\nwhile (gr.next()) {\n  var test = {};\n  test.display_field = gr.short_description.getDisplayValue();\n  test.sys_id = gr.sys_id.getDisplayValue();\n  //data.list.push(gr.getValue('short_description'));\n  test.url = \"?id=kb_article&sys_id=\" + test.sys_id;\n  //data.url=\"?id=kb_article&sys_id=\"+record.sys_id;\n  data.list.push(test);\n}",
+            "max_length": 65000,
+            "ed": {
+                "name": "script"
+            }
+        },
+        "has_preview": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Has preview",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "true",
+            "readonly": false,
+            "hint": "Defines whether preview data is available",
+            "name": "has_preview",
+            "attributes": {},
+            "choice": 0,
+            "value": "true",
+            "max_length": 40,
+            "ed": {
+                "name": "has_preview"
+            }
+        },
+        "public": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -7,
+            "label": "Public",
+            "sys_readonly": false,
+            "type": "boolean",
+            "mandatory": false,
+            "displayValue": "false",
+            "readonly": false,
+            "hint": "Widget publicly available to unauthenticated users",
+            "name": "public",
+            "attributes": {
+                "update_exempt": "true"
+            },
+            "choice": 0,
+            "value": "false",
+            "max_length": 40,
+            "ed": {
+                "name": "public"
+            }
+        },
+        "docs": {
+            "sys_mandatory": false,
+            "visible": true,
+            "table_attributes": {
+                "update_synch": "true",
+                "synch_attachments": "true"
+            },
+            "dbType": 12,
+            "label": "Docs",
+            "sys_readonly": false,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sp_documentation",
+            "reference_type": "table",
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "docs",
+            "attributes": {
+                "encode_utf8": "false"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": false,
+            "choice": 0,
+            "value": "",
+            "max_length": 32,
+            "ed": {
+                "reference": "sp_documentation",
+                "searchField": "title",
+                "defaultOperator": "STARTSWITH",
+                "name": "docs"
+            }
+        },
+        "client_script": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": -1,
+            "label": "Client controller",
+            "sys_readonly": false,
+            "type": "script",
+            "mandatory": false,
+            "displayValue": "function(spUtil, $scope) {\n  /* widget controller */\n\tvar c = this;\nif (!c.data.table)\n\t\treturn;\n\t\n\tspUtil.recordWatch($scope, c.data.table, c.data.filter);\n}",
+            "readonly": false,
+            "hint": "",
+            "name": "client_script",
+            "attributes": {
+                "client_script": "true"
+            },
+            "choice": 0,
+            "value": "function(spUtil, $scope) {\n  /* widget controller */\n\tvar c = this;\nif (!c.data.table)\n\t\treturn;\n\t\n\tspUtil.recordWatch($scope, c.data.table, c.data.filter);\n}",
+            "max_length": 8000,
+            "ed": {
+                "name": "client_script"
+            }
+        },
+        "data_table": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "default_value": "sp_instance",
+            "label": "Data table",
+            "sys_readonly": false,
+            "type": "table_name",
+            "mandatory": true,
+            "displayValue": "sp_instance",
+            "readonly": false,
+            "hint": "",
+            "name": "data_table",
+            "attributes": {
+                "base_table": "sp_instance",
+                "base_start": "true"
+            },
+            "choice": 0,
+            "choices": [],
+            "value": "sp_instance",
+            "max_length": 80,
+            "ed": {
+                "name": "data_table"
+            }
+        },
+        "name": {
+            "sys_mandatory": true,
+            "visible": true,
+            "dbType": 12,
+            "label": "Name",
+            "sys_readonly": false,
+            "type": "translated_field",
+            "mandatory": true,
+            "displayValue": "Custom Announcements",
+            "readonly": false,
+            "hint": "",
+            "name": "name",
+            "attributes": {},
+            "choice": 0,
+            "value": "Custom Announcements",
+            "max_length": 40,
+            "ed": {
+                "name": "name"
+            }
+        },
+        "sys_scope": {
+            "sys_mandatory": false,
+            "visible": true,
+            "table_attributes": {},
+            "dbType": 12,
+            "label": "Application",
+            "sys_readonly": true,
+            "type": "reference",
+            "mandatory": false,
+            "refTable": "sys_scope",
+            "reference_type": "table",
+            "displayValue": "Global",
+            "readonly": true,
+            "hint": "Application containing this record",
+            "name": "sys_scope",
+            "attributes": {
+                "list_force_default": "true",
+                "readonly_clickthrough": "true",
+                "ignore_filter_on_new": "true"
+            },
+            "reference_key": "sys_id",
+            "readonlyClickthrough": true,
+            "choice": 0,
+            "value": "global",
+            "max_length": 32,
+            "ed": {
+                "reference": "sys_scope",
+                "searchField": "name",
+                "defaultOperator": "STARTSWITH",
+                "name": "sys_scope"
+            }
+        },
+        "id": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "ID",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "custom-announcements",
+            "readonly": false,
+            "hint": "Identifier for $sp.embedWidget()",
+            "name": "id",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "custom-announcements",
+            "max_length": 40,
+            "ed": {
+                "name": "id"
+            }
+        },
+        "field_list": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dependentField": "data_table",
+            "dbType": -1,
+            "label": "Fields",
+            "sys_readonly": false,
+            "type": "field_list",
+            "mandatory": false,
+            "displayValue": "",
+            "readonly": false,
+            "hint": "",
+            "name": "field_list",
+            "attributes": {
+                "is_multi_text": "false"
+            },
+            "choice": 0,
+            "value": "",
+            "max_length": 1000,
+            "ed": {
+                "dependent_value": "sp_instance",
+                "name": "field_list"
+            }
+        },
+        "controller_as": {
+            "sys_mandatory": false,
+            "visible": true,
+            "dbType": 12,
+            "label": "controllerAs",
+            "sys_readonly": false,
+            "type": "string",
+            "mandatory": false,
+            "displayValue": "c",
+            "readonly": false,
+            "hint": "Identifier name for a reference to the controller in the directive's scope",
+            "name": "controller_as",
+            "attributes": {
+                "edge_encryption_enabled": "true"
+            },
+            "choice": 0,
+            "value": "c",
+            "max_length": 100,
+            "ed": {
+                "name": "controller_as"
+            }
+        }
+    }
+}

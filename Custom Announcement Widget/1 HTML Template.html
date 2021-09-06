@@ -1,0 +1,9 @@
+<div ng-show="{{::options.access}}" class="alert alert-info alert-dismissable"> 
+   <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+ <marquee behavior="scroll" direction="left" scrolldelay="75" onmouseover="this.stop();" onmouseout="this.start();">
+      <a ng-href="{{item.url}}" ng-repeat="item in data.list" class="btn btn-info">{{::item.display_field}} </a> 
+    </marquee>  
+</div>
+
+
+ 

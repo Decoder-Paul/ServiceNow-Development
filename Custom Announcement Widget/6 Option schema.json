@@ -1,0 +1,1 @@
+[{"name":"interval","label":"Interval","type":"string"},{"name":"filter","label":"Filter","type":"string"},{"name":"show_incident_alerts","default_value":"","label":"Show Incident Alerts","type":"boolean"}]
