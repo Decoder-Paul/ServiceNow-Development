@@ -5,6 +5,7 @@ function ($scope, spUtil, spUIActionsExecuter, $window, $uibModal) {
 		REJECT_SYS: "580f711147220100ba13a5554ee4904b"
 	};
 	var c = this;
+	
 	if ($scope.options.portal == true || $scope.options.portal == 'true') {
 		$scope.contentColClass = "col-xs-12";
 		$scope.options.portal = true;
@@ -12,7 +13,7 @@ function ($scope, spUtil, spUIActionsExecuter, $window, $uibModal) {
 		$scope.options.portal = false;
 		$scope.contentColClass = "col-sm-8";
 	}
-
+	
 	$scope.data.op = "";
 	spUtil.recordWatch($scope, "sysapproval_approver", "state=requested^approverIN" + $scope.data.myApprovals.toString(), function (data) {
 		// don't double-roundtrip if update came from record just approved/rejected
@@ -22,6 +23,7 @@ function ($scope, spUtil, spUIActionsExecuter, $window, $uibModal) {
 
 	function get() {
 		spUtil.update($scope);
+		$scope.selectedAll = false;
 	}
 	//checked ALL logic
 	$scope.checkAll = function(){
@@ -33,7 +35,7 @@ function ($scope, spUtil, spUIActionsExecuter, $window, $uibModal) {
 	$scope.updateSelectedAll = function() {
 		allCheckedFlag = true;
 		$scope.data.approvals.forEach(function(item){
-			if(item.checkbox == false){
+			if(typeof(item.checkbox)=='undefined' || item.checkbox == false){
 				allCheckedFlag = false;
 			}
 		});
@@ -65,6 +67,7 @@ function ($scope, spUtil, spUIActionsExecuter, $window, $uibModal) {
 			}).then(function(response){
 				//Process your response
 				spUtil.addInfoMessage("Selected tasks are " + response.data.status);
+				$scope.selectedAll = false;
 			});
 		}else{
 			spUtil.addErrorMessage("Select individual task checkbox to approve or reject");
@@ -78,6 +81,7 @@ function ($scope, spUtil, spUIActionsExecuter, $window, $uibModal) {
 				comment: comment
 			}).then(function(response){
 				spUtil.addInfoMessage("Selected tasks are " + response.data.status);
+				$scope.selectedAll = false;
 			});
 			c.closeModal();
 		}else{
@@ -162,5 +166,13 @@ function ($scope, spUtil, spUIActionsExecuter, $window, $uibModal) {
 	}
 	c.closeModal = function () {
 		c.modalInstance.close();
+	}
+	
+	$scope.toggleFilter = function(){
+		this.toggle = !this.toggle;
+		if(this.toggle)
+			this.detailsText = "Expand for more details";
+		else
+			this.detailsText = "Collapse more details";
 	}
 }

@@ -32,15 +32,44 @@
               </a>
             </label>
           </div>
-          <div ng-if="approval.task.opened_by"><label>${Requestor}</label> {{::approval.task.opened_by}}</div>
-          <div ng-if="approval.task.approver"><label>${Approver}</label> {{::approval.task.approver}}</div>
-          <div ng-if="approval.task.start_date"><label>${Start}</label> {{::approval.task.start_date}}</div>
-          <div ng-if="approval.task.end_date"><label>${End}</label> {{::approval.task.end_date}}</div>
-          <div ng-if="approval.task.quantity"><label>${Quantity}</label> {{::approval.task.quantity}}</div>
-          <div ng-if="approval.task.price"><label>${Price}</label> {{::approval.task.price}}
-            <span ng-if="approval.task.recurring_price"><label>${Recurring price}</label> {{::approval.task.recurring_price}} {{::approval.task.recurring_frequency}}</span>
-            <label ng-if="approval.task.quantity && approval.task.quantity > 1"> ${each}</label>
+          <div ng-if="approval.task.opened_by"><label>${Requestor}:</label> {{::approval.task.opened_by}}</div>
+          <div ng-if="approval.task.requested_for"><label>${Requested For}:</label> {{::approval.task.requested_for}}</div>
+          <div ng-if="approval.task.company"><label>${Company}:</label> {{::approval.task.company}}</div>
+          <div ng-if="approval.task.department"><label>${Department}:</label> {{::approval.task.department}}</div>
+          <div ng-if="approval.task.variables1" ng-bind-html="approval.task.variables1"></div>
+          <div ng-if="approval.task.approver"><label>${Approver}:</label> {{::approval.task.approver}}</div>
+          <div ng-if="approval.task.type"><label>${Type}:</label> {{::approval.task.type}}</div>
+          <div ng-if="approval.task.start_date"><label>${Start}:</label> {{::approval.task.start_date}}</div>
+          <div ng-if="approval.task.end_date"><label>${End}:</label> {{::approval.task.end_date}}</div>
+          <div ng-if="approval.task.cmdb_ci"><label>${Configuration Item}:</label> {{::approval.task.cmdb_ci}}</div>
+          <div ng-if="approval.task.description" ng-bind-html="approval.task.description"></div>
+          <div ng-if="approval.task.table == 'Change Request'">
+          	<a href='#' ng-init="toggle=true;detailsText='Expand for more details'" ng-click='toggleFilter();'><span id='sp{{::approval.task.number}}' class="glyphicon" ng-class="this.toggle ? 'glyphicon-chevron-up' : 'glyphicon-chevron-down'"></span>
+       			&nbsp;{{this.detailsText}}</a>
+          	<div ng-hide="toggle" id='div{{::approval.task.number}}'>
+              <table style="width:100%">
+                <tr class="break-word" ng-init="items = approval.task.variables" ng-repeat="item in approval.task.variables" ng-switch on="$index % 2">
+                  <td ng-switch-when="0">
+                    <label ng-if="item.label" class="m-t-xs m-b-none text-muted"><b>{{::items[$index].label}}</b></label>
+                    <div>
+                    <span class="pre-wrap">{{::items[$index].display_value}}</span>
+                    </div>
+                  </td>
+                  <td ng-switch-when="0">
+                    <label ng-if="item.label" class="m-t-xs m-b-none text-muted"><b>{{::items[$index+1].label}}</b></label>
+                    <div>
+                      <span class="pre-wrap">{{::items[$index+1].display_value}}</span>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+          	</div>
           </div>
+         <!-- <div ng-if="approval.task.quantity"><label>${Quantity}</label> {{::approval.task.quantity}}</div>
+          <div ng-if="approval.task.price"><label>${Price}</label> {{::approval.task.price}}
+            <span ng-if="approval.task.recurring_price"><label>$approval.task.{Recurring price}</label> {{::approval.task.recurring_price}} {{::approval.task.recurring_frequency}}</span>
+            <label ng-if="approval.task.quantity && approval.task.quantity > 1"> ${each}</label>
+          </div>-->
           <div ng-if="approval.items.length == 1">
             <div ng-repeat="item in approval.items">
              <sp-widget ng-if="item.variableSummarizerWidget" widget="item.variableSummarizerWidget"></sp-widget> 
@@ -75,8 +104,8 @@
     <span class="pull-left" style="padding-right: 10px;margin-top:6px">
       <strong><label class="checkbox-inline" for="select_all"><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">Select All</label></strong>
     </span>
-    <button class="btn btn-success pull-left" type="submit" ng-click="approveOnlyChecked()">${Approve Selected}</button>
-    <button class="btn btn-danger pull-left" type="submit" ng-click="openMultiRejModal()">${Reject Selected}</button
+    <button class="btn btn-success pull-left" type="submit" ng-click="approveOnlyChecked()" style="margin-right:5px">${Approve Selected}</button>
+    <button class="btn btn-danger pull-left" type="submit" ng-click="openMultiRejModal()">${Reject Selected}</button>
     <div ng-if="data.pagination.showPagination">
       <a id="previous-btn" href="javascript:void(0)" ng-click="previousPage()" ng-show="data.pagination.hasPrevious" class="pull-right btn btn-sm btn-default" aria-label="${Pagination button Previous}">
         <i class="fa fa-arrow-left m-r-sm" aria-hidden="true"></i>${Previous}</a>
