@@ -1,6 +1,6 @@
 # Approval Buttons on ServiceNow Email
 We mostly know how to create an Approve / Reject button on the approval email but sometimes those buttons doesn't show up on our office emails, it gets converted into a link with the text like this following image.
-![Failed Approval Button Image](failed_approval_buttons.png)
+![Failed Approval Button Image](failed_approval_buttons.PNG)
 
 The trick to make the buttons work or look as buttons is to use pure CSS. Instead of creating HTML buttons we can covert an anchor tag to a box with CSS which looks something like this.
 ![Working Approval Button Image](working_approval_buttons.png)
