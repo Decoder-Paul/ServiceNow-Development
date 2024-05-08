@@ -1,0 +1,39 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="h4 panel-title">
+      ${Location Tree}
+    </h2>
+  </div>
+  <div class="panel-body location-panel">
+    <!--<input type="text" id="location-filter" ng-model="c.filterQuery" placeholder="Filter Location">-->
+    <ul style="padding-inline-start: 0px !important;">
+      <li ng-repeat="item in c.preFilter(data.children)">
+        <fa ng-hide="!item.showSpinner" class="fa-spin" name="spinner" spin="item.showSpinner"></fa>
+        <span ng-class="{'caret-hide':item.showSpinner, 'close-caret': item.caret > 0, 'down-caret' : item.toggle}" ng-click="c.getChildren(item)"></span>
+        <a href="javascript:void(0)">
+          <span ng-click="c.selectedID(item.id, item.name)">{{item.name}}</span>
+        </a>
+        <div ng-show="item.toggle" ng-if="item.children && item.children.length" ng-include="'menu.html'"></div>
+      </li>
+    </ul>
+  </div>
+  <div class="panel-footer">
+    <div class="m-t-xs pull-left">${Selected Location: <b><i><span ng-if="!c.selectedLocation">none</span>{{c.selectedLocation.name}}}</i></b></div>
+    <div class="btn-toolbar pull-right">
+      <button class="btn btn-primary btn-md m-l-xs" ng-if="c.selectedLocation" ng-click="c.send()">Submit</button>
+    </div>
+    <span class="clearfix"></span>
+  </div>
+</div>
+<script type="text/ng-template" id="menu.html">
+	<ul>
+  	<li ng-repeat="item in c.preFilter(item.children)">
+    	<fa ng-show="item.showSpinner" class="fa-spin" name="spinner" spin="item.showSpinner"></fa>
+      <span ng-class="{'caret-hide':item.showSpinner, 'close-caret': item.caret > 0, 'down-caret' : item.toggle}" ng-click="c.getChildren(item)"></span>
+      <a href="javascript:void(0)">
+      	<span ng-click="c.selectedID(item.id, item.name)">{{item.name}}</span>
+  		</a>
+      <div ng-show="item.toggle" ng-if="item.children && item.children.length" ng-include="'menu.html'"></div>
+  	</li>
+  </ul>
+</script>
