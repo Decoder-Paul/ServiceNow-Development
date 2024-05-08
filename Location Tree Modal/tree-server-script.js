@@ -1,6 +1,6 @@
 (function() {
-	if(input.deviceId){
-		data.deviceId = input.deviceId;
+	if(input.user_id){
+		data.user_id = input.user_id;
 	}
 	function getNumberOfChild(parentId){
 		var grAgg = new GlideAggregate('cmn_location');
@@ -54,13 +54,11 @@
 	}
 	
 	if(input){
-		if(input.action == 'updateLocation'){
-			var gr = new GlideRecord('cmdb_ci_pc_hardware');
-			if(gr.get(input.deviceId))
-			{
-				gr.setValue('location', input.location);
-				gr.update();
-			}
+		if(input.action == 'updateUser'){
+			var grUser = new GlideRecord('sys_user');
+			grUser.get(input.user);
+			grUser.setValue('location', input.location);
+			grUser.update();
 		}
 		else if(input.action == 'getChildren'){
 			getChildren(input.parentId);
