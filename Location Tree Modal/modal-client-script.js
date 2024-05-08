@@ -1,6 +1,6 @@
 api.controller = function($uibModal, $scope, spUtil) {
-    /* widget controller */
-    var c = this;
+  /* widget controller */
+  var c = this;
 	var MODAL_TEMPLATE = '<div class="modal-content">'+
 		'<div class="modal-header">' +
     '    <span class="h3 inline modal-title">{{ctrl.params.title}}</span>' +
